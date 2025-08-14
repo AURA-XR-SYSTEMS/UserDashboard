@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Aura — Sign In</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="/public/styles.css">
+</head>
+<body>
+  <header class="header">
+    <nav class="nav">
+      <div class="brand"><a href="/"><img class="brand-logo" src="/assets/aura_logo_withtext_transparent_white-06.png" alt="Aura" /></a></div>
+      <div class="right">
+        <span class="muted" style="font-weight:600;">Login / Create Account</span>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <h1>Welcome to Aura</h1>
+      <p class="muted">Sign in or create an account to access the portal.</p>
+    </section>
+
+    <div class="card" style="max-width:520px;margin:0 auto;">
+      <div class="tabs">
+        <div class="tab-header">
+          <button class="tab-btn active" data-tab-target="#tab-login">Sign in</button>
+          <button class="tab-btn" data-tab-target="#tab-register">Create account</button>
+        </div>
+        <div class="tab-panels">
+          <div class="tab-panel active" id="tab-login">
+            <form class="form" data-auth-form data-mode="login">
+              <div>
+                <label>Email</label>
+                <input class="input" type="email" name="email" required placeholder="you@company.com">
+              </div>
+              <div>
+                <label>Password</label>
+                <input class="input" type="password" name="password" required minlength="6" placeholder="••••••••">
+              </div>
+              <div class="row" style="justify-content:space-between;">
+                <button class="btn primary" type="submit">Sign in</button>
+                <a class="btn ghost" href="/dashboard">Skip (demo)</a>
+              </div>
+            </form>
+          </div>
+          <div class="tab-panel" id="tab-register">
+            <form class="form" data-auth-form data-mode="register">
+              <div>
+                <label>Name</label>
+                <input class="input" type="text" name="name" placeholder="Your name">
+              </div>
+              <div>
+                <label>Email</label>
+                <input class="input" type="email" name="email" required placeholder="you@company.com">
+              </div>
+              <div>
+                <label>Password</label>
+                <input class="input" type="password" name="password" required minlength="6" placeholder="Create a password">
+              </div>
+              <div class="row" style="justify-content:flex-end;">
+                <button class="btn primary" type="submit">Create account</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer"><span>© 2025 Aura XR Systems LLC</span><span>First-pass POC</span></footer>
+  <script src="/public/app.js"></script>
+  <script>
+    // simple tabs
+    document.addEventListener('DOMContentLoaded', () => {
+      const btns = Array.from(document.querySelectorAll('.tab-btn'));
+      const panels = Array.from(document.querySelectorAll('.tab-panel'));
+      btns.forEach(btn => btn.addEventListener('click', () => {
+        const target = document.querySelector(btn.dataset.tabTarget);
+        btns.forEach(b => b.classList.remove('active'));
+        panels.forEach(p => p.classList.remove('active'));
+        btn.classList.add('active');
+        if (target) target.classList.add('active');
+      }));
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Aura — Account</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="/public/styles.css">
+</head>
+<body>
+<header class="header">
+  <nav class="nav">
+    <div class="brand"><a href="/dashboard"><img class="brand-logo" src="/assets/aura_logo_withtext_transparent_white-06.png" alt="Aura" /></a></div>
+    <div class="right">
+      <a class="btn ghost" href="/account">Account</a>
+      <a class="btn ghost" href="/docs">Documentation</a>
+      <a class="btn ghost" href="/downloads">Downloads</a>
+      <button class="btn" data-logout>Log out</button>
+    </div>
+  </nav>
+</header>
+
+<main class="container">
+  <section class="hero">
+    <h1>Account</h1>
+    <p class="muted">Manage plan, billing, credits, and security settings.</p>
+  </section>
+
+  <div class="stacked">
+
+  <!-- Overview -->
+  <div class="card has-header" id="section-overview">
+    <div class="card-header">Overview</div>
+    <div class="card-body">
+      <div class="row" style="flex-wrap:wrap; gap:8px;">
+        <span class="chip" id="ov-plan">Plan: —</span>
+        <span class="chip" id="ov-status">Status: —</span>
+        <span class="chip muted" id="ov-renew">Renews: —</span>
+        <span class="chip" id="ov-credits">Credits: —</span>
+      </div>
+      <div class="hr"></div>
+      <div class="card-actions" style="gap:10px; flex-wrap:wrap;">
+        <a class="btn primary" href="/plans" id="ov-change-plan">Change plan</a>
+        <a class="btn ghost" href="/credits" id="ov-add-credits">Add credits</a>
+        <a class="btn ghost" href="#section-billing" id="ov-update-payment">Update payment method</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Plan -->
+  <div class="card has-header" id="section-plan">
+    <div class="card-header">Plan</div>
+    <div class="card-body">
+      <span class="section-tab">Current plan</span>
+      <div class="row" id="plan-summary" style="flex-wrap:wrap; gap:8px; margin-bottom:6px;">
+        <span class="chip muted">Loading…</span>
+      </div>
+      <div class="card-actions" style="gap:8px; flex-wrap:wrap;">
+        <a class="btn" href="/plans">Browse plans</a>
+        <button class="btn" data-plan="basic">Switch to Basic</button>
+        <button class="btn" data-plan="pro">Switch to Pro</button>
+        <button class="btn" data-plan="team">Switch to Team</button>
+        <button class="btn ghost" id="btn-cancel-plan">Cancel plan</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Billing -->
+  <div class="card has-header" id="section-billing">
+    <div class="card-header">Billing</div>
+    <div class="card-body">
+      <span class="section-tab">Payment method</span>
+      <div class="row">
+        <input class="input" id="pm-last4" placeholder="Card last4 e.g. 4242" style="max-width:220px;" />
+        <button class="btn" id="pm-update">Save</button>
+      </div>
+      <div class="hr"></div>
+      <p class="features">Invoices and history will appear here (placeholder).</p>
+    </div>
+  </div>
+
+  <!-- Credits -->
+  <div class="card has-header" id="section-credits">
+    <div class="card-header">Credits</div>
+    <div class="card-body">
+      <span class="section-tab">Balance</span>
+      <div class="row" style="justify-content:space-between;">
+        <span class="badge" id="cr-label">—</span>
+      </div>
+      <div class="meter" aria-label="included credits"><span id="cr-meter"></span></div>
+      <div class="row" style="justify-content:space-between; margin-top:8px;">
+        <span class="badge">Additional credits</span>
+        <span class="badge" id="crp-label">0 / 0 this cycle</span>
+      </div>
+      <div class="meter blue" aria-label="purchased credits"><span id="crp-meter"></span></div>
+      <div class="hr"></div>
+      <div class="card-actions" style="gap:8px; flex-wrap:wrap;">
+        <a class="btn primary" href="/credits">Purchase credits</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Security -->
+  <div class="card has-header" id="section-security">
+    <div class="card-header">Security</div>
+    <div class="card-body">
+      <span class="section-tab">Email</span>
+      <div class="row">
+        <input class="input" id="sec-email" placeholder="New email" style="max-width:320px;" />
+        <button class="btn" id="sec-email-save">Update</button>
+      </div>
+      <div class="hr"></div>
+      <span class="section-tab">Password</span>
+      <div class="row" style="flex-wrap:wrap;">
+        <input class="input" id="sec-current" type="password" placeholder="Current password" style="max-width:220px;" />
+        <input class="input" id="sec-new" type="password" placeholder="New password" style="max-width:220px;" />
+        <button class="btn" id="sec-pass-save">Change password</button>
+      </div>
+    </div>
+  </div>
+
+  </div>
+</main>
+
+<footer class="footer"><span> 2025 Aura XR Systems LLC</span><span>Account</span></footer>
+<script src="/public/app.js"></script>
+<script>
+// load overview/account data
+(async function(){
+  const res = await fetch('/api/account');
+  const { user } = await res.json();
+  if (!user) return;
+  // Overview chips
+  const renew = user.billing?.renewAt ? new Date(user.billing.renewAt).toLocaleDateString() : '—';
+  document.getElementById('ov-plan').innerHTML = `Plan: <strong>${user.billing?.planId || '—'}</strong>`;
+  document.getElementById('ov-status').innerHTML = `Status: <strong>${user.billing?.status || 'none'}</strong>`;
+  document.getElementById('ov-renew').innerHTML = `Renews: <strong>${renew}</strong>`;
+  const bal = user.credits?.balance ?? 0; const incl = user.credits?.includedAllowance ?? 0;
+  document.getElementById('ov-credits').innerHTML = `Credits: <strong>${bal.toLocaleString()}</strong>`;
+  // Credits meter
+  const meter = document.getElementById('cr-meter');
+  const crLabel = document.getElementById('cr-label');
+  const crpLabel = document.getElementById('crp-label');
+  const meterP = document.getElementById('crp-meter');
+  const incBal = typeof user.credits?.includedRemaining === 'number' ? user.credits.includedRemaining : incl;
+  const purBal = typeof user.credits?.purchasedRemaining === 'number' ? user.credits.purchasedRemaining : Math.max(0, bal - incBal);
+  const purTotal = typeof user.credits?.purchasedCycleTotal === 'number' ? user.credits.purchasedCycleTotal : purBal;
+  if (incl>0){
+    const pct = Math.max(0, Math.min(100, (incBal/incl)*100));
+    meter.style.width = pct + '%';
+    crLabel.textContent = `${incBal.toLocaleString()} / ${incl.toLocaleString()} included this cycle`;
+  } else {
+    crLabel.textContent = `${bal.toLocaleString()} available`;
+    meter.style.width = '0%';
+  }
+  const pctP = purTotal>0 ? Math.max(0, Math.min(100, (purBal / purTotal) * 100)) : 0;
+  meterP.style.width = pctP + '%';
+  crpLabel.textContent = `${purBal.toLocaleString()} / ${purTotal.toLocaleString()} this cycle`;
+  // Plan summary chips
+  const ps = document.getElementById('plan-summary');
+  const pId = user.billing?.planId || '—';
+  const pStatus = user.billing?.status || 'none';
+  const renewText = renew;
+  const statusClass = pStatus === 'active' ? 'success' : (pStatus === 'none' ? 'muted' : 'warn');
+  ps.innerHTML = `
+    <span class="chip">Plan: <strong>${pId}</strong></span>
+    <span class="chip ${statusClass}">Status: <strong>${pStatus}</strong></span>
+    <span class="chip muted">Renews: <strong>${renewText}</strong></span>
+  `;
+})();
+
+// plan change
+Array.from(document.querySelectorAll('#section-plan [data-plan]')).forEach(btn=>{
+  btn.addEventListener('click', async ()=>{
+    const planId = btn.getAttribute('data-plan');
+    const r = await fetch('/api/plan/change', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ planId })});
+    if (r.ok) location.reload();
+  });
+});
+
+document.getElementById('btn-cancel-plan').addEventListener('click', async ()=>{
+  if (!confirm('Cancel your plan?')) return;
+  const r = await fetch('/api/plan/cancel', { method:'POST' });
+  if (r.ok) location.reload();
+});
+
+// payment method
+const pmBtn = document.getElementById('pm-update');
+pmBtn.addEventListener('click', async ()=>{
+  const last4 = document.getElementById('pm-last4').value.trim();
+  const r = await fetch('/api/account/payment-method', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ last4 })});
+  if (r.ok) alert('Payment method updated.');
+});
+
+// security
+const secEmailBtn = document.getElementById('sec-email-save');
+secEmailBtn.addEventListener('click', async ()=>{
+  const newEmail = document.getElementById('sec-email').value.trim();
+  if (!newEmail) return alert('Enter an email');
+  const r = await fetch('/api/account/security/email', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ newEmail })});
+  if (r.ok) alert('Email updated');
+});
+
+const secPassBtn = document.getElementById('sec-pass-save');
+secPassBtn.addEventListener('click', async ()=>{
+  const currentPassword = document.getElementById('sec-current').value;
+  const newPassword = document.getElementById('sec-new').value;
+  if (!newPassword || !currentPassword) return alert('Enter both passwords');
+  const r = await fetch('/api/account/security/password', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ currentPassword, newPassword })});
+  if (r.ok) alert('Password changed');
+});
+</script>
+</body>
+</html>

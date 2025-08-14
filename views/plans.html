@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Aura — Plans</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="/public/styles.css">
+</head>
+<body>
+<header class="header">
+  <nav class="nav">
+    <div class="brand"><a href="/dashboard"><img class="brand-logo" src="/assets/aura_logo_withtext_transparent_white-06.png" alt="Aura" /></a></div>
+    <div class="right">
+      <a class="btn ghost" href="/account">Account</a>
+      <a class="btn ghost" href="/docs">Documentation</a>
+      <a class="btn ghost" href="/downloads">Downloads</a>
+      <button class="btn" data-logout>Log out</button>
+    </div>
+  </nav>
+</header>
+
+<main class="container">
+  <section class="hero">
+    <h1>Choose a plan</h1>
+    <p class="muted">Activate a plan to unlock downloads and early access.</p>
+  </section>
+
+  <div id="plan-list" class="cards">
+    <!-- populated by JS -->
+  </div>
+
+  <p class="notice" style="margin-top:18px;">
+    This is a POC — clicking “Choose” simulates a successful payment and activates your subscription.
+  </p>
+</main>
+
+<footer class="footer"><span>© 2025 Aura XR Systems LLC</span><span>Plans</span></footer>
+<script src="/public/app.js"></script>
+</body>
+</html>

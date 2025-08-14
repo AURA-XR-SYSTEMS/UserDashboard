@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Aura — Billing</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="/public/styles.css">
+</head>
+<body>
+<header class="header">
+  <nav class="nav">
+    <div class="brand"><a href="/dashboard">AURA</a></div>
+    <div class="right">
+      <a class="btn ghost" href="/plans">Plans</a>
+      <a class="btn ghost" href="/docs">Documentation</a>
+      <a class="btn ghost" href="/billing">Billing</a>
+      <a class="btn ghost" href="/downloads">Downloads</a>
+      <button class="btn" data-logout>Log out</button>
+    </div>
+  </nav>
+</header>
+
+<main class="container">
+  <section class="hero">
+    <h1>Billing</h1>
+    <p class="muted">Manage your subscription and renewal.</p>
+  </section>
+
+  <div class="card" style="padding:18px 22px;">
+    <div id="billing-info" class="features">Loading…</div>
+  </div>
+</main>
+
+<footer class="footer"><span>© 2025 Aura XR Systems LLC</span><span>Billing</span></footer>
+
+<script src="/public/app.js"></script>
+<script>
+(async function(){
+  const { user } = await (await fetch('/api/me')).json();
+  const el = document.getElementById('billing-info');
+  if (!user || !user.billing || user.billing.status === 'none') {
+    el.innerHTML = 'No active plan. <a href="/plans">Choose a plan</a>.';
+  } else {
+    el.innerHTML = `
+      <div><strong>Status:</strong> ${user.billing.status}</div>
+      <div><strong>Plan:</strong> ${user.billing.planId}</div>
+      <div><strong>Renews:</strong> ${new Date(user.billing.renewAt).toLocaleString()}</div>
+      <div class="hr"></div>
+      <a class="btn primary" href="/downloads">Go to downloads</a>
+    `;
+  }
+})();
+</script>
+</body>
+</html>

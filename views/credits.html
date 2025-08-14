@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Aura — Purchase Credits</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="/public/styles.css">
+</head>
+<body>
+<header class="header">
+  <nav class="nav">
+    <div class="brand"><a href="/dashboard"><img class="brand-logo" src="/assets/aura_logo_withtext_transparent_white-06.png" alt="Aura" /></a></div>
+    <div class="right">
+      <a class="btn ghost" href="/account">Account</a>
+      <a class="btn ghost" href="/docs">Documentation</a>
+      <a class="btn ghost" href="/downloads">Downloads</a>
+      <button class="btn" data-logout>Log out</button>
+    </div>
+  </nav>
+</header>
+
+<main class="container">
+  <section class="hero">
+    <h1>Purchase credits</h1>
+    <p class="muted">Choose a pack to add additional credits for this billing cycle.</p>
+  </section>
+
+  <div class="stacked" id="balance-section">
+    <div class="card has-header">
+      <div class="card-header">Current balance</div>
+      <div class="card-body">
+        <span class="section-tab">Included credits</span>
+        <div class="row" style="justify-content:space-between;">
+          <span class="badge" id="inc-label">—</span>
+        </div>
+        <div class="meter"><span id="inc-meter"></span></div>
+        <div class="row" style="justify-content:space-between; margin-top:8px;">
+          <span class="badge">Additional credits</span>
+          <span class="badge" id="add-label">0 / 0 this cycle</span>
+        </div>
+        <div class="meter blue"><span id="add-meter"></span></div>
+      </div>
+    </div>
+
+    <div class="card has-header">
+      <div class="card-header">Buy credits</div>
+      <div class="card-body">
+        <div class="cards" id="credit-options">
+          <div class="card">
+            <div class="card-body">
+              <div class="features">
+                <div class="row" style="align-items:baseline; gap:8px;">
+                  <div class="price" style="font-size:28px; font-weight:700;">$10</div>
+                  <span class="badge">1000 credits</span>
+                </div>
+              </div>
+              <div class="hr"></div>
+              <div class="card-actions">
+                <button class="btn primary" data-buy="1000">Buy 1000</button>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-body">
+              <div class="features">
+                <div class="row" style="align-items:baseline; gap:8px;">
+                  <div class="price" style="font-size:28px; font-weight:700;">$20</div>
+                  <span class="badge">2000 credits</span>
+                </div>
+              </div>
+              <div class="hr"></div>
+              <div class="card-actions">
+                <button class="btn primary" data-buy="2000">Buy 2000</button>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-body">
+              <div class="features">
+                <div class="row" style="align-items:baseline; gap:8px;">
+                  <div class="price" style="font-size:28px; font-weight:700;">$50</div>
+                  <span class="badge">5000 credits</span>
+                </div>
+              </div>
+              <div class="hr"></div>
+              <div class="card-actions">
+                <button class="btn primary" data-buy="5000">Buy 5000</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="muted" style="margin-top:12px;">Purchases reset to 0/0 at the start of each billing cycle.</p>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="footer"><span>© 2025 Aura XR Systems LLC</span><span>Purchase credits</span></footer>
+<script src="/public/app.js"></script>
+<script>
+(async function(){
+  // Load balances
+  try{
+    const { user } = await (await fetch('/api/account')).json();
+    if (user && user.credits){
+      const incl = user.credits.includedAllowance || 0;
+      const incBal = typeof user.credits.includedRemaining === 'number' ? user.credits.includedRemaining : incl;
+      const purBal = user.credits.purchasedRemaining || 0;
+      const purTotal = user.credits.purchasedCycleTotal || 0;
+      const incPct = incl>0 ? Math.max(0, Math.min(100, (incBal / incl) * 100)) : 0;
+      document.getElementById('inc-meter').style.width = incPct + '%';
+      document.getElementById('inc-label').textContent = incl>0 ? `${incBal.toLocaleString()} / ${incl.toLocaleString()} included this cycle` : `${(user.credits.balance||0).toLocaleString()} available`;
+      const purPct = purTotal>0 ? Math.max(0, Math.min(100, (purBal / purTotal) * 100)) : 0;
+      document.getElementById('add-meter').style.width = purPct + '%';
+      document.getElementById('add-label').textContent = `${purBal.toLocaleString()} / ${purTotal.toLocaleString()} this cycle`;
+    }
+  }catch(e){}
+
+  // Buy buttons
+  document.getElementById('credit-options').addEventListener('click', async (e)=>{
+    const amt = e.target && e.target.dataset && e.target.dataset.buy;
+    if (!amt) return;
+    try{
+      const res = await fetch('/api/credits/purchase', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ amount: Number(amt) })});
+      if (!res.ok){ const j = await res.json(); throw new Error(j.error || 'Error'); }
+      location.reload();
+    }catch(err){ alert(err.message); }
+  });
+})();
+</script>
+</body>
+</html>
