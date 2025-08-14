@@ -9,12 +9,12 @@
 <body>
 <header class="header">
   <nav class="nav">
-    <div class="brand"><a href="/dashboard">AURA</a></div>
+    <div class="brand"><a href="/dashboard.html">AURA</a></div>
     <div class="right">
-      <a class="btn ghost" href="/plans">Plans</a>
-      <a class="btn ghost" href="/docs">Documentation</a>
+      <a class="btn ghost" href="/plans.html">Plans</a>
+      <a class="btn ghost" href="/docs.html">Documentation</a>
       <a class="btn ghost" href="/billing">Billing</a>
-      <a class="btn ghost" href="/downloads">Downloads</a>
+      <a class="btn ghost" href="/downloads.html">Downloads</a>
       <button class="btn" data-logout>Log out</button>
     </div>
   </nav>
@@ -39,14 +39,14 @@
   const { user } = await (await fetch('/api/me')).json();
   const el = document.getElementById('billing-info');
   if (!user || !user.billing || user.billing.status === 'none') {
-    el.innerHTML = 'No active plan. <a href="/plans">Choose a plan</a>.';
+    el.innerHTML = 'No active plan. <a href="/plans.html">Choose a plan</a>.';
   } else {
     el.innerHTML = `
       <div><strong>Status:</strong> ${user.billing.status}</div>
       <div><strong>Plan:</strong> ${user.billing.planId}</div>
       <div><strong>Renews:</strong> ${new Date(user.billing.renewAt).toLocaleString()}</div>
       <div class="hr"></div>
-      <a class="btn primary" href="/downloads">Go to downloads</a>
+      <a class="btn primary" href="/downloads.html">Go to downloads</a>
     `;
   }
 })();

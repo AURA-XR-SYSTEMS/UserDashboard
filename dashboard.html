@@ -9,11 +9,11 @@
 <body>
   <header class="header">
     <nav class="nav">
-      <div class="brand"><a href="/dashboard"><img class="brand-logo" src="/assets/aura_logo_withtext_transparent_white-06.png" alt="Aura" /></a></div>
+      <div class="brand"><a href="/dashboard.html"><img class="brand-logo" src="/assets/aura_logo_withtext_transparent_white-06.png" alt="Aura" /></a></div>
       <div class="right">
-        <a class="btn ghost" href="/account">Account</a>
-        <a class="btn ghost" href="/docs">Documentation</a>
-        <a class="btn ghost" href="/downloads">Downloads</a>
+        <a class="btn ghost" href="/account.html">Account</a>
+        <a class="btn ghost" href="/docs.html">Documentation</a>
+        <a class="btn ghost" href="/downloads.html">Downloads</a>
         <button class="btn" data-logout>Log out</button>
       </div>
     </nav>
@@ -43,7 +43,7 @@
               </div>
               <div class="meter blue" aria-label="purchased credits"><span id="purchased-meter"></span></div>
               <div class="card-actions" style="margin-top:10px;">
-                <a class="btn ghost" href="/credits">Purchase credits</a>
+                <a class="btn ghost" href="/credits.html">Purchase credits</a>
               </div>
             </div>
           </div>
@@ -54,9 +54,9 @@
         <div class="card-body">
           <div class="features" style="display:flex; flex-direction:column; gap:10px;">
             <div class="card-actions">
-              <a class="btn primary" href="/downloads">Go to downloads</a>
-              <a class="btn ghost" href="/account">Account settings</a>
-              <a class="btn ghost" href="/account" onclick="event.preventDefault(); location.href='/account'">Manage billing</a>
+              <a class="btn primary" href="/downloads.html">Go to downloads</a>
+              <a class="btn ghost" href="/account.html">Account settings</a>
+              <a class="btn ghost" href="/account.html" onclick="event.preventDefault(); location.href='/account.html'">Manage billing</a>
             </div>
           </div>
         </div>
@@ -74,8 +74,8 @@
               <li>Read setup guide</li>
             </ol>
             <div class="card-actions" style="margin-top:12px;">
-              <a class="btn primary" href="/plans">Choose a plan</a>
-              <a class="btn ghost" href="/downloads" data-requires-plan>Go to downloads</a>
+              <a class="btn primary" href="/plans.html">Choose a plan</a>
+              <a class="btn ghost" href="/downloads.html" data-requires-plan>Go to downloads</a>
             </div>
           </div>
         </div>
@@ -85,7 +85,7 @@
         <div class="card-body">
           <div class="features">Read setup guides, API references, and tutorials.</div>
           <div class="card-actions">
-            <a class="btn ghost" href="/docs">Open documentation</a>
+            <a class="btn ghost" href="/docs.html">Open documentation</a>
           </div>
         </div>
       </div>
@@ -101,7 +101,7 @@
         const { user } = await (await fetch('/api/me')).json();
         const chipsEl = document.getElementById('status-chips');
         if (!user || !user.billing || user.billing.status === 'none') {
-          chipsEl.innerHTML = 'No active plan. <a href="/plans">Choose a plan</a> to unlock downloads.';
+          chipsEl.innerHTML = 'No active plan. <a href="/plans.html">Choose a plan</a> to unlock downloads.';
         } else {
           const renew = user.billing.renewAt ? new Date(user.billing.renewAt).toLocaleDateString() : '—';
           const statusClass = user.billing.status === 'active' ? 'success' : 'warn';

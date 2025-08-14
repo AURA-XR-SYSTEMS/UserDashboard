@@ -32,7 +32,7 @@ async function api(path, opts = {}) {
     try {
       const path = mode === 'register' ? '/api/auth/register' : '/api/auth/login';
       await api(path, { method: 'POST', body });
-      location.href = '/dashboard';
+      location.href = '/dashboard.html';
     } catch (err) {
       alert(err.message);
     }
