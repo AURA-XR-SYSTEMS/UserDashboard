@@ -1,6 +1,9 @@
 // Simple front-end helpers for forms/navigation
 
 async function api(path, opts = {}) {
+    const body = ({path, ...opts})
+    console.log("Logging API Call...")
+    console.log(body)
     const res = await fetch(path, {
       method: opts.method || 'GET',
       headers: { 'Content-Type': 'application/json' },
@@ -12,7 +15,7 @@ async function api(path, opts = {}) {
   
   async function loadMe() {
     try {
-      const { user } = await api('/api/me');
+      const { user } = await api('https://jeyfs1x61h.execute-api.us-east-1.amazonaws.com/dev/api/me');
       window.currentUser = user;
       const el = document.querySelector('[data-username]');
       if (el && user) el.textContent = user.name || user.email;
@@ -30,7 +33,7 @@ async function api(path, opts = {}) {
     const mode = form.dataset.mode || 'login';
     const body = Object.fromEntries(new FormData(form).entries());
     try {
-      const path = mode === 'register' ? '/api/auth/register' : '/api/auth/login';
+      const path = mode === 'register' ? 'https://jeyfs1x61h.execute-api.us-east-1.amazonaws.com/dev/api/auth/register' : 'https://jeyfs1x61h.execute-api.us-east-1.amazonaws.com/dev/api/auth/login';
       await api(path, { method: 'POST', body });
       location.href = '/dashboard.html';
     } catch (err) {
@@ -39,17 +42,17 @@ async function api(path, opts = {}) {
   }
   
   async function handleLogout() {
-    await api('/api/auth/logout', { method: 'POST' });
+    await api('https://jeyfs1x61h.execute-api.us-east-1.amazonaws.com/dev/api/auth/logout', { method: 'POST' });
     location.href = '/';
   }
   
   async function loadPlans() {
     const list = document.querySelector('#plan-list');
     if (!list) return;
-    const { plans } = await api('/api/plans');
+    const { plans } = await api('https://jeyfs1x61h.execute-api.us-east-1.amazonaws.com/dev/api/plans');
     // also load user to determine trial state
     let user = null;
-    try { ({ user } = await api('/api/me')); } catch(_){ user = null; }
+    try { ({ user } = await api('https://jeyfs1x61h.execute-api.us-east-1.amazonaws.com/dev/api/me')); } catch(_){ user = null; }
     const trialActive = !!(user && user.billing && user.billing.trial && user.billing.trial.active);
     const trialExpired = !!(user && user.billing && user.billing.trial && user.billing.trial.expiresAt && new Date(user.billing.trial.expiresAt) < new Date());
     const trialEligible = !trialActive && !trialExpired;
@@ -97,14 +100,14 @@ async function api(path, opts = {}) {
       const id = e.target.dataset.choose;
       if (id){
         try {
-          await api('/api/subscribe', { method: 'POST', body: { planId: id, method: 'test' } });
+          await api('https://jeyfs1x61h.execute-api.us-east-1.amazonaws.com/dev/api/subscribe', { method: 'POST', body: { planId: id, method: 'test' } });
           location.href = '/downloads';
         } catch (err) { alert(err.message); }
         return;
       }
       if (e.target && e.target.hasAttribute('data-start-trial')){
         try{
-          await api('/api/trial/start', { method: 'POST' });
+          await api('https://jeyfs1x61h.execute-api.us-east-1.amazonaws.com/dev/api/trial/start', { method: 'POST' });
           location.href = '/downloads';
         } catch (err){ alert(err.message); }
       }

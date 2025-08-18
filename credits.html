@@ -101,7 +101,7 @@
 (async function(){
   // Load balances
   try{
-    const { user } = await (await fetch('/api/account')).json();
+    const { user } = await (await fetch('https://jeyfs1x61h.execute-api.us-east-1.amazonaws.com/dev/api/account')).json();
     if (user && user.credits){
       const incl = user.credits.includedAllowance || 0;
       const incBal = typeof user.credits.includedRemaining === 'number' ? user.credits.includedRemaining : incl;
@@ -121,7 +121,7 @@
     const amt = e.target && e.target.dataset && e.target.dataset.buy;
     if (!amt) return;
     try{
-      const res = await fetch('/api/credits/purchase', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ amount: Number(amt) })});
+      const res = await fetch('https://jeyfs1x61h.execute-api.us-east-1.amazonaws.com/dev/api/credits/purchase', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ amount: Number(amt) })});
       if (!res.ok){ const j = await res.json(); throw new Error(j.error || 'Error'); }
       location.reload();
     }catch(err){ alert(err.message); }
