@@ -98,7 +98,7 @@
     // Populate status summary with chips and credits meter
     (async function(){
       try{
-        const { user } = await (await fetch('/api/me')).json();
+        const { user } = await (await fetch('https://jeyfs1x61h.execute-api.us-east-1.amazonaws.com/dev/api/me', {credentials: 'include'})).json();
         const chipsEl = document.getElementById('status-chips');
         if (!user || !user.billing || user.billing.status === 'none') {
           chipsEl.innerHTML = 'No active plan. <a href="plans.html">Choose a plan</a> to unlock downloads.';
