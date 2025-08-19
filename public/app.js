@@ -37,7 +37,7 @@ async function handleAuth(e) {
   try {
     const path = mode === 'register' ? 'https://jeyfs1x61h.execute-api.us-east-1.amazonaws.com/dev/api/auth/register' : 'https://jeyfs1x61h.execute-api.us-east-1.amazonaws.com/dev/api/auth/login';
     const res = await api(path, { method: 'POST', body});
-    location.href = '/dashboard.html';
+    location.href = 'dashboard.html';
   } catch (err) {
     alert(err.message);
   }
@@ -45,7 +45,7 @@ async function handleAuth(e) {
 
 async function handleLogout() {
   await api('https://jeyfs1x61h.execute-api.us-east-1.amazonaws.com/dev/api/auth/logout', { method: 'POST' });
-  location.href = '/';
+  location.href = '/'; // I actually don't know how to fix this at this very moment...
 }
 
 async function loadPlans() {
@@ -103,14 +103,14 @@ async function loadPlans() {
     if (id){
       try {
         await api('https://jeyfs1x61h.execute-api.us-east-1.amazonaws.com/dev/api/subscribe', { method: 'POST', body: { planId: id, method: 'test' } });
-        location.href = '/downloads';
+        location.href = 'downloads';
       } catch (err) { alert(err.message); }
       return;
     }
     if (e.target && e.target.hasAttribute('data-start-trial')){
       try{
         await api('https://jeyfs1x61h.execute-api.us-east-1.amazonaws.com/dev/api/trial/start', { method: 'POST' });
-        location.href = '/downloads';
+        location.href = 'downloads';
       } catch (err){ alert(err.message); }
     }
   });
