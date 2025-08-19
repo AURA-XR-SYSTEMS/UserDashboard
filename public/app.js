@@ -2,9 +2,12 @@
 
 async function api(path, opts = {}) {
 
+  console.log("OPTS: " + JSON.stringify(opts));
+
   const res = await fetch(path, {
     method: opts.method || 'GET',
     body: opts.body ? JSON.stringify(opts.body) : undefined,
+    credentials: 'include'
   });
   if (!res.ok) throw new Error((await res.json()).error || res.statusText);
   return res.json();
@@ -21,7 +24,9 @@ async function loadMe() {
       const status = user?.billing?.status;
       if (!user || (status !== 'active' && status !== 'trial')) n.style.display = 'none';
     });
-  } catch (_) {}
+  } catch (err) {
+    alert(err.message)
+  }
 }
 
 async function handleAuth(e) {
@@ -31,7 +36,7 @@ async function handleAuth(e) {
   const body = Object.fromEntries(new FormData(form).entries());
   try {
     const path = mode === 'register' ? 'https://jeyfs1x61h.execute-api.us-east-1.amazonaws.com/dev/api/auth/register' : 'https://jeyfs1x61h.execute-api.us-east-1.amazonaws.com/dev/api/auth/login';
-    await api(path, { method: 'POST', body, credentials: 'include' });
+    const res = await api(path, { method: 'POST', body});
     location.href = '/dashboard.html';
   } catch (err) {
     alert(err.message);

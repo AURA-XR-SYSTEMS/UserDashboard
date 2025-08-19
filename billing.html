@@ -36,7 +36,7 @@
 <script src="public/app.js"></script>
 <script>
 (async function(){
-  const { user } = await (await fetch('https://jeyfs1x61h.execute-api.us-east-1.amazonaws.com/dev/api/me')).json();
+  const { user } = await (await fetch('https://jeyfs1x61h.execute-api.us-east-1.amazonaws.com/dev/api/me', {credentials: 'include'})).json();
   const el = document.getElementById('billing-info');
   if (!user || !user.billing || user.billing.status === 'none') {
     el.innerHTML = 'No active plan. <a href="plans.html">Choose a plan</a>.';
