@@ -45,7 +45,7 @@ async function handleAuth(e) {
 
 async function handleLogout() {
   await api('https://jeyfs1x61h.execute-api.us-east-1.amazonaws.com/dev/api/auth/logout', { method: 'POST' });
-  location.href = '/'; // I actually don't know how to fix this at this very moment...
+  location.href = 'index.html';
 }
 
 async function loadPlans() {
@@ -103,14 +103,14 @@ async function loadPlans() {
     if (id){
       try {
         await api('https://jeyfs1x61h.execute-api.us-east-1.amazonaws.com/dev/api/subscribe', { method: 'POST', body: { planId: id, method: 'test' } });
-        location.href = 'downloads';
+        location.href = 'downloads.html';
       } catch (err) { alert(err.message); }
       return;
     }
     if (e.target && e.target.hasAttribute('data-start-trial')){
       try{
         await api('https://jeyfs1x61h.execute-api.us-east-1.amazonaws.com/dev/api/trial/start', { method: 'POST' });
-        location.href = 'downloads';
+        location.href = 'downloads.html';
       } catch (err){ alert(err.message); }
     }
   });
