@@ -4,12 +4,12 @@
   <meta charset="utf-8">
   <title>Aura — Sign In</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="public/styles.css">
+  <link rel="stylesheet" href="/default.css">
 </head>
 <body>
   <header class="header">
     <nav class="nav">
-      <div class="brand"><a href="/"><img class="brand-logo" src="assets/aura_logo_withtext_transparent_white-06.png" alt="Aura" /></a></div>
+      <div class="brand"><a href="/index.html"><img class="brand-logo"/></a></div>
       <div class="right">
         <span class="muted" style="font-weight:600;">Login / Create Account</span>
       </div>
@@ -41,7 +41,7 @@
               </div>
               <div class="row" style="justify-content:space-between;">
                 <button class="btn primary" type="submit">Sign in</button>
-                <a class="btn ghost" href="dashboard.html">Skip (demo)</a>
+                <a class="btn ghost" href="/dashboard.html">Skip (demo)</a>
               </div>
             </form>
           </div>
@@ -70,7 +70,8 @@
   </main>
 
   <footer class="footer"><span>© 2025 Aura XR Systems LLC</span><span>First-pass POC</span></footer>
-  <script src="public/app.js"></script>
+  <!-- <script src="public/app.js"></script> -->
+  <script type="module" src="/src/main.js"></script>
   <script>
     // simple tabs
     document.addEventListener('DOMContentLoaded', () => {

@@ -1,19 +1,23 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   <title>Aura — Downloads</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="public/styles.css">
+  <link rel="stylesheet" href="/default.css">
 </head>
 <body>
 <header class="header">
   <nav class="nav">
-    <div class="brand"><a href="dashboard.html"><img class="brand-logo" src="assets/aura_logo_withtext_transparent_white-06.png" alt="Aura" /></a></div>
+    <div class="brand">
+      <a href="/dashboard.html">
+        <img class="brand-logo"/>
+      </a>
+    </div>
     <div class="right">
-      <a class="btn ghost" href="account.html">Account</a>
-      <a class="btn ghost" href="docs.html">Documentation</a>
-      <a class="btn ghost" href="downloads.html">Downloads</a>
+      <a class="btn ghost" href="/account.html">Account</a>
+      <a class="btn ghost" href="/docs.html">Documentation</a>
+      <a class="btn ghost" href="/downloads.html">Downloads</a>
       <button class="btn" data-logout>Log out</button>
     </div>
   </nav>
@@ -36,10 +40,11 @@
         </div>
         <div class="hr"></div>
         <div class="card-actions">
-          <a class="btn primary" href="#" download>Download .exe (Win64)</a>
+          <a class="btn primary" href="#" download data-requires-plan>Download .exe (Win64)</a>
         </div>
       </div>
     </div>
+
     <div class="card has-header">
       <div class="card-header">Demo Models Pack</div>
       <div class="card-body">
@@ -50,10 +55,11 @@
         </div>
         <div class="hr"></div>
         <div class="card-actions">
-          <a class="btn primary" href="#" download>Download (2.1 GB)</a>
+          <a class="btn primary" href="#" download data-requires-plan>Download (2.1 GB)</a>
         </div>
       </div>
     </div>
+
     <div class="card has-header">
       <div class="card-header">Aura Engine Plugin — UE5</div>
       <div class="card-body">
@@ -64,7 +70,7 @@
         </div>
         <div class="hr"></div>
         <div class="card-actions">
-          <a class="btn primary" href="#" download>Download (.zip)</a>
+          <a class="btn primary" href="#" download data-requires-plan>Download (.zip)</a>
         </div>
       </div>
     </div>
@@ -72,6 +78,8 @@
 </main>
 
 <footer class="footer"><span>© 2025 Aura XR Systems LLC</span><span>Downloads</span></footer>
-<script src="public/app.js"></script>
+
+<!-- Vite module entry -->
+<script type="module" src="/src/main.js"></script>
 </body>
 </html>
