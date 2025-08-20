@@ -1,5 +1,6 @@
 // src/pages/credits.js
 import { api } from '../lib/api.js';
+import { startCheckout, wireModalClose } from '../lib/stripe.js';
 
 function setWidth(id, pct) {
   const el = document.getElementById(id);
@@ -36,18 +37,19 @@ export async function initCredits() {
     console.warn('initCredits:', e.message);
   }
 
-  // Buy buttons
+  // Wire up the modal "X"/backdrop close
+  wireModalClose();
+
+  // Buy buttons --> open Stripe modal
   const container = document.getElementById('credit-options');
   if (container) {
     container.addEventListener('click', async (e) => {
       const amt = e.target?.dataset?.buy;
       if (!amt) return;
       try {
-        await api('/api/credits/purchase', {
-          method: 'POST',
-          body: { amount: Number(amt) }
-        });
-        location.reload();
+        /* Version 2 - Stripe*/
+        await startCheckout({ packCredits: Number(amt)})
+
       } catch (err) {
         alert(err.message);
       }
