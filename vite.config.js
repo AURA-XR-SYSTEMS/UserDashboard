@@ -8,7 +8,7 @@ export default defineConfig(({ mode }) => {
 
   const targets = {
     dashboard: {
-        local: 'http://localhost:8001',
+        local: 'http://localhost:8000',
         dev: 'https://jeyfs1x61h.execute-api.us-east-1.amazonaws.com/dev',
     },
     userService: {
