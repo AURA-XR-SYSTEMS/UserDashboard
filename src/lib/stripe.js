@@ -1,6 +1,6 @@
 // src/lib/stripe.js
-import { loadStripe } from '@stripe/stripe-js';
-import { api } from './api.js';
+import { loadStripe } from "@stripe/stripe-js";
+import { api } from "./api.js";
 
 let stripe;
 let elements;
@@ -8,30 +8,40 @@ let paymentElement;
 let currentIntentId; // for your telemetry if you want
 
 function openModal() {
-  const m = document.getElementById('stripe-modal');
+  const m = document.getElementById("stripe-modal");
   m.hidden = false;
 }
 function closeModal() {
-  const m = document.getElementById('stripe-modal');
+  const m = document.getElementById("stripe-modal");
   m.hidden = true;
-  const container = document.getElementById('payment-element');
-  if (container) container.innerHTML = ''; // unmount
+  const container = document.getElementById("payment-element");
+  if (container) container.innerHTML = ""; // unmount
   elements = paymentElement = null;
 }
 
 export function wireModalClose() {
-  document.querySelectorAll('#stripe-modal [data-close]').forEach(btn => {
-    btn.addEventListener('click', closeModal);
+  document.querySelectorAll("#stripe-modal [data-close]").forEach((btn) => {
+    btn.addEventListener("click", closeModal);
   });
 }
 
-export async function startCheckout({ packCredits }) {
+export async function startCheckout({ packType: inPackType, packCredits }) {
   // Ask backend to create a PaymentIntent bound to this pack (avoid trusting client price).
-  const { clientSecret, intentId } = await api('/api/credits/create-payment-intent', {
-    method: 'POST',
-    body: { pack: Number(packCredits) }
+  const { intent } = await api("/api/credits/create-payment-intent", {
+    method: "POST",
+    body: { packType: inPackType },
   });
-  currentIntentId = intentId;
+
+  const {
+    id,
+    stripeIntentId,
+    clientSecret,
+    packType: outPackType,
+    status,
+    createdAt,
+    updatedAt,
+  } = intent
+  currentIntentId = id;
 
   // Lazy init Stripe
   if (!stripe) {
@@ -40,23 +50,24 @@ export async function startCheckout({ packCredits }) {
 
   // Build Payment Element
   elements = stripe.elements({ clientSecret });
-  paymentElement = elements.create('payment', { layout: 'tabs' });
-  paymentElement.mount('#payment-element');
+  paymentElement = elements.create("payment", { layout: "tabs" });
+  paymentElement.mount("#payment-element");
 
   openModal();
 
   // Handle form submit
-  const form = document.getElementById('payment-form');
-  const submitBtn = document.getElementById('submit-payment');
-  const messages = document.getElementById('payment-messages');
+  const form = document.getElementById("payment-form");
+  const submitBtn = document.getElementById("submit-payment");
+  const messages = document.getElementById("payment-messages");
 
   async function onSubmit(e) {
     e.preventDefault();
-    submitBtn.disabled = true; messages.textContent = 'Processing...';
+    submitBtn.disabled = true;
+    messages.textContent = "Processing...";
 
     const { error, paymentIntent } = await stripe.confirmPayment({
       elements,
-      redirect: 'if_required', // keep users on the page (3DS may still overlay)
+      redirect: "if_required", // keep users on the page (3DS may still overlay)
       // (optional) billing details:
       // confirmParams: { payment_method_data: { billing_details: { email: ... } } }
     });
@@ -64,24 +75,25 @@ export async function startCheckout({ packCredits }) {
     submitBtn.disabled = false;
 
     if (error) {
-      messages.textContent = error.message || 'Payment failed.';
+      messages.textContent = error.message || "Payment failed.";
       return;
     }
 
     // Success locally? Great. Final source of truth is webhook, but we can poll/notify:
-    messages.textContent = 'Payment captured. Updating credits...';
+    messages.textContent = "Payment captured. Updating credits...";
     try {
       // Ask backend to finalize (or no-op if webhook already did).
-      await api('/api/credits/finalize', {
-        method: 'POST',
-        body: { intentId: paymentIntent?.id || currentIntentId }
+      await api("/api/credits/finalize", {
+        method: "POST",
+        body: { intentId: paymentIntent?.id || currentIntentId },
       });
       closeModal();
       location.reload(); // refresh balance UI
     } catch (e2) {
-      messages.textContent = e2.message || 'Could not apply credits (but payment likely succeeded).';
+      messages.textContent =
+        e2.message || "Could not apply credits (but payment likely succeeded).";
     }
   }
 
-  form.addEventListener('submit', onSubmit, { once: true });
+  form.addEventListener("submit", onSubmit, { once: true });
 }

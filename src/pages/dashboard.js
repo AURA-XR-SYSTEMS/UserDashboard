@@ -14,7 +14,7 @@ export async function initDashboard() {
 
     // Username (shared pattern with signin page)
     const nameEl = document.querySelector('[data-username]');
-    if (nameEl && user) nameEl.textContent = user.name || user.email;
+    if (nameEl && user) nameEl.textContent = user.firstName || user.email;
 
     // Status chips
     if (!user || !user.billing || user.billing.status === 'none') {
