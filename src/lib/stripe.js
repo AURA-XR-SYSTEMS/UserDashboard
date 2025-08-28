@@ -40,8 +40,8 @@ export async function startCheckout({ packType: inPackType, packCredits }) {
     status,
     createdAt,
     updatedAt,
-  } = intent
-  currentIntentId = id;
+  } = intent;
+  currentIntentId = stripeIntentId;
 
   // Lazy init Stripe
   if (!stripe) {
@@ -77,21 +77,25 @@ export async function startCheckout({ packType: inPackType, packCredits }) {
     if (error) {
       messages.textContent = error.message || "Payment failed.";
       return;
+    } else {
+      messages.textContent = "Payment captured. Updating credits...";
     }
 
-    // Success locally? Great. Final source of truth is webhook, but we can poll/notify:
-    messages.textContent = "Payment captured. Updating credits...";
     try {
       // Ask backend to finalize (or no-op if webhook already did).
-      await api("/api/credits/finalize", {
+      const res = await api("/api/credits/finalize", {
         method: "POST",
-        body: { intentId: paymentIntent?.id || currentIntentId },
+        body: {
+          id: id,
+          intentId: paymentIntent?.id || currentIntentId,
+        },
       });
+      console.log(JSON.stringify({ res: res }));
       closeModal();
       location.reload(); // refresh balance UI
     } catch (e2) {
-      messages.textContent =
-        e2.message || "Could not apply credits (but payment likely succeeded).";
+      const errMessage = "Error while calling finalize: ";
+      messages.textContent = errMessage + e2.message;
     }
   }
 
