@@ -37,6 +37,3 @@ dist-ssr/
 *.local
 *.development
 *.production
-
-# Github
-.github/

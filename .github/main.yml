@@ -1,0 +1,54 @@
+name: Deploy Main to Gh Pages
+
+on:
+  push:
+    branches: [ main ]
+
+permissions:
+  pages: write
+  id-token: write
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node 18
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      # Create only what you use. You can also bake these into .env.production in the repo.
+      - name: Create .env.production
+        run: |
+          echo "VITE_USE_LOCAL_API=false" > .env.production
+          echo "VITE_API_BASE=${{ vars.VITE_API_BASE }}" >> .env.production
+          echo "VITE_ROOT=${{ vars.VITE_ROOT }}" >> .env.production
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      # Optional for SPAs; harmless for your MPA, safe to remove if you want
+      - name: Add 404.html fallback
+        run: cp dist/index.html dist/404.html || true
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
