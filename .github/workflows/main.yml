@@ -27,6 +27,7 @@ jobs:
           echo "VITE_USE_LOCAL_API=false" > .env.production
           echo "VITE_API_BASE=${{ vars.VITE_API_BASE }}" >> .env.production
           echo "VITE_ROOT=${{ vars.VITE_ROOT }}" >> .env.production
+          echo "VITE_STRIPE_PUBLISHABLE_KEY=${{ vars.VITE_STRIPE_PUBLISHABLE_KEY }}" >> .env.production
 
       - name: Install deps
         run: npm ci
