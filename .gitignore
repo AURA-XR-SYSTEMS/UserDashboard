@@ -34,5 +34,9 @@ dist-ssr/
 .vite/
 
 .env
-.env.development
-.env.production
+*.local
+*.development
+*.production
+
+# Github
+.github/
