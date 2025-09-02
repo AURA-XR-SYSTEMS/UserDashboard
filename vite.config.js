@@ -36,6 +36,7 @@ export default defineConfig(({ mode }) => {
       },
     },
     build: {
+      sourcemap: true,
       rollupOptions: {
         // multi-page entries (add others as needed)
         input: {
