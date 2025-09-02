@@ -26,7 +26,7 @@ export async function handleAuth(e) {
   try {
     const path = mode === "register" ? "/api/auth/register" : "/api/auth/login";
     await api(path, { method: "POST", body });
-    location.href = "/dashboard.html";
+    location.href = "dashboard.html";
   } catch (err) {
     alert(err.message);
   }
