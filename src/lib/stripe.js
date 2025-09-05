@@ -65,12 +65,13 @@ export async function startCheckout({ packType: inPackType, packCredits }) {
     submitBtn.disabled = true;
     messages.textContent = "Processing...";
 
-    const { error, paymentIntent } = await stripe.confirmPayment({
-      elements,
-      redirect: "if_required", // keep users on the page (3DS may still overlay)
-      // (optional) billing details:
-      // confirmParams: { payment_method_data: { billing_details: { email: ... } } }
-    });
+    const { error, paymentIntent: stripePaymentIntent } =
+      await stripe.confirmPayment({
+        elements,
+        redirect: "if_required", // keep users on the page (3DS may still overlay)
+        // (optional) billing details:
+        // confirmParams: { payment_method_data: { billing_details: { email: ... } } }
+      });
 
     submitBtn.disabled = false;
 
@@ -87,12 +88,12 @@ export async function startCheckout({ packType: inPackType, packCredits }) {
         method: "POST",
         body: {
           id: id,
-          intentId: paymentIntent?.id || currentIntentId,
+          sid: stripePaymentIntent?.id || currentIntentId,
         },
       });
       console.log(JSON.stringify({ res: res }));
       closeModal();
-      location.reload(); // refresh balance UI
+      // location.reload(); // refresh balance UI
     } catch (e2) {
       const errMessage = "Error while calling finalize: ";
       messages.textContent = errMessage + e2.message;
