@@ -13,81 +13,73 @@ function setWidth(id, pct) {
 
 export async function initAccount() {
   // Load account overview
-  try {
-    const { account: user } = await api("/api/account");
+  const creditsLabel = document.getElementById("credits-label");
+  const creditsMeter = document.getElementById("credits-meter");
+  const purchasedLabel = document.getElementById("purchased-label");
+  const purchasedMeter = document.getElementById("purchased-meter");
+  const { account } = await api("/api/account");
+  console.log(account);
 
-    const { renewsAt, status } = user.billing;
-    const { balance, includedAllowance } = user.credits;
+  const { status } = account.billing;
+  const {
+    active,
+    allowanceAmount,
+    allowanceRemaining,
+    planType,
+    purchasedTotal,
+    purchasedRemaining,
+    balance,
+    renewsAt,
+    startedAt,
+  } = account.credits;
 
-    // Overview chips
-    const renewsAtTzAware = renewsAt
-      ? new Date(renewsAt).toLocaleDateString()
-      : "—";
-    setText("ov-plan", `Plan: <strong>${planId}</strong>`);
-    setText("ov-status", `Status: <strong>${status}</strong>`);
-    setText("ov-renew", `Renews: <strong>${renewsAtTzAware}</strong>`);
+  // Overview chips
+  const renewsAtTzAware = new Date(renewsAt).toLocaleDateString();
+  setText("ov-plan", `Plan: <strong>${planType}</strong>`);
+  setText("ov-status", `Status: <strong>${status}</strong>`);
+  setText("ov-renew", `Renews: <strong>${renewsAtTzAware}</strong>`);
 
-    setText(
-      "ov-credits",
-      `Credits: <strong>${balance.toLocaleString()}</strong>`
-    );
+  setText(
+    "ov-credits",
+    `Credits: <strong>${balance.toLocaleString()}</strong>`
+  );
 
-    // Credits meters
-    const incBal = Number.isFinite(user.credits.includedRemaining)
-      ? user.credits.includedRemaining
-      : incl;
-    const purBal = Number.isFinite(user.credits.purchasedRemaining)
-      ? user.credits.purchasedRemaining
-      : Math.max(0, bal - incBal);
-    const purTot = Number.isFinite(user.credits.purchasedCycleTotal)
-      ? user.credits.purchasedCycleTotal
-      : purBal;
-
-    if (incl > 0) {
-      const pct = (incBal / incl) * 100;
-      setWidth("cr-meter", pct);
-      setText(
-        "cr-label",
-        `${incBal.toLocaleString()} / ${incl.toLocaleString()} included this cycle`
-      );
-    } else {
-      setText("cr-label", `${bal.toLocaleString()} available`);
-      setWidth("cr-meter", 0);
-    }
-
-    const pPct = purTot > 0 ? (purBal / purTot) * 100 : 0;
-    setWidth("crp-meter", pPct);
-    setText(
-      "crp-label",
-      `${purBal.toLocaleString()} / ${purTot.toLocaleString()} this cycle`
-    );
-
-    // Plan summary
-    const statusClass =
-      user.billing?.status === "active"
-        ? "success"
-        : user.billing?.status === "none"
-        ? "muted"
-        : "warn";
-    const planSummary = document.getElementById("plan-summary");
-    if (planSummary) {
-      planSummary.innerHTML = `
-        <span class="chip">Plan: <strong>${
-          user.billing?.planId || "—"
-        }</strong></span>
-        <span class="chip ${statusClass}">Status: <strong>${
-        user.billing?.status || "none"
-      }</strong></span>
-        <span class="chip muted">Renews: <strong>${renew}</strong></span>
-      `;
-    }
-
-    // Username (optional)
-    const nameEl = document.querySelector("[data-username]");
-    if (nameEl) nameEl.textContent = user.name || user.email;
-  } catch (e) {
-    console.warn("initAccount:", e.message);
+  // Credits meters
+  if (allowanceRemaining > 0) {
+    const percentage = (allowanceAmount / allowanceRemaining) * 100;
+    creditsMeter.style.width = percentage + "%";
+    creditsLabel.textContent = `${allowanceRemaining.toLocaleString()} / ${allowanceAmount.toLocaleString()} included this cycle`;
+  } else {
+    creditsMeter.style.width = "0%";
+    creditsLabel.textContent = `${balance.toLocaleString()} available`;
   }
+
+  if (purchasedTotal > 0) {
+    const percentage = (purchasedRemaining / purchasedTotal) * 100;
+    purchasedMeter.style.width = percentage + "%";
+    purchasedLabel.textContent = `${purchasedRemaining.toLocaleString()} / ${purchasedTotal.toLocaleString()} this cycle`;
+  } else {
+    purchasedMeter.style.width = "0%";
+    purchasedLabel.textContent = `${purchasedRemaining.toLocaleString()} additional credits available`;
+  }
+
+  let statusClass = status === "none" ? "muted" : "warn";
+  if (status === "active") {
+    statusClass = "success";
+  }
+
+  const planSummary = document.getElementById("plan-summary");
+  if (planSummary) {
+    planSummary.innerHTML = `
+        <span class="chip">Plan: <strong>${planType}</strong></span>
+        <span class="chip ${statusClass}">Status: <strong>${status}</strong></span>
+        <span class="chip muted">Renews: <strong>${renewsAtTzAware}</strong></span>
+      `;
+  }
+
+  // Username (optional)
+  const nameEl = document.querySelector("[data-username]");
+  if (nameEl) nameEl.textContent = user.name || user.email;
 
   // Event handlers (plan change / cancel / payment / security)
   document.querySelectorAll("#section-plan [data-plan]").forEach((btn) => {

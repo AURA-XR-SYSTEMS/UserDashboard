@@ -1,6 +1,7 @@
 // src/lib/stripe.js
 import { loadStripe } from "@stripe/stripe-js";
 import { api } from "./api.js";
+import { ssrModuleExportsKey } from "vite/module-runner";
 
 let stripe;
 let elements;
@@ -84,6 +85,7 @@ export async function startCheckout({ packType: inPackType, packCredits }) {
 
     try {
       // Ask backend to finalize (or no-op if webhook already did).
+      await new Promise((resolve) => setTimeout(resolve, 5 * 1000));
       const res = await api("/api/credits/finalize", {
         method: "POST",
         body: {
@@ -93,7 +95,7 @@ export async function startCheckout({ packType: inPackType, packCredits }) {
       });
       console.log(JSON.stringify({ res: res }));
       closeModal();
-      // location.reload(); // refresh balance UI
+      location.reload(); // refresh balance UI
     } catch (e2) {
       const errMessage = "Error while calling finalize: ";
       messages.textContent = errMessage + e2.message;
