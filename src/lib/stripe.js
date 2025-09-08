@@ -1,6 +1,7 @@
 // src/lib/stripe.js
 import { loadStripe } from "@stripe/stripe-js";
 import { api } from "./api.js";
+import { ssrModuleExportsKey } from "vite/module-runner";
 
 let stripe;
 let elements;
@@ -65,12 +66,13 @@ export async function startCheckout({ packType: inPackType, packCredits }) {
     submitBtn.disabled = true;
     messages.textContent = "Processing...";
 
-    const { error, paymentIntent } = await stripe.confirmPayment({
-      elements,
-      redirect: "if_required", // keep users on the page (3DS may still overlay)
-      // (optional) billing details:
-      // confirmParams: { payment_method_data: { billing_details: { email: ... } } }
-    });
+    const { error, paymentIntent: stripePaymentIntent } =
+      await stripe.confirmPayment({
+        elements,
+        redirect: "if_required", // keep users on the page (3DS may still overlay)
+        // (optional) billing details:
+        // confirmParams: { payment_method_data: { billing_details: { email: ... } } }
+      });
 
     submitBtn.disabled = false;
 
@@ -83,11 +85,12 @@ export async function startCheckout({ packType: inPackType, packCredits }) {
 
     try {
       // Ask backend to finalize (or no-op if webhook already did).
+      await new Promise((resolve) => setTimeout(resolve, 5 * 1000));
       const res = await api("/api/credits/finalize", {
         method: "POST",
         body: {
           id: id,
-          intentId: paymentIntent?.id || currentIntentId,
+          sid: stripePaymentIntent?.id || currentIntentId,
         },
       });
       console.log(JSON.stringify({ res: res }));

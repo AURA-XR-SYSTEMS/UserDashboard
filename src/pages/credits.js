@@ -2,15 +2,6 @@
 import { api } from "../lib/api.js";
 import { startCheckout, wireModalClose } from "../lib/stripe.js";
 
-function setWidth(id, pct) {
-  const el = document.getElementById(id);
-  if (el) el.style.width = `${Math.max(0, Math.min(100, pct))}%`;
-}
-function setText(id, text) {
-  const el = document.getElementById(id);
-  if (el) el.textContent = text;
-}
-
 function fmtUSD(cents) {
   return (cents / 100).toLocaleString(undefined, {
     style: "currency",
@@ -23,36 +14,42 @@ function fmtInt(n) {
 }
 
 export async function initBalance() {
+  const creditsLabel = document.getElementById("credits-label");
+  const creditsMeter = document.getElementById("credits-meter");
+  const purchasedLabel = document.getElementById("purchased-label");
+  const purchasedMeter = document.getElementById("purchased-meter");
   // Load balances
-  try {
-    const { account } = await api("/api/account");
-    const credits = account?.credits;
-    if (credits) {
-      const incl = credits.includedAllowance || 0;
-      const incBal = Number.isFinite(credits.includedRemaining)
-        ? credits.includedRemaining
-        : incl;
-      const bal = credits.balance || 0;
-      const purBal = credits.purchasedRemaining || 0;
-      const purTot = credits.purchasedCycleTotal || 0;
+  const res = await api("/api/account");
+  console.log(res);
+  const { account } = res;
+  console.log(account);
+  const {
+    active,
+    allowanceAmount,
+    allowanceRemaining,
+    planType,
+    purchasedTotal,
+    purchasedRemaining,
+    balance,
+    renewsAt,
+    startedAt,
+  } = account.credits;
+  if (allowanceRemaining > 0) {
+    const percentage = (allowanceAmount / allowanceRemaining) * 100;
+    creditsMeter.style.width = percentage + "%";
+    creditsLabel.textContent = `${allowanceRemaining.toLocaleString()} / ${allowanceAmount.toLocaleString()} included this cycle`;
+  } else {
+    creditsMeter.style.width = "0%";
+    creditsLabel.textContent = `${balance.toLocaleString()} available`;
+  }
 
-      const incPct = incl > 0 ? (incBal / incl) * 100 : 0;
-      setWidth("inc-meter", incPct);
-      setText(
-        "inc-label",
-        incl > 0
-          ? `${
-              fmtInt(incBal) / $fmtInt(incl)
-            } / ${incl.toLocaleString()} included this cycle`
-          : `${fmtInt(bal)} available`
-      );
-
-      const purPct = purTot > 0 ? (purBal / purTot) * 100 : 0;
-      setWidth("add-meter", purPct);
-      setText("add-label", `${fmtInt(purBal)} / ${fmtInt(purTot)} this cycle`);
-    }
-  } catch (e) {
-    console.warn("initCredits:", e.message);
+  if (purchasedTotal > 0) {
+    const percentage = (purchasedRemaining / purchasedTotal) * 100;
+    purchasedMeter.style.width = percentage + "%";
+    purchasedLabel.textContent = `${purchasedRemaining.toLocaleString()} / ${purchasedTotal.toLocaleString()} this cycle`;
+  } else {
+    purchasedMeter.style.width = "0%";
+    purchasedLabel.textContent = `${purchasedRemaining.toLocaleString()} additional credits available`;
   }
 }
 

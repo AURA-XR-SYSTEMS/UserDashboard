@@ -13,13 +13,15 @@ export async function initBilling() {
       return;
     }
 
-    const renewAt = user.billing.renewAt
-      ? new Date(user.billing.renewAt).toLocaleString()
+    const { status, planId, renewsAt } = user.billing;
+
+    const renewsAtTzAware = user.billing.renewsAt
+      ? new Date(user.billing.renewsAt).toLocaleString()
       : "—";
     el.innerHTML = `
-      <div><strong>Status:</strong> ${user.billing.status}</div>
-      <div><strong>Plan:</strong> ${user.billing.planId || "—"}</div>
-      <div><strong>Renews:</strong> ${renewAt}</div>
+      <div><strong>Status:</strong> ${status}</div>
+      <div><strong>Plan:</strong> ${planId || "—"}</div>
+      <div><strong>Renews:</strong> ${renewsAtTzAware}</div>
       <div class="hr"></div>
       <a class="btn primary" href="downloads.html">Go to downloads</a>
     `;
