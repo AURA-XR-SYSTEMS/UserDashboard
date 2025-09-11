@@ -28,6 +28,8 @@ jobs:
           echo "VITE_API_BASE=${{ vars.VITE_API_BASE }}" >> .env.production
           echo "VITE_ROOT=${{ vars.VITE_ROOT }}" >> .env.production
           echo "VITE_STRIPE_PUBLISHABLE_KEY=${{ vars.VITE_STRIPE_PUBLISHABLE_KEY }}" >> .env.production
+          echo "VITE_ALLOW_NO_AUTH=${{ vars.VITE_ALLOW_NO_AUTH }}" >> .env.production
+          echo "VITE_ALLOW_DEBUG_LOGS=${{ vars.VITE_ALLOW_DEBUG_LOGS }}" >> .env.production
 
       - name: Install deps
         run: npm ci
