@@ -1,5 +1,6 @@
 // src/lib/api.js
 const BASE = (import.meta.env.VITE_API_BASE || "").replace(/\/$/, "");
+const REQUIRE_AUTH = import.meta.env.VITE_ALLOW_NO_AUTH === "false";
 
 export async function api(path, opts = {}) {
   const url = path.startsWith("http") ? path : `${BASE}${path}`;
@@ -20,4 +21,38 @@ export async function api(path, opts = {}) {
     throw new Error(msg);
   }
   return res.json();
+}
+
+export async function loadMe() {
+  try {
+    const { user } = await api("/api/me");
+    console.log("Found user in loadMe...", user);
+    return user;
+  } catch (error) {
+    console.log("Caught error in loadMe...", error);
+    if (
+      REQUIRE_AUTH &&
+      !["/", "/index.html"].includes(window.location.pathname)
+    ) {
+      window.location.href = "/";
+      // TODO - show some type of alert to explain why they were redirected
+    }
+  }
+}
+
+export async function loadAccount() {
+  try {
+    const { account } = await api("/api/account");
+    document.querySelectorAll("[data-requires-plan]").forEach((n) => {
+      const status = account.billing.status;
+      if (["active", "trial"].includes(status) == false) {
+        n.disabled = true;
+      }
+    });
+    return account;
+  } catch (error) {
+    console.log("Caught error in loadAccount...", error);
+    // TODO - handle scenario where user might be authenticated, but there was a problem
+    // with their account
+  }
 }

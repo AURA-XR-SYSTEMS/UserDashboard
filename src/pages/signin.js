@@ -1,23 +1,6 @@
 // src/pages/signin.js
 import { api } from "../lib/api.js";
 
-export async function loadMe() {
-  try {
-    const { user } = await api("/api/me");
-    window.currentUser = user;
-    const el = document.querySelector("[data-username]");
-    if (el && user) el.textContent = user.name || user.email;
-    document.querySelectorAll("[data-requires-plan]").forEach((n) => {
-      const status = user?.billing?.status;
-      if (!user || (status !== "active" && status !== "trial"))
-        n.style.display = "none";
-    });
-  } catch (err) {
-    // optional: silent for sign-in page
-    console.warn("loadMe:", err.message);
-  }
-}
-
 export async function handleAuth(e) {
   e.preventDefault();
   const form = e.currentTarget;

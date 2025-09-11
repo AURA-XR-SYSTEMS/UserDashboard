@@ -2,16 +2,29 @@
 import "./styles.css"; // optional: pull CSS into the bundle
 import auraLogoUrl from "./assets/aura_logo_withtext_transparent_white-06.png";
 
-import { loadMe, handleAuth, initTabs } from "./pages/signin.js";
+import { api, loadMe } from "./lib/api.js";
+import { handleAuth, initTabs } from "./pages/signin.js";
 import { loadPlans, handleLogout } from "./pages/plans.js";
 import { initDashboard } from "./pages/dashboard.js";
 import { initAccount } from "./pages/account.js";
 import { initBilling } from "./pages/billing.js";
 import { initCredits } from "./pages/credits.js";
 
+const REQUIRE_AUTH = import.meta.env.VITE_ALLOW_NO_AUTH === "false";
+const ALLOW_DEBUG_LOGS = import.meta.env.VITE_ALLOW_DEBUG_LOGS === "true";
+
+const originalConsoleLog = console.log;
+console.log = function () {
+  const timestamp = new Date().toISOString();
+  if (ALLOW_DEBUG_LOGS) {
+    originalConsoleLog.apply(console, [`[${timestamp}]`, ...arguments]);
+  }
+};
+
 document.addEventListener("DOMContentLoaded", () => {
   // Common
   loadMe();
+
   const img = document.querySelector(".brand-logo");
   if (img) {
     img.src = auraLogoUrl;
@@ -22,6 +35,10 @@ document.addEventListener("DOMContentLoaded", () => {
   // Sign-in page features
   if (path.endsWith("/") || path.endsWith("/index.html")) {
     initTabs();
+    if (REQUIRE_AUTH) {
+      const hideEl = document.querySelector("[data-skip-auth]");
+      hideEl.style.display = "none";
+    }
     document
       .querySelectorAll("[data-auth-form]")
       .forEach((f) => f.addEventListener("submit", handleAuth));

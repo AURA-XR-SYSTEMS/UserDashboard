@@ -1,5 +1,5 @@
 // src/pages/account.js
-import { api } from "../lib/api.js";
+import { api, loadAccount } from "../lib/api.js";
 
 function setText(id, html) {
   const el = document.getElementById(id);
@@ -17,8 +17,9 @@ export async function initAccount() {
   const creditsMeter = document.getElementById("credits-meter");
   const purchasedLabel = document.getElementById("purchased-label");
   const purchasedMeter = document.getElementById("purchased-meter");
-  const { account } = await api("/api/account");
-  console.log(account);
+
+  const account = await loadAccount();
+  console.log("obtained account in initAccount()...", account);
 
   const { status } = account.billing;
   const {
