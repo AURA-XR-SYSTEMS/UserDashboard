@@ -1,5 +1,5 @@
 // src/pages/dashboard.js
-import { api } from "../lib/api.js";
+import { api, loadMe } from "../lib/api.js";
 
 /**
  * Provided billing inforormation, returns relevant plan info
@@ -26,11 +26,11 @@ export async function initDashboard() {
   const purchasedLabel = document.getElementById("purchased-label");
   const purchasedMeter = document.getElementById("purchased-meter");
 
-  const { user } = await api("/api/me");
+  // const { user } = await api("/api/me");
+  const user = await loadMe();
 
-  // Username (shared pattern with signin page)
-  const nameEl = document.querySelector("[data-username]");
-  if (nameEl && user) nameEl.textContent = user.firstName || user.email;
+  const el = document.querySelector("[data-username]");
+  if (el && user) el.textContent = user.firstName;
 
   const res = await api("/api/account");
   console.log(res);
