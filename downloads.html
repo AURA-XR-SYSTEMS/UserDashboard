@@ -1,85 +1,121 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <title>Aura — Downloads</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="default.css">
-</head>
-<body>
-<header class="header">
-  <nav class="nav">
-    <div class="brand">
-      <a href="dashboard.html">
-        <img class="brand-logo"/>
-      </a>
-    </div>
-    <div class="right">
-      <a class="btn ghost" href="account.html">Account</a>
-      <a class="btn ghost" href="docs.html">Documentation</a>
-      <a class="btn ghost" href="downloads.html">Downloads</a>
-      <button class="btn" data-logout>Log out</button>
-    </div>
-  </nav>
-</header>
-
-<main class="container">
-  <section class="hero">
-    <h1>Downloads</h1>
-    <p class="muted">Access keys, SDKs, and sample data (unlocked with active plan).</p>
-  </section>
-
-  <div class="cards">
-    <div class="card has-header">
-      <div class="card-header">Aura Engine — Standalone (Windows)</div>
-      <div class="card-body">
-        <div class="features">Desktop viewer and tooling for Windows. Includes authentication and local dataset playback.</div>
-        <div class="row" style="gap:8px; flex-wrap:wrap;">
-          <span class="chip">Windows</span>
-          <span class="chip muted">Win64</span>
+  <head>
+    <meta charset="utf-8" />
+    <title>Aura — Downloads</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="default.css" />
+  </head>
+  <body>
+    <header class="header">
+      <nav class="nav">
+        <div class="brand">
+          <a href="dashboard.html">
+            <img class="brand-logo" />
+          </a>
         </div>
-        <div class="hr"></div>
-        <div class="card-actions">
-          <a class="btn primary" href="https://aura-maui.s3.us-east-1.amazonaws.com/releases/0.0.0/AuraMauiSetup_0.0.0.exe" download data-requires-plan>Download .exe (Win64)</a>
+        <div class="right">
+          <a class="btn ghost" href="account.html">Account</a>
+          <a class="btn ghost" href="docs.html">Documentation</a>
+          <a class="btn ghost" href="downloads.html">Downloads</a>
+          <button class="btn" data-logout>Log out</button>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container">
+      <section class="hero">
+        <h1>Downloads</h1>
+        <p class="muted">
+          Access keys, SDKs, and sample data (unlocked with active plan).
+        </p>
+      </section>
+
+      <div class="cards">
+        <div class="card has-header">
+          <div class="card-header">Aura Engine — Standalone (Windows)</div>
+          <div class="card-body">
+            <div class="features">
+              Desktop viewer and tooling for Windows. Includes authentication
+              and local dataset playback.
+            </div>
+            <div class="row" style="gap: 8px; flex-wrap: wrap">
+              <span class="chip">Windows</span>
+              <span class="chip muted">Win64</span>
+            </div>
+            <div class="hr"></div>
+            <div class="card-actions">
+              <a
+                class="btn primary"
+                href="https://aura-maui.s3.us-east-1.amazonaws.com/releases/0.0.0/AuraMauiSetup_0.0.0.exe"
+                download
+                >Download .exe (Win64)</a
+              >
+            </div>
+          </div>
+        </div>
+
+        <div class="card has-header">
+          <div class="card-header">Demo Models Pack</div>
+          <div class="card-body">
+            <div class="features">
+              Curated sample scenes and assets to evaluate rendering, IO, and
+              workflows.
+            </div>
+            <div class="row" style="gap: 8px; flex-wrap: wrap">
+              <span class="chip muted">2.1 GB</span>
+              <span class="chip">Multi-platform</span>
+            </div>
+            <div class="hr"></div>
+            <div class="card-actions">
+              <a
+                class="btn primary"
+                download
+                data-download-unavailable
+                >Coming soon</a
+              >
+            </div>
+          </div>
+        </div>
+
+        <div class="card has-header">
+          <div class="card-header">Aura Engine Plugin — UE5</div>
+          <div class="card-body">
+            <div class="features">
+              Unreal Engine 5 integration for ingest, materials, and runtime
+              visualization.
+            </div>
+            <div class="row" style="gap: 8px; flex-wrap: wrap">
+              <span class="chip">UE5</span>
+              <span class="chip muted">.zip</span>
+            </div>
+            <div class="hr"></div>
+            <div class="card-actions">
+              <a
+                class="btn primary"
+                download
+                data-download-unavailable
+                >Coming soon</a
+              >
+            </div>
+          </div>
         </div>
       </div>
-    </div>
+    </main>
 
-    <div class="card has-header">
-      <div class="card-header">Demo Models Pack</div>
-      <div class="card-body">
-        <div class="features">Curated sample scenes and assets to evaluate rendering, IO, and workflows.</div>
-        <div class="row" style="gap:8px; flex-wrap:wrap;">
-          <span class="chip muted">2.1 GB</span>
-          <span class="chip">Multi-platform</span>
-        </div>
-        <div class="hr"></div>
-        <div class="card-actions">
-          <a class="btn primary" href="#" download data-requires-plan>Download (2.1 GB)</a>
-        </div>
-      </div>
-    </div>
+    <footer class="footer">
+      <span>© 2025 Aura XR Systems LLC</span><span>Downloads</span>
+    </footer>
 
-    <div class="card has-header">
-      <div class="card-header">Aura Engine Plugin — UE5</div>
-      <div class="card-body">
-        <div class="features">Unreal Engine 5 integration for ingest, materials, and runtime visualization.</div>
-        <div class="row" style="gap:8px; flex-wrap:wrap;">
-          <span class="chip">UE5</span>
-          <span class="chip muted">.zip</span>
-        </div>
-        <div class="hr"></div>
-        <div class="card-actions">
-          <a class="btn primary" href="#" download data-requires-plan>Download (.zip)</a>
-        </div>
-      </div>
-    </div>
-  </div>
-</main>
-
-<footer class="footer"><span>© 2025 Aura XR Systems LLC</span><span>Downloads</span></footer>
-
-<!-- Vite module entry -->
-<script type="module" src="/src/main.js"></script>
-</body>
+    <!-- Vite module entry -->
+    <script type="module" src="/src/main.js"></script>
+    <script>
+      // simple tabs
+      document.addEventListener("DOMContentLoaded", () => {
+        // const unavailableDownloads = Array.from(document.querySelectorAll("[data-download-unavailable]"));
+        document.querySelectorAll("[data-download-unavailable]").forEach((btn) => {
+          btn.disabled = true;
+        })})
+    </script>
+  </body>
 </html>

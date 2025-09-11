@@ -1,5 +1,5 @@
 // src/pages/dashboard.js
-import { api, loadMe } from "../lib/api.js";
+import { api, loadAccount, loadMe } from "../lib/api.js";
 
 /**
  * Provided billing inforormation, returns relevant plan info
@@ -32,10 +32,8 @@ export async function initDashboard() {
   const el = document.querySelector("[data-username]");
   if (el && user) el.textContent = user.firstName;
 
-  const res = await api("/api/account");
-  console.log(res);
-  const { account } = res;
-  console.log(account);
+  const account = await loadAccount();
+  console.log("displaying account in dashboard...", account);
 
   chipsEl.innerHTML = getStatusHTML(
     account.billing.status,
