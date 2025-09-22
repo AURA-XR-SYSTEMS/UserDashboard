@@ -47,7 +47,7 @@
             <div class="card-actions">
               <a
                 class="btn primary"
-                href="https://aura-maui.s3.us-east-1.amazonaws.com/releases/0.0.0/AuraMauiSetup_0.0.0.exe"
+                href="https://aura-maui.s3.us-east-1.amazonaws.com/releases/0.0.1/AuraEngine_PreAlpha_Setup_0.0.1.exe"
                 download
                 >Download .exe (Win64)</a
               >
@@ -68,10 +68,7 @@
             </div>
             <div class="hr"></div>
             <div class="card-actions">
-              <a
-                class="btn primary"
-                download
-                data-download-unavailable
+              <a class="btn primary" download data-download-unavailable
                 >Coming soon</a
               >
             </div>
@@ -91,10 +88,7 @@
             </div>
             <div class="hr"></div>
             <div class="card-actions">
-              <a
-                class="btn primary"
-                download
-                data-download-unavailable
+              <a class="btn primary" download data-download-unavailable
                 >Coming soon</a
               >
             </div>
@@ -113,9 +107,12 @@
       // simple tabs
       document.addEventListener("DOMContentLoaded", () => {
         // const unavailableDownloads = Array.from(document.querySelectorAll("[data-download-unavailable]"));
-        document.querySelectorAll("[data-download-unavailable]").forEach((btn) => {
-          btn.disabled = true;
-        })})
+        // document
+        //   .querySelectorAll("[data-download-unavailable]")
+        //   .forEach((btn) => {
+        //     btn.disabled = true;
+        //   });
+      });
     </script>
   </body>
 </html>
