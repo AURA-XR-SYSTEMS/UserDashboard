@@ -9,6 +9,8 @@ import { initDashboard } from "./pages/dashboard.js";
 import { initAccount } from "./pages/account.js";
 import { initBilling } from "./pages/billing.js";
 import { initCredits } from "./pages/credits.js";
+import { initResetPassword } from "./pages/reset-password.js";
+import { initForgotPassword } from "./pages/forgot-password.js";
 
 const REQUIRE_AUTH = import.meta.env.VITE_ALLOW_NO_AUTH === "false";
 const ALLOW_DEBUG_LOGS = import.meta.env.VITE_ALLOW_DEBUG_LOGS === "true";
@@ -49,6 +51,8 @@ document.addEventListener("DOMContentLoaded", () => {
   if (document.getElementById("section-overview")) initAccount();
   if (document.getElementById("balance-section")) initCredits();
   if (document.getElementById("billing-info")) initBilling();
+  if (document.getElementById("reset-password")) initResetPassword();
+  if (document.getElementById("forgot-password")) initForgotPassword();
 
   const logout = document.querySelector("[data-logout]");
   if (logout) logout.addEventListener("click", handleLogout);

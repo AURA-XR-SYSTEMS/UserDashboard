@@ -227,3 +227,8 @@
   .tab-panel.active{ 
     display:block; 
   }
+
+/* notices */
+.is-hidden {
+  display: none;
+}
