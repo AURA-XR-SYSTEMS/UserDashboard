@@ -1,15 +1,17 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <title>Aura — Sign In</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="default.css">
 </head>
+
 <body>
   <header class="header">
     <nav class="nav">
-      <div class="brand"><a href="index.html"><img class="brand-logo"/></a></div>
+      <div class="brand"><a href="index.html"><img class="brand-logo" /></a></div>
       <div class="right">
         <span class="muted" style="font-weight:600;">Login / Create Account</span>
       </div>
@@ -38,6 +40,9 @@
               <div>
                 <label>Password</label>
                 <input class="input" type="password" name="password" required minlength="6" placeholder="••••••••">
+                <p class="muted small" style="margin-top: .25rem;">
+                  <a href="forgot-password.html" data-skip-auth>Forgot your password?</a>
+                </p>
               </div>
               <div class="row" style="justify-content:space-between;">
                 <button class="btn primary" type="submit">Sign in</button>
@@ -52,21 +57,22 @@
                 <input class="input" type="text" name="first_name" placeholder="Your first name">
               </div>
               <div>
-              <div>
-                <label>Last Name</label>
-                <input class="input" type="text" name="last_name" placeholder="Your last name">
-              </div>
-              <div>
-                <label>Email</label>
-                <input class="input" type="email" name="email" required placeholder="you@company.com">
-              </div>
-              <div>
-                <label>Password</label>
-                <input class="input" type="password" name="password" required minlength="6" placeholder="Create a password">
-              </div>
-              <div class="row" style="justify-content:flex-end;">
-                <button class="btn primary" type="submit">Create account</button>
-              </div>
+                <div>
+                  <label>Last Name</label>
+                  <input class="input" type="text" name="last_name" placeholder="Your last name">
+                </div>
+                <div>
+                  <label>Email</label>
+                  <input class="input" type="email" name="email" required placeholder="you@company.com">
+                </div>
+                <div>
+                  <label>Password</label>
+                  <input class="input" type="password" name="password" required minlength="6"
+                    placeholder="Create a password">
+                </div>
+                <div class="row" style="justify-content:flex-end;">
+                  <button class="btn primary" type="submit">Create account</button>
+                </div>
             </form>
           </div>
         </div>
@@ -92,4 +98,5 @@
     });
   </script>
 </body>
+
 </html>

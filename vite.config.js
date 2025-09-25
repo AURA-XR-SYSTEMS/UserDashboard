@@ -48,6 +48,8 @@ export default defineConfig(({ mode }) => {
           plans: "./plans.html",
           credits: "./credits.html",
           billing: "./billing.html",
+          "reset-password": "./reset-password.html",
+          "forgot-password": "./forgot-password.html",
         },
       },
     },
