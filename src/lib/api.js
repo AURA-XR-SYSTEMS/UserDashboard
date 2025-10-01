@@ -13,7 +13,6 @@ export async function api(path, opts = {}) {
     credentials: "include", // keep cookie auth behavior
   });
 
-  debugger;
   if (!res.ok) {
     let msg = res.statusText;
     try {

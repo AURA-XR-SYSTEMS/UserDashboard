@@ -31,7 +31,7 @@ export async function loadPlans() {
       workspaces,
     } = plan;
     const isBasic = planType === "basic";
-    const price = cost_cents / 1000;
+    const price = cost_cents / 100;
 
     const priceHtml =
       showTrialOnBasic && isBasic
@@ -89,7 +89,7 @@ export async function loadPlans() {
     }
     if (e.target?.hasAttribute("data-start-trial")) {
       try {
-        await api("/api/trial/start", { method: "POST" });
+        await api("/api/subscriptions/trial", { method: "POST" });
         location.href = "downloads.html";
       } catch (err) {
         alert(err.message);
