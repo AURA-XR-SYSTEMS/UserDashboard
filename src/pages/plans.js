@@ -89,7 +89,7 @@ export async function loadPlans() {
     }
     if (e.target?.hasAttribute("data-start-trial")) {
       try {
-        await api("/api/trial/start", { method: "POST" });
+        await api("/api/subscriptions/trial", { method: "POST" });
         location.href = "downloads.html";
       } catch (err) {
         alert(err.message);
