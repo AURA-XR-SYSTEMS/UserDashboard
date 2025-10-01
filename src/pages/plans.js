@@ -31,7 +31,7 @@ export async function loadPlans() {
       workspaces,
     } = plan;
     const isBasic = planType === "basic";
-    const price = cost_cents / 1000;
+    const price = cost_cents / 100;
 
     const priceHtml =
       showTrialOnBasic && isBasic
