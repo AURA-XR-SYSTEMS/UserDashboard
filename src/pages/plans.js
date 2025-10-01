@@ -97,8 +97,3 @@ export async function loadPlans() {
     }
   });
 }
-
-export async function handleLogout() {
-  await api("/api/auth/logout", { method: "POST" });
-  location.href = "index.html";
-}

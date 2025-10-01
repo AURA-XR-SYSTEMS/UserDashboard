@@ -13,14 +13,15 @@ export async function api(path, opts = {}) {
     credentials: "include", // keep cookie auth behavior
   });
 
+  debugger;
   if (!res.ok) {
     let msg = res.statusText;
     try {
       msg = (await res.json()).error || msg;
     } catch {}
     throw new Error(msg);
-  }
-  return res.json();
+  } else if (res.status == 204) return {};
+  else return res.json();
 }
 
 export async function loadMe() {
