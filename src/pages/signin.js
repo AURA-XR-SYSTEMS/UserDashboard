@@ -28,3 +28,8 @@ export function initTabs() {
     })
   );
 }
+
+export async function handleLogout() {
+  await api("/api/auth/logout", { method: "POST" });
+  location.href = "index.html";
+}

@@ -2,9 +2,9 @@
 import "./styles.css"; // optional: pull CSS into the bundle
 import auraLogoUrl from "./assets/aura_logo_withtext_transparent_white-06.png";
 
-import { api, loadMe } from "./lib/api.js";
-import { handleAuth, initTabs } from "./pages/signin.js";
-import { loadPlans, handleLogout } from "./pages/plans.js";
+import { loadMe } from "./lib/api.js";
+import { handleAuth, initTabs, handleLogout } from "./pages/signin.js";
+import { loadPlans } from "./pages/plans.js";
 import { initDashboard } from "./pages/dashboard.js";
 import { initAccount } from "./pages/account.js";
 import { initBilling } from "./pages/billing.js";
