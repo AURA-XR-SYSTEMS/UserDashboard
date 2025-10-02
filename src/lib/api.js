@@ -31,7 +31,15 @@ export async function loadMe() {
   } catch (error) {
     console.log("Caught error in loadMe...", error);
     const path = window.location.pathname;
-    if (REQUIRE_AUTH && !["/", "/index.html"].some((p) => path.endsWith(p))) {
+    if (
+      REQUIRE_AUTH &&
+      ![
+        "/",
+        "/index.html",
+        "/forgot-password.html",
+        "/reset-password.html",
+      ].some((p) => path.endsWith(p))
+    ) {
       window.location.href = "index.html";
       // TODO - show some type of alert to explain why they were redirected
     }
