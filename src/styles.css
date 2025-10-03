@@ -112,6 +112,7 @@
     background: transparent; color: var(--text); border:1px solid var(--border);
   }
   .btn.link{ background:transparent; color: var(--accent); padding: 6px 8px; }
+  .cta { width: 60%; }
   /* active nav state */
   .nav .right .btn.active,
   .nav .right a.active{ outline: 0; border-color: rgba(43,183,169,.45); background: rgba(43,183,169,.20); color:#eafffb; box-shadow: var(--glow); }
