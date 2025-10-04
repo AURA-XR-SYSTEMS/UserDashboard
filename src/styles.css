@@ -112,6 +112,7 @@
     background: transparent; color: var(--text); border:1px solid var(--border);
   }
   .btn.link{ background:transparent; color: var(--accent); padding: 6px 8px; }
+  .cta { width: 60%; }
   /* active nav state */
   .nav .right .btn.active,
   .nav .right a.active{ outline: 0; border-color: rgba(43,183,169,.45); background: rgba(43,183,169,.20); color:#eafffb; box-shadow: var(--glow); }
@@ -232,3 +233,22 @@
 .is-hidden {
   display: none;
 }
+
+.form-error {
+  margin-top: .5rem;
+  padding: .5rem .75rem;
+  border-radius: .375rem;
+  background: #fee;
+  color: #b42318;
+  border: 1px solid #f3c2c0;
+  font-size: .9375rem;
+}
+.input.invalid { border-color: #b42318; outline-color: #b42318; }
+
+@keyframes shake {
+  10%, 90% { transform: translateX(-2px); }
+  20%, 80% { transform: translateX(4px); }
+  30%, 50%, 70% { transform: translateX(-8px); }
+  40%, 60% { transform: translateX(8px); }
+}
+.form.shake { animation: shake .3s linear; }

@@ -1,6 +1,5 @@
 // src/lib/api.js
 const BASE = (import.meta.env.VITE_API_BASE || "").replace(/\/$/, "");
-const REQUIRE_AUTH = import.meta.env.VITE_ALLOW_NO_AUTH === "false";
 
 export async function api(path, opts = {}) {
   const url = path.startsWith("http") ? path : `${BASE}${path}`;
@@ -32,7 +31,6 @@ export async function loadMe() {
     console.log("Caught error in loadMe...", error);
     const path = window.location.pathname;
     if (
-      REQUIRE_AUTH &&
       ![
         "/",
         "/index.html",

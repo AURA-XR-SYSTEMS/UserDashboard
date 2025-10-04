@@ -1,9 +1,15 @@
 // src/main.js
 import "./styles.css"; // optional: pull CSS into the bundle
-import auraLogoUrl from "./assets/aura_logo_withtext_transparent_white-06.png";
+// import auraLogoUrl from "./assets/aura_logo_withtext_transparent_white-06.png";
+import auraLogoUrl from "./assets/wizard-top.png";
 
 import { loadMe } from "./lib/api.js";
-import { handleAuth, initTabs, handleLogout } from "./pages/signin.js";
+import {
+  handleAuth,
+  initTabs,
+  handleLogout,
+  initAuthFormUX,
+} from "./pages/signin.js";
 import { loadPlans } from "./pages/plans.js";
 import { initDashboard } from "./pages/dashboard.js";
 import { initAccount } from "./pages/account.js";
@@ -12,7 +18,6 @@ import { initCredits } from "./pages/credits.js";
 import { initResetPassword } from "./pages/reset-password.js";
 import { initForgotPassword } from "./pages/forgot-password.js";
 
-const REQUIRE_AUTH = import.meta.env.VITE_ALLOW_NO_AUTH === "false";
 const ALLOW_DEBUG_LOGS = import.meta.env.VITE_ALLOW_DEBUG_LOGS === "true";
 
 const originalConsoleLog = console.log;
@@ -37,13 +42,10 @@ document.addEventListener("DOMContentLoaded", () => {
   // Sign-in page features
   if (path.endsWith("/") || path.endsWith("/index.html")) {
     initTabs();
-    if (REQUIRE_AUTH) {
-      const hideEl = document.querySelector("[data-skip-auth]");
-      hideEl.style.display = "none";
-    }
     document
       .querySelectorAll("[data-auth-form]")
       .forEach((f) => f.addEventListener("submit", handleAuth));
+    initAuthFormUX();
   }
 
   if (document.getElementById("status-panel")) initDashboard();
