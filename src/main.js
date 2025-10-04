@@ -4,7 +4,12 @@ import "./styles.css"; // optional: pull CSS into the bundle
 import auraLogoUrl from "./assets/wizard-top.png";
 
 import { loadMe } from "./lib/api.js";
-import { handleAuth, initTabs, handleLogout } from "./pages/signin.js";
+import {
+  handleAuth,
+  initTabs,
+  handleLogout,
+  initAuthFormUX,
+} from "./pages/signin.js";
 import { loadPlans } from "./pages/plans.js";
 import { initDashboard } from "./pages/dashboard.js";
 import { initAccount } from "./pages/account.js";
@@ -40,6 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document
       .querySelectorAll("[data-auth-form]")
       .forEach((f) => f.addEventListener("submit", handleAuth));
+    initAuthFormUX();
   }
 
   if (document.getElementById("status-panel")) initDashboard();
