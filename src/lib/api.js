@@ -16,7 +16,7 @@ export async function api(path, opts = {}) {
     let msg = res.statusText;
     try {
       msg = (await res.json()).error || msg;
-    } catch {}
+    } catch { }
     throw new Error(msg);
   } else if (res.status == 204) return {};
   else return res.json();
@@ -58,5 +58,22 @@ export async function loadAccount() {
     console.log("Caught error in loadAccount...", error);
     // TODO - handle scenario where user might be authenticated, but there was a problem
     // with their account
+  }
+}
+
+export async function onForgotSubmit(email, onSuccess, onErr) {
+  try {
+    await api("/api/auth/forgot", {
+      method: "POST",
+      body: { email },
+    });
+    onSuccess(email);
+  } catch (err) {
+    if (err?.status === 429) {
+      // TODO - handle rate limiting
+    }
+    else if (err) {
+      onErr();
+    }
   }
 }

@@ -17,17 +17,23 @@ export async function initAccount() {
   const creditsMeter = document.getElementById("credits-meter");
   const purchasedLabel = document.getElementById("purchased-label");
   const purchasedMeter = document.getElementById("purchased-meter");
+  const resetPasswordControls = {
+    currentPassword: document.getElementById('sec-current'),
+    newPassword: document.getElementById('sec-new'),
+    newPasswordConfirm: document.getElementById('sec-new-confirm'),
+    submitBtn: document.getElementById('sec-pass-save')
+  }
 
   const account = await loadAccount();
   console.log("obtained account in initAccount()...", account);
 
+  const { email } = account;
   const { status } = account.billing;
   const {
     active,
     allowanceAmount,
     allowanceRemaining,
     planType,
-    purchasedTotal,
     purchasedRemaining,
     balance,
     renewsAt,
@@ -55,10 +61,10 @@ export async function initAccount() {
     creditsLabel.textContent = `${balance.toLocaleString()} available`;
   }
 
-  if (purchasedTotal > 0) {
-    const percentage = (purchasedRemaining / purchasedTotal) * 100;
+  if (purchasedRemaining > 0) {
+    const percentage = (purchasedRemaining / purchasedRemaining) * 100;
     purchasedMeter.style.width = percentage + "%";
-    purchasedLabel.textContent = `${purchasedRemaining.toLocaleString()} / ${purchasedTotal.toLocaleString()} this cycle`;
+    purchasedLabel.textContent = `${purchasedRemaining.toLocaleString()} / ${purchasedRemaining.toLocaleString()} this cycle`;
   } else {
     purchasedMeter.style.width = "0%";
     purchasedLabel.textContent = `${purchasedRemaining.toLocaleString()} additional credits available`;
