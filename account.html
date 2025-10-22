@@ -1,75 +1,77 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8" />
   <title>Aura — Account</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="default.css">
 </head>
+
 <body>
-<header class="header">
-  <nav class="nav">
-    <div class="brand">
-      <a href="dashboard.html">
-        <img class="brand-logo"/>
-      </a>
-    </div>
-    <div class="right">
-      <a class="btn ghost" href="account.html">Account</a>
-      <a class="btn ghost" href="docs.html">Documentation</a>
-      <a class="btn ghost" href="downloads.html">Downloads</a>
-      <button class="btn" data-logout>Log out</button>
-    </div>
-  </nav>
-</header>
-
-<main class="container">
-  <section class="hero">
-    <h1>Account</h1>
-    <p class="muted">Manage plan, billing, credits, and security settings.</p>
-  </section>
-
-  <div class="stacked">
-
-  <!-- Overview -->
-  <div class="card has-header" id="section-overview">
-    <div class="card-header">Overview</div>
-    <div class="card-body">
-      <div class="row" style="flex-wrap:wrap; gap:8px;">
-        <span class="chip" id="ov-plan">Plan: —</span>
-        <span class="chip" id="ov-status">Status: —</span>
-        <span class="chip muted" id="ov-renew">Renews: —</span>
-        <span class="chip" id="ov-credits">Credits: —</span>
+  <header class="header">
+    <nav class="nav">
+      <div class="brand">
+        <a href="dashboard.html">
+          <img class="brand-logo" />
+        </a>
       </div>
-      <div class="hr"></div>
-      <div class="card-actions" style="gap:10px; flex-wrap:wrap;">
-        <a class="btn primary" href="plans.html" id="ov-change-plan">Change plan</a>
-        <a class="btn ghost" href="credits.html" id="ov-add-credits">Add credits</a>
-        <a class="btn ghost" href="#section-billing" id="ov-update-payment">Update payment method</a>
+      <div class="right">
+        <a class="btn ghost" href="account.html">Account</a>
+        <a class="btn ghost" href="docs.html">Documentation</a>
+        <a class="btn ghost" href="downloads.html">Downloads</a>
+        <button class="btn" data-logout>Log out</button>
       </div>
-    </div>
-  </div>
+    </nav>
+  </header>
 
-  <!-- Plan -->
-  <div class="card has-header" id="section-plan">
-    <div class="card-header">Plan</div>
-    <div class="card-body">
-      <span class="section-tab">Current plan</span>
-      <div class="row" id="plan-summary" style="flex-wrap:wrap; gap:8px; margin-bottom:6px;">
-        <span class="chip muted">Loading…</span>
-      </div>
-      <div class="card-actions" style="gap:8px; flex-wrap:wrap;">
-        <a class="btn" href="plans.html">Browse plans</a>
-        <button class="btn" data-plan="basic">Switch to Basic</button>
-        <button class="btn" data-plan="pro">Switch to Pro</button>
-        <button class="btn" data-plan="team">Switch to Team</button>
-        <button class="btn ghost" id="btn-cancel-plan">Cancel plan</button>
-      </div>
-    </div>
-  </div>
+  <main class="container">
+    <section class="hero">
+      <h1>Account</h1>
+      <p class="muted">Manage plan, billing, credits, and security settings.</p>
+    </section>
 
-  <!-- Billing -->
-  <div class="card has-header" id="section-billing">
+    <div class="stacked">
+
+      <!-- Overview -->
+      <div class="card has-header" id="section-overview">
+        <div class="card-header">Overview</div>
+        <div class="card-body">
+          <div class="row" style="flex-wrap:wrap; gap:8px;">
+            <span class="chip" id="ov-plan">Plan: —</span>
+            <span class="chip" id="ov-status">Status: —</span>
+            <span class="chip muted" id="ov-renew">Renews: —</span>
+            <span class="chip" id="ov-credits">Credits: —</span>
+          </div>
+          <div class="hr"></div>
+          <div class="card-actions" style="gap:10px; flex-wrap:wrap;">
+            <a class="btn primary" href="plans.html" id="ov-change-plan">Change plan</a>
+            <a class="btn ghost" href="credits.html" id="ov-add-credits">Add credits</a>
+            <a class="btn ghost" href="#section-billing" id="ov-update-payment">Update payment method</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Plan -->
+      <div class="card has-header" id="section-plan">
+        <div class="card-header">Plan</div>
+        <div class="card-body">
+          <span class="section-tab">Current plan</span>
+          <div class="row" id="plan-summary" style="flex-wrap:wrap; gap:8px; margin-bottom:6px;">
+            <span class="chip muted">Loading…</span>
+          </div>
+          <div class="card-actions" style="gap:8px; flex-wrap:wrap;">
+            <a class="btn" href="plans.html">Browse plans</a>
+            <button class="btn" data-plan="basic">Switch to Basic</button>
+            <button class="btn" data-plan="pro">Switch to Pro</button>
+            <button class="btn" data-plan="team">Switch to Team</button>
+            <button class="btn ghost" id="btn-cancel-plan">Cancel plan</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Billing -->
+      <!-- <div class="card has-header" id="section-billing">
     <div class="card-header">Billing</div>
     <div class="card-body">
       <span class="section-tab">Payment method</span>
@@ -80,55 +82,71 @@
       <div class="hr"></div>
       <p class="features">Invoices and history will appear here (placeholder).</p>
     </div>
-  </div>
+  </div> -->
 
-  <!-- Credits -->
-  <div class="card has-header" id="section-credits">
-    <div class="card-header">Credits</div>
-    <div class="card-body">
-      <span class="section-tab">Balance</span>
-      <div class="row" style="justify-content:space-between;">
-        <span class="badge">Credits</span>
-        <span class="badge" id="credits-label">—</span>
+      <!-- Credits -->
+      <div class="card has-header" id="section-credits">
+        <div class="card-header">Credits</div>
+        <div class="card-body">
+          <span class="section-tab">Balance</span>
+          <div class="row" style="justify-content:space-between;">
+            <span class="badge">Credits</span>
+            <span class="badge" id="credits-label">—</span>
+          </div>
+          <div class="meter" aria-label="included credits"><span id="credits-meter"></span></div>
+          <div class="row" style="justify-content:space-between; margin-top:8px;">
+            <span class="badge">Additional credits</span>
+            <span class="badge" id="purchased-label">0 / 0 this cycle</span>
+          </div>
+          <div class="meter blue" aria-label="purchased credits"><span id="purchased-meter"></span></div>
+          <div class="hr"></div>
+          <div class="card-actions" style="gap:8px; flex-wrap:wrap;">
+            <a class="btn primary" href="credits.html">Purchase credits</a>
+          </div>
+        </div>
       </div>
-      <div class="meter" aria-label="included credits"><span id="credits-meter"></span></div>
-      <div class="row" style="justify-content:space-between; margin-top:8px;">
-        <span class="badge">Additional credits</span>
-        <span class="badge" id="purchased-label">0 / 0 this cycle</span>
+
+      <!-- Security -->
+      <div class="card has-header" id="section-security">
+        <div class="card-header">Security</div>
+        <div class="card-body">
+          <span class="section-tab">Email</span>
+          <form class="row" id="email-reset-form">
+            <label for="sec-email">New Email</label>
+            <input class="input" type="email" name="email" required id="sec-email" placeholder="New email" style="max-width:320px;" />
+            <button class="btn" id="sec-email-save" type="submit">Update</button>
+          </form>
+          <div class="hr"></div>
+          <span class="section-tab">Password Reset</span>
+          <!-- Password Reset form -->
+          <form class="row" id="pw-reset-form" style="flex-wrap:wrap; justify-content: space-between;">
+            <div class="row">
+              <label for="sec-current">Current Password</label>
+              <input class="input" id="sec-current" type="password" placeholder="Current password"
+                style="max-width:220px;" required />
+
+            </div>
+            <div class="row">
+              <label for="sec-new">New Password</label>
+              <input class="input" id="sec-new" type="password" placeholder="New password" style="max-width:220px;" required />
+            </div>
+            <div class="row">
+              <label for="sec-new-confirm">Confirm Password</label>
+              <input class="input" id="sec-new-confirm" type="password" placeholder="Confirm new password"
+                style="max-width:220px;" required />
+            </div>
+            <button class="btn" id="sec-pass-save" type="submit">Reset password</button>
+          </form>
+        </div>
       </div>
-      <div class="meter blue" aria-label="purchased credits"><span id="purchased-meter"></span></div>
-      <div class="hr"></div>
-      <div class="card-actions" style="gap:8px; flex-wrap:wrap;">
-        <a class="btn primary" href="credits.html">Purchase credits</a>
-      </div>
+
     </div>
-  </div>
+  </main>
 
-  <!-- Security -->
-  <div class="card has-header" id="section-security">
-    <div class="card-header">Security</div>
-    <div class="card-body">
-      <span class="section-tab">Email</span>
-      <div class="row">
-        <input class="input" id="sec-email" placeholder="New email" style="max-width:320px;" />
-        <button class="btn" id="sec-email-save">Update</button>
-      </div>
-      <div class="hr"></div>
-      <span class="section-tab">Password</span>
-      <div class="row" style="flex-wrap:wrap;">
-        <input class="input" id="sec-current" type="password" placeholder="Current password" style="max-width:220px;" />
-        <input class="input" id="sec-new" type="password" placeholder="New password" style="max-width:220px;" />
-        <button class="btn" id="sec-pass-save">Change password</button>
-      </div>
-    </div>
-  </div>
+  <footer class="footer"><span>© 2025 Aura XR Systems LLC</span><span>Account</span></footer>
 
-  </div>
-</main>
-
-<footer class="footer"><span>© 2025 Aura XR Systems LLC</span><span>Account</span></footer>
-
-<!-- Vite module entry -->
-<script type="module" src="/src/main.js"></script>
+  <!-- Vite module entry -->
+  <script type="module" src="/src/main.js"></script>
 </body>
+
 </html>

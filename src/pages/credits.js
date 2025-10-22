@@ -28,7 +28,7 @@ export async function initBalance() {
     allowanceAmount,
     allowanceRemaining,
     planType,
-    purchasedTotal,
+    purchasedCeiling,
     purchasedRemaining,
     balance,
     renewsAt,
@@ -43,10 +43,10 @@ export async function initBalance() {
     creditsLabel.textContent = `${balance.toLocaleString()} available`;
   }
 
-  if (purchasedTotal > 0) {
-    const percentage = (purchasedRemaining / purchasedTotal) * 100;
+  if (purchasedRemaining > 0) {
+    const percentage = (purchasedRemaining / purchasedCeiling) * 100;
     purchasedMeter.style.width = percentage + "%";
-    purchasedLabel.textContent = `${purchasedRemaining.toLocaleString()} / ${purchasedTotal.toLocaleString()} this cycle`;
+    purchasedLabel.textContent = `${purchasedRemaining.toLocaleString()} / ${purchasedCeiling.toLocaleString()} this cycle`;
   } else {
     purchasedMeter.style.width = "0%";
     purchasedLabel.textContent = `${purchasedRemaining.toLocaleString()} additional credits available`;

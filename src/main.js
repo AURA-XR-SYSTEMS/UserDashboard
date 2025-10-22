@@ -50,7 +50,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (document.getElementById("status-panel")) initDashboard();
   if (document.querySelector("#plan-list")) loadPlans();
-  if (document.getElementById("section-overview")) initAccount();
+  if (document.getElementById("section-overview") &&
+    document.getElementById("section-plan") &&
+    document.getElementById('section-credits') &&
+    document.getElementById('section-security')) initAccount();
   if (document.getElementById("balance-section")) initCredits();
   if (document.getElementById("billing-info")) initBilling();
   if (document.getElementById("reset-password")) initResetPassword();
@@ -64,6 +67,6 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
       const url = new URL(a.href, location.origin);
       if (url.pathname === path) a.classList.add("active");
-    } catch {}
+    } catch { }
   });
 });
