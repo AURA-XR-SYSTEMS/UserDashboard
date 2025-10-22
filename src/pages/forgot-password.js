@@ -1,5 +1,5 @@
 // src/pages/forgot-password.js
-import { api, onForgotSubmit } from "../lib/api.js";
+import { onForgotSubmit } from "../lib/api.js";
 
 
 /**
@@ -61,7 +61,7 @@ export function initForgotPassword() {
   });
 }
 
-function emailWasInvalid(email) {
+export function emailWasInvalid(email) {
   return !email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email.trim().toLowerCase())
 
 }

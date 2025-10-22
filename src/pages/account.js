@@ -17,12 +17,6 @@ export async function initAccount() {
   const creditsMeter = document.getElementById("credits-meter");
   const purchasedLabel = document.getElementById("purchased-label");
   const purchasedMeter = document.getElementById("purchased-meter");
-  const resetPasswordControls = {
-    currentPassword: document.getElementById('sec-current'),
-    newPassword: document.getElementById('sec-new'),
-    newPasswordConfirm: document.getElementById('sec-new-confirm'),
-    submitBtn: document.getElementById('sec-pass-save')
-  }
 
   const account = await loadAccount();
   console.log("obtained account in initAccount()...", account);
@@ -130,41 +124,134 @@ export async function initAccount() {
     });
   }
 
+  const emailResetForm = document.getElementById('email-reset-form');
+  const emailResetInput = document.getElementById('sec-email');
+  emailResetInput.addEventListener('input', () => emailResetInput.setCustomValidity(''))
   const secEmailBtn = document.getElementById("sec-email-save");
-  if (secEmailBtn) {
-    secEmailBtn.addEventListener("click", async () => {
-      const newEmail = (
-        document.getElementById("sec-email")?.value || ""
-      ).trim();
-      if (!newEmail) return alert("Enter an email");
-      try {
-        await api("/api/account/security/email", {
-          method: "POST",
-          body: { newEmail },
-        });
-        alert("Email updated");
-      } catch (e) {
-        alert(e.message);
-      }
-    });
-  }
+  secEmailBtn.addEventListener("click", async () => {
+    const newEmail = (emailResetInput.value || "").trim();
+    if (!newEmail) {
+      emailResetInput.setCustomValidity("Invalid email");
+      emailResetInput.reportValidity();
+      emailResetInput.classList.add('invalid');
+      return;
+    }
+    emailResetInput.setCustomValidity('');
+    emailResetInput.classList.remove('invalid');
 
-  const secPassBtn = document.getElementById("sec-pass-save");
-  if (secPassBtn) {
-    secPassBtn.addEventListener("click", async () => {
-      const currentPassword = document.getElementById("sec-current")?.value;
-      const newPassword = document.getElementById("sec-new")?.value;
-      if (!newPassword || !currentPassword)
-        return alert("Enter both passwords");
-      try {
-        await api("/api/account/security/password", {
-          method: "POST",
-          body: { currentPassword, newPassword },
-        });
-        alert("Password changed");
-      } catch (e) {
-        alert(e.message);
-      }
-    });
-  }
+    try {
+      await api("/api/auth/emailUpdate", {
+        method: "POST",
+        body: { newEmail },
+      });
+      alert("Email updated");
+    } catch (e) {
+      alert(e.message);
+    }
+  });
+
+  emailResetForm.addEventListener("invalid", async (e) => {
+    emailResetForm.classList.add('shake');
+    setTimeout(() => passwordResetForm.classList.remove("shake"), 300);
+    e.target.classList.add("invalid");
+  })
+
+  passwordResetForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    // check to see if it is a valid email
+    if (newPasswordInput.value !== confirmPasswordInput.value) {
+      confirmPasswordInput.setCustomValidity("Passwords don't match");
+      confirmPasswordInput.reportValidity();
+      confirmPasswordInput.classList.add('invalid');
+      return;
+    }
+    confirmPasswordInput.setCustomValidity('');
+    confirmPasswordInput.classList.remove('invalid');
+
+    // attempt to submit password reset
+    try {
+
+      const { token } = await api("api/auth/resetToken", {
+        method: "POST",
+        body: {
+          previousPassword: currentPasswordInput.value,
+        }
+      });
+
+      await api("api/auth/reset", {
+        method: "POST",
+        body: { token, newPassword: confirmPasswordInput.value }
+      })
+      alert(
+        "Your password has been reset! "
+      )
+    }
+    catch (err) {
+      console.error(err);
+      alert(
+        err?.message || "Unable to reset your password at this time. Please contact the AURA team for assistance."
+      )
+      passwordResetButton.disabled = false;
+      passwordResetButton.textContent = 'Reset Password'
+    }
+  })
+
+  // Password Reset
+  const passwordResetForm = document.getElementById("pw-reset-form");
+  const passwordResetButton = document.getElementById('sec-pass-save');
+  const currentPasswordInput = document.getElementById('sec-current');
+  const newPasswordInput = document.getElementById('sec-new');
+  const confirmPasswordInput = document.getElementById('sec-new-confirm');
+
+  // console.log([currentPasswordInput, newPasswordInput, confirmPasswordInput]);
+  [currentPasswordInput, newPasswordInput, confirmPasswordInput].forEach(input => {
+    input.addEventListener('input', () => input.setCustomValidity(''))
+  })
+
+  passwordResetForm.addEventListener("invalid", async (e) => {
+    passwordResetForm.classList.add('shake');
+    setTimeout(() => passwordResetForm.classList.remove("shake"), 300);
+    e.target.classList.add("invalid");
+  })
+
+
+  passwordResetForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    if (newPasswordInput.value !== confirmPasswordInput.value) {
+      confirmPasswordInput.setCustomValidity("Passwords don't match");
+      confirmPasswordInput.reportValidity();
+      confirmPasswordInput.classList.add('invalid');
+      return;
+    }
+    confirmPasswordInput.setCustomValidity('');
+    confirmPasswordInput.classList.remove('invalid');
+
+    // attempt to submit password reset
+    try {
+
+      const { token } = await api("api/auth/resetToken", {
+        method: "POST",
+        body: {
+          previousPassword: currentPasswordInput.value,
+          newPassword: confirmPasswordInput.value,
+        }
+      });
+
+      await api("api/auth/reset", {
+        method: "POST",
+        body: { token, newPassword: confirmPasswordInput.value }
+      })
+      alert(
+        "Your password has been reset! "
+      )
+    }
+    catch (err) {
+      console.error(err);
+      alert(
+        err?.message || "Unable to reset your password at this time. Please contact the AURA team for assistance."
+      )
+      passwordResetButton.disabled = false;
+      passwordResetButton.textContent = 'Reset Password'
+    }
+  })
 }

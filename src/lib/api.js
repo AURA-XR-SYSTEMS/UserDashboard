@@ -1,3 +1,5 @@
+import { initResetPassword } from "../pages/reset-password";
+
 // src/lib/api.js
 const BASE = (import.meta.env.VITE_API_BASE || "").replace(/\/$/, "");
 
