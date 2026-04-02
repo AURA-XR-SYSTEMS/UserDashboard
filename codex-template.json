@@ -1,6 +1,6 @@
 {
   "template_type": "single-repo",
-  "template_version": "1.2.0",
+  "template_version": "1.3.0",
   "codexification_stage": "standardized",
   "conformity_status": "conforming",
   "template_source": "CodexEnv/templates/single-repo",
@@ -8,6 +8,19 @@
   "template_access_reference": "/home/codex/workspace/CodexEnv",
   "runtime_contract_version": "1.0.0",
   "shared_skill_set_version": "1.0.0",
+  "next_stage_target": "operational",
+  "operational_readiness": "partial",
+  "assessment_checks": {
+    "manifest_current": "pass",
+    "docs_current": "pass",
+    "command_inventory_grounded": "pass",
+    "verification_path_defined": "pass",
+    "verification_path_validated": "pass",
+    "shared_skill_coverage": "pass",
+    "repo_local_skill_coverage": "deferred",
+    "publish_flow_current": "pass",
+    "operational_smoke": "partial"
+  },
   "applied_at": "2026-04-01",
   "last_reviewed_at": "2026-04-02",
   "last_conformity_reviewed_at": "2026-04-02",
@@ -17,5 +30,5 @@
     "Repo-specific command inventory centers on Vite multi-page frontend commands and backend proxy assumptions.",
     "Repo-local skills are still planned rather than implemented, which is acceptable for this frontend repo at the standardized stage."
   ],
-  "notes": "UserDashboard is a lightweight frontend codexified from the single-repo@1.2.0 template line using the local CodexEnv checkout as its template source."
+  "notes": "UserDashboard is a lightweight frontend codexified from the single-repo@1.3.0 template line using the local CodexEnv checkout as its template source."
 }

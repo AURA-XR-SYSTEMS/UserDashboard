@@ -4,7 +4,8 @@ Instructions in this file apply to the entire `UserDashboard` repository.
 
 ## Workflow
 
-- Read `codex-template.json` first to determine the repo's template version, codexification stage, conformity status, and local override state.
+- Read `codex-template.json` first to determine the repo's template version, codexification stage, conformity status, readiness state, and local override state.
+- Read `codex-assessment.md` after the manifest to see the current scorecard, evidence, and next promotion target.
 - Read `runtime-bootstrap.md` first to determine the repo's runtime and auth conventions.
 - Inspect the relevant code paths before editing. Prefer `rg` for search.
 - Keep changes minimal and localized to the requested behavior.
