@@ -8,6 +8,7 @@
 
 ## Assessment Checks
 
+- `readme_status_surface`: `pass`
 - `manifest_current`: `pass`
 - `docs_current`: `pass`
 - `command_inventory_grounded`: `pass`
