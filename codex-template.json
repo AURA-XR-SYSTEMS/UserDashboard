@@ -1,15 +1,15 @@
 {
   "template_type": "single-repo",
   "template_version": "1.3.0",
-  "codexification_stage": "standardized",
+  "codexification_stage": "operational",
   "conformity_status": "conforming",
   "template_source": "CodexEnv/templates/single-repo",
   "template_access_mode": "local-checkout",
   "template_access_reference": "/home/codex/workspace/CodexEnv",
   "runtime_contract_version": "1.0.0",
   "shared_skill_set_version": "1.0.0",
-  "next_stage_target": "operational",
-  "operational_readiness": "partial",
+  "next_stage_target": "maintained",
+  "operational_readiness": "passing",
   "assessment_checks": {
     "manifest_current": "pass",
     "docs_current": "pass",
@@ -19,7 +19,7 @@
     "shared_skill_coverage": "pass",
     "repo_local_skill_coverage": "deferred",
     "publish_flow_current": "pass",
-    "operational_smoke": "partial"
+    "operational_smoke": "pass"
   },
   "applied_at": "2026-04-01",
   "last_reviewed_at": "2026-04-02",
@@ -28,7 +28,7 @@
   "local_overrides": [
     "Current validation surface is build-only; lint, test, and typecheck scripts are not yet present.",
     "Repo-specific command inventory centers on Vite multi-page frontend commands and backend proxy assumptions.",
-    "Repo-local skills are still planned rather than implemented, which is acceptable for this frontend repo at the standardized stage."
+    "Repo-local skills are still planned rather than implemented, which is acceptable for this frontend repo at the operational stage because the current workflow relies on shared skills plus documented verification commands."
   ],
   "notes": "UserDashboard is a lightweight frontend codexified from the single-repo@1.3.0 template line using the local CodexEnv checkout as its template source."
 }
