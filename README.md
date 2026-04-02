@@ -6,7 +6,7 @@ Vite-powered multi-page frontend for account, billing, plans, docs, downloads, a
 
 | Signal | Current |
 | --- | --- |
-| Template line | `single-repo@1.3.0` |
+| Template line | `single-repo@1.4.0` |
 | Codexification stage | `operational` |
 | Operational readiness | `passing` |
 | Next target | `maintained` |
@@ -36,6 +36,7 @@ flowchart LR
 | Repo-local skill coverage | `deferred` |
 | Publish flow current | `pass` |
 | Operational smoke | `pass` |
+| README status surface | `pass` |
 
 **Remaining Work**
 
