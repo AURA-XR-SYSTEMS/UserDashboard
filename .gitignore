@@ -29,6 +29,7 @@ dist-ssr/
 *.njsproj
 *.sln
 *.sw?
+.codex-sessions/
 
 # Vite specific
 .vite/

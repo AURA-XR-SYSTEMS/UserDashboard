@@ -1,0 +1,21 @@
+{
+  "template_type": "single-repo",
+  "template_version": "1.2.0",
+  "codexification_stage": "standardized",
+  "conformity_status": "conforming",
+  "template_source": "CodexEnv/templates/single-repo",
+  "template_access_mode": "local-checkout",
+  "template_access_reference": "/home/codex/workspace/CodexEnv",
+  "runtime_contract_version": "1.0.0",
+  "shared_skill_set_version": "1.0.0",
+  "applied_at": "2026-04-01",
+  "last_reviewed_at": "2026-04-02",
+  "last_conformity_reviewed_at": "2026-04-02",
+  "drift_status": "overrides",
+  "local_overrides": [
+    "Current validation surface is build-only; lint, test, and typecheck scripts are not yet present.",
+    "Repo-specific command inventory centers on Vite multi-page frontend commands and backend proxy assumptions.",
+    "Repo-local skills are still planned rather than implemented, which is acceptable for this frontend repo at the standardized stage."
+  ],
+  "notes": "UserDashboard is a lightweight frontend codexified from the single-repo@1.2.0 template line using the local CodexEnv checkout as its template source."
+}
