@@ -14,6 +14,7 @@
 - `command_inventory_grounded`: `pass`
 - `verification_path_defined`: `pass`
 - `verification_path_validated`: `pass`
+- `github_actions_verification`: `pass`
 - `shared_skill_coverage`: `pass`
 - `repo_local_skill_coverage`: `deferred`
 - `publish_flow_current`: `pass`
@@ -24,6 +25,7 @@
 - `2026-04-02`: `npm install && npm run build` completed successfully after bootstrapping local dependencies.
 - Build produced output under `dist/` across the documented multi-page entries.
 - `2026-04-02`: explicit Codex workflow smoke pass completed by reading the manifest and assessment, selecting the documented verification path, and successfully running the repo's native verification command without ambiguity.
+- `2026-04-02`: GitHub Actions verification was aligned to the repo's native verification path by running `npm ci` and `npm run build` on pull requests as well as `main` pushes.
 - Warnings remain:
   - `default.css` does not exist at build time and is left unresolved for runtime.
   - Vite reported a browser-compatibility warning related to `node:module` in its bundled module runner.

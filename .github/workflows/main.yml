@@ -1,6 +1,8 @@
-name: Deploy Main to Gh Pages
+name: Verify and Deploy Main to Gh Pages
 
 on:
+  pull_request:
+    branches: [ main ]
   push:
     branches: [ main ]
 
@@ -48,6 +50,7 @@ jobs:
 
   deploy:
     needs: build
+    if: github.event_name == 'push'
     runs-on: ubuntu-latest
     environment:
       name: github-pages
