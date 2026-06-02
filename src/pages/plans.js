@@ -12,16 +12,15 @@ export async function loadPlans() {
     account,
   });
 
-  const { method, status, trialAvailable: showTrialOnBasic } = account.billing;
+  const { trialAvailable: showTrialOnBasic } = account.billing;
 
   list.innerHTML = "";
   plans.forEach((plan) => {
     const card = document.createElement("div");
     card.className = "card has-header";
     const {
-      cost_cents,
+      costCents,
       credits,
-      deactivated,
       description,
       features,
       name,
@@ -31,7 +30,7 @@ export async function loadPlans() {
       workspaces,
     } = plan;
     const isBasic = planType === "basic";
-    const price = cost_cents / 100;
+    const price = costCents / 100;
 
     const priceHtml =
       showTrialOnBasic && isBasic
@@ -77,10 +76,13 @@ export async function loadPlans() {
     const id = e.target?.dataset?.choose;
     if (id) {
       try {
-        await api("/api/subscribe", {
+        const { account } = await api("/api/subscribe", {
           method: "POST",
-          body: { planId: id, method: "test" },
+          body: { planType: id, method: "test" },
         });
+        if (!account?.credits?.planType) {
+          throw new Error("Subscribe response missing account state");
+        }
         location.href = "downloads.html";
       } catch (err) {
         alert(err.message);
@@ -89,7 +91,12 @@ export async function loadPlans() {
     }
     if (e.target?.hasAttribute("data-start-trial")) {
       try {
-        await api("/api/subscriptions/trial", { method: "POST" });
+        const { user } = await api("/api/subscriptions/trial", {
+          method: "POST",
+        });
+        if (!user?.credits?.planType) {
+          throw new Error("Trial response missing user state");
+        }
         location.href = "downloads.html";
       } catch (err) {
         alert(err.message);

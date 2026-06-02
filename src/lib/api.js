@@ -1,7 +1,22 @@
-import { initResetPassword } from "../pages/reset-password";
-
 // src/lib/api.js
 const BASE = (import.meta.env.VITE_API_BASE || "").replace(/\/$/, "");
+
+export function fmtInt(n) {
+  return Number(n || 0).toLocaleString();
+}
+
+export function fmtDate(value) {
+  return value ? new Date(value).toLocaleDateString() : "--";
+}
+
+export function creditPct(remaining, allowance) {
+  if (!allowance || allowance <= 0) return 0;
+  return (Number(remaining || 0) / allowance) * 100;
+}
+
+export function hasPlanAccess(status) {
+  return ["active", "trialing"].includes(status);
+}
 
 export async function api(path, opts = {}) {
   const url = path.startsWith("http") ? path : `${BASE}${path}`;
@@ -17,8 +32,9 @@ export async function api(path, opts = {}) {
   if (!res.ok) {
     let msg = res.statusText;
     try {
-      msg = (await res.json()).error || msg;
-    } catch { }
+      const body = await res.json();
+      msg = body.error || body.detail || msg;
+    } catch {}
     throw new Error(msg);
   } else if (res.status == 204) return {};
   else return res.json();
@@ -51,7 +67,7 @@ export async function loadAccount() {
     const { account } = await api("/api/account");
     document.querySelectorAll("[data-requires-plan]").forEach((n) => {
       const status = account.billing.status;
-      if (["active", "trial"].includes(status) == false) {
+      if (!hasPlanAccess(status)) {
         n.disabled = true;
       }
     });
