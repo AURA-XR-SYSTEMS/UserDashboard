@@ -1,5 +1,5 @@
 // src/pages/credits.js
-import { api } from "../lib/api.js";
+import { api, creditPct, fmtInt } from "../lib/api.js";
 import { startCheckout, wireModalClose } from "../lib/stripe.js";
 
 function fmtUSD(cents) {
@@ -9,47 +9,39 @@ function fmtUSD(cents) {
     maximumFractionDigits: 0,
   });
 }
-function fmtInt(n) {
-  return Number(n || 0).toLocaleString();
-}
-
 export async function initBalance() {
   const creditsLabel = document.getElementById("credits-label");
   const creditsMeter = document.getElementById("credits-meter");
   const purchasedLabel = document.getElementById("purchased-label");
   const purchasedMeter = document.getElementById("purchased-meter");
   // Load balances
-  const res = await api("/api/account");
-  console.log(res);
-  const { account } = res;
-  console.log(account);
-  const {
-    active,
-    allowanceAmount,
-    allowanceRemaining,
-    planType,
-    purchasedCeiling,
-    purchasedRemaining,
-    balance,
-    renewsAt,
-    startedAt,
-  } = account.credits;
-  if (allowanceRemaining > 0) {
-    const percentage = (allowanceAmount / allowanceRemaining) * 100;
-    creditsMeter.style.width = percentage + "%";
-    creditsLabel.textContent = `${allowanceRemaining.toLocaleString()} / ${allowanceAmount.toLocaleString()} included this cycle`;
+  const { account } = await api("/api/account");
+  const { allowanceAmount, allowanceRemaining, purchasedRemaining, balance } =
+    account.credits;
+
+  if (allowanceAmount > 0) {
+    creditsMeter.style.width = `${creditPct(
+      allowanceRemaining,
+      allowanceAmount
+    )}%`;
+    creditsLabel.textContent = `${fmtInt(allowanceRemaining)} / ${fmtInt(
+      allowanceAmount
+    )} included this cycle`;
   } else {
     creditsMeter.style.width = "0%";
-    creditsLabel.textContent = `${balance.toLocaleString()} available`;
+    creditsLabel.textContent = `${fmtInt(balance)} available`;
   }
 
   if (purchasedRemaining > 0) {
-    const percentage = (purchasedRemaining / purchasedCeiling) * 100;
-    purchasedMeter.style.width = percentage + "%";
-    purchasedLabel.textContent = `${purchasedRemaining.toLocaleString()} / ${purchasedCeiling.toLocaleString()} this cycle`;
+    purchasedMeter.style.width = "100%";
+    purchasedLabel.textContent = `${fmtInt(
+      purchasedRemaining
+    )} additional credits available`;
   } else {
     purchasedMeter.style.width = "0%";
-    purchasedLabel.textContent = `${purchasedRemaining.toLocaleString()} additional credits available`;
+    purchasedLabel.textContent = `${fmtInt(
+      purchasedRemaining
+    )} additional credits available`;
   }
 }
 
@@ -64,10 +56,10 @@ function renderPacks(container, packs) {
     <div class="features">
       <div class="row" style="align-items:baseline; gap:8px;">
         <div class="price" style="font-size:28px; font-weight:700;">
-          ${fmtUSD(p.cost_cents)}
+          ${fmtUSD(p.costCents)}
         </div>
         <span class="badge">
-          ${fmtInt(p.total_credits)} credits
+          ${fmtInt(p.totalCredits)} credits
         </span>
       </div>
     </div>
@@ -75,8 +67,8 @@ function renderPacks(container, packs) {
     <div class="card-actions">
       <button class="btn primary"
               data-pack-type="${p.type}"
-              data-pack-credits="${p.total_credits}">
-        Buy ${fmtInt(p.total_credits)}
+              data-pack-credits="${p.totalCredits}">
+        Buy ${fmtInt(p.totalCredits)}
       </button>
     </div>
   </div>

@@ -2,18 +2,7 @@ import { defineConfig, loadEnv } from "vite";
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), "");
-  // Optional: let an env toggle which backend you want for /api
-  // e.g. VITE_USE_LOCAL_API=true/false
-  const useLocal = env.VITE_USE_LOCAL_API !== "false";
-
-  const targets = {
-    dashboard: {
-      local: "http://localhost:8000",
-      dev: env.VITE_API_BASE,
-    },
-  };
-
-  const envTarget = useLocal ? targets.dashboard.local : targets.dashboard.dev;
+  const apiTarget = env.VITE_API_PROXY_TARGET || "http://localhost:8000";
   const rawBase = env.VITE_ROOT || "/";
   const base = rawBase.endsWith("/") ? rawBase : `${rawBase}/`;
 
@@ -23,13 +12,13 @@ export default defineConfig(({ mode }) => {
       port: 5173,
       proxy: {
         "/api": {
-          target: envTarget,
+          target: apiTarget,
           changeOrigin: true,
           secure: false, // local is http; okay for remote https too
         },
 
         "/health": {
-          target: envTarget,
+          target: apiTarget,
           changeOrigin: true,
           secure: false,
         },

@@ -1,5 +1,5 @@
 // src/pages/account.js
-import { api, loadAccount } from "../lib/api.js";
+import { api, creditPct, fmtDate, fmtInt, loadAccount } from "../lib/api.js";
 
 function setText(id, html) {
   const el = document.getElementById(id);
@@ -19,49 +19,49 @@ export async function initAccount() {
   const purchasedMeter = document.getElementById("purchased-meter");
 
   const account = await loadAccount();
-  console.log("obtained account in initAccount()...", account);
-
-  const { email } = account;
+  const { email, firstName, lastName } = account;
   const { status } = account.billing;
   const {
-    active,
     allowanceAmount,
     allowanceRemaining,
     planType,
     purchasedRemaining,
     balance,
     renewsAt,
-    startedAt,
   } = account.credits;
 
   // Overview chips
-  const renewsAtTzAware = new Date(renewsAt).toLocaleDateString();
+  const renewsAtTzAware = fmtDate(renewsAt);
   setText("ov-plan", `Plan: <strong>${planType}</strong>`);
   setText("ov-status", `Status: <strong>${status}</strong>`);
   setText("ov-renew", `Renews: <strong>${renewsAtTzAware}</strong>`);
 
-  setText(
-    "ov-credits",
-    `Credits: <strong>${balance.toLocaleString()}</strong>`
-  );
+  setText("ov-credits", `Credits: <strong>${fmtInt(balance)}</strong>`);
 
   // Credits meters
-  if (allowanceRemaining > 0) {
-    const percentage = (allowanceAmount / allowanceRemaining) * 100;
-    creditsMeter.style.width = percentage + "%";
-    creditsLabel.textContent = `${allowanceRemaining.toLocaleString()} / ${allowanceAmount.toLocaleString()} included this cycle`;
+  if (allowanceAmount > 0) {
+    creditsMeter.style.width = `${creditPct(
+      allowanceRemaining,
+      allowanceAmount
+    )}%`;
+    creditsLabel.textContent = `${fmtInt(allowanceRemaining)} / ${fmtInt(
+      allowanceAmount
+    )} included this cycle`;
   } else {
     creditsMeter.style.width = "0%";
-    creditsLabel.textContent = `${balance.toLocaleString()} available`;
+    creditsLabel.textContent = `${fmtInt(balance)} available`;
   }
 
   if (purchasedRemaining > 0) {
-    const percentage = (purchasedRemaining / purchasedRemaining) * 100;
-    purchasedMeter.style.width = percentage + "%";
-    purchasedLabel.textContent = `${purchasedRemaining.toLocaleString()} / ${purchasedRemaining.toLocaleString()} this cycle`;
+    purchasedMeter.style.width = "100%";
+    purchasedLabel.textContent = `${fmtInt(
+      purchasedRemaining
+    )} additional credits available`;
   } else {
     purchasedMeter.style.width = "0%";
-    purchasedLabel.textContent = `${purchasedRemaining.toLocaleString()} additional credits available`;
+    purchasedLabel.textContent = `${fmtInt(
+      purchasedRemaining
+    )} additional credits available`;
   }
 
   let statusClass = status === "none" ? "muted" : "warn";
@@ -80,7 +80,8 @@ export async function initAccount() {
 
   // Username (optional)
   const nameEl = document.querySelector("[data-username]");
-  if (nameEl) nameEl.textContent = user.name || user.email;
+  const fullName = [firstName, lastName].filter(Boolean).join(" ");
+  if (nameEl) nameEl.textContent = fullName || email;
 
   // Event handlers (plan change / cancel / payment / security)
   document.querySelectorAll("#section-plan [data-plan]").forEach((btn) => {
@@ -152,48 +153,8 @@ export async function initAccount() {
 
   emailResetForm.addEventListener("invalid", async (e) => {
     emailResetForm.classList.add('shake');
-    setTimeout(() => passwordResetForm.classList.remove("shake"), 300);
+    setTimeout(() => emailResetForm.classList.remove("shake"), 300);
     e.target.classList.add("invalid");
-  })
-
-  passwordResetForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    // check to see if it is a valid email
-    if (newPasswordInput.value !== confirmPasswordInput.value) {
-      confirmPasswordInput.setCustomValidity("Passwords don't match");
-      confirmPasswordInput.reportValidity();
-      confirmPasswordInput.classList.add('invalid');
-      return;
-    }
-    confirmPasswordInput.setCustomValidity('');
-    confirmPasswordInput.classList.remove('invalid');
-
-    // attempt to submit password reset
-    try {
-
-      const { token } = await api("api/auth/resetToken", {
-        method: "POST",
-        body: {
-          previousPassword: currentPasswordInput.value,
-        }
-      });
-
-      await api("api/auth/reset", {
-        method: "POST",
-        body: { token, newPassword: confirmPasswordInput.value }
-      })
-      alert(
-        "Your password has been reset! "
-      )
-    }
-    catch (err) {
-      console.error(err);
-      alert(
-        err?.message || "Unable to reset your password at this time. Please contact the AURA team for assistance."
-      )
-      passwordResetButton.disabled = false;
-      passwordResetButton.textContent = 'Reset Password'
-    }
   })
 
   // Password Reset
