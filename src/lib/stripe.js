@@ -80,8 +80,9 @@ export async function startCheckout({ packType: inPackType, packCredits }) {
       await stripe.confirmPayment({
         elements,
         redirect: "if_required", // keep users on the page (3DS may still overlay)
-        // (optional) billing details:
-        // confirmParams: { payment_method_data: { billing_details: { email: ... } } }
+        confirmParams: {
+          return_url: `${window.location.origin}/credits.html`,
+        },
       });
 
     submitBtn.disabled = false;
