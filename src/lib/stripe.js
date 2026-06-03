@@ -1,12 +1,14 @@
 // src/lib/stripe.js
 import { loadStripe } from "@stripe/stripe-js";
 import { api } from "./api.js";
-import { ssrModuleExportsKey } from "vite/module-runner";
 
 let stripe;
 let elements;
 let paymentElement;
 let currentIntentId; // for your telemetry if you want
+
+const STRIPE_CONFIG_ERROR =
+  "Stripe checkout is not configured for this local dashboard. Set VITE_STRIPE_PUBLISHABLE_KEY and run UserService with matching Stripe settings before buying credits.";
 
 function openModal() {
   const m = document.getElementById("stripe-modal");
@@ -27,6 +29,11 @@ export function wireModalClose() {
 }
 
 export async function startCheckout({ packType: inPackType, packCredits }) {
+  const publishableKey = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY;
+  if (!publishableKey) {
+    throw new Error(STRIPE_CONFIG_ERROR);
+  }
+
   // Ask backend to create a PaymentIntent bound to this pack (avoid trusting client price).
   const { intent } = await api("/api/credits/create-payment-intent", {
     method: "POST",
@@ -46,7 +53,10 @@ export async function startCheckout({ packType: inPackType, packCredits }) {
 
   // Lazy init Stripe
   if (!stripe) {
-    stripe = await loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
+    stripe = await loadStripe(publishableKey);
+    if (!stripe) {
+      throw new Error("Stripe checkout could not be initialized.");
+    }
   }
 
   // Build Payment Element
@@ -70,8 +80,9 @@ export async function startCheckout({ packType: inPackType, packCredits }) {
       await stripe.confirmPayment({
         elements,
         redirect: "if_required", // keep users on the page (3DS may still overlay)
-        // (optional) billing details:
-        // confirmParams: { payment_method_data: { billing_details: { email: ... } } }
+        confirmParams: {
+          return_url: `${window.location.origin}/credits.html`,
+        },
       });
 
     submitBtn.disabled = false;
