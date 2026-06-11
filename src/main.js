@@ -14,7 +14,6 @@ import { loadPlans } from "./pages/plans.js";
 import { initDashboard } from "./pages/dashboard.js";
 import { initAccount } from "./pages/account.js";
 import { initBilling } from "./pages/billing.js";
-import { initCredits } from "./pages/credits.js";
 import { initResetPassword } from "./pages/reset-password.js";
 import { initForgotPassword } from "./pages/forgot-password.js";
 
@@ -52,9 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (document.querySelector("#plan-list")) loadPlans();
   if (document.getElementById("section-overview") &&
     document.getElementById("section-plan") &&
-    document.getElementById('section-credits') &&
     document.getElementById('section-security')) initAccount();
-  if (document.getElementById("balance-section")) initCredits();
   if (document.getElementById("billing-info")) initBilling();
   if (document.getElementById("reset-password")) initResetPassword();
   if (document.getElementById("forgot-password")) initForgotPassword();

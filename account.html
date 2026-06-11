@@ -28,7 +28,7 @@
   <main class="container">
     <section class="hero">
       <h1>Account</h1>
-      <p class="muted">Manage plan, billing, credits, and security settings.</p>
+      <p class="muted">Manage membership, billing, and security settings.</p>
     </section>
 
     <div class="stacked">
@@ -41,13 +41,11 @@
             <span class="chip" id="ov-plan">Plan: —</span>
             <span class="chip" id="ov-status">Status: —</span>
             <span class="chip muted" id="ov-renew">Renews: —</span>
-            <span class="chip" id="ov-credits">Credits: —</span>
           </div>
           <div class="hr"></div>
           <div class="card-actions" style="gap:10px; flex-wrap:wrap;">
-            <a class="btn primary" href="plans.html" id="ov-change-plan">Change plan</a>
-            <a class="btn ghost" href="credits.html" id="ov-add-credits">Add credits</a>
-            <a class="btn ghost" href="#section-billing" id="ov-update-payment">Update payment method</a>
+            <a class="btn primary" href="plans.html" id="ov-change-plan">Start membership</a>
+            <button class="btn ghost" id="ov-manage-billing">Manage billing</button>
           </div>
         </div>
       </div>
@@ -62,46 +60,7 @@
           </div>
           <div class="card-actions" style="gap:8px; flex-wrap:wrap;">
             <a class="btn" href="plans.html">Browse plans</a>
-            <button class="btn" data-plan="basic">Switch to Basic</button>
-            <button class="btn" data-plan="pro">Switch to Pro</button>
-            <button class="btn" data-plan="team">Switch to Team</button>
-            <button class="btn ghost" id="btn-cancel-plan">Cancel plan</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Billing -->
-      <!-- <div class="card has-header" id="section-billing">
-    <div class="card-header">Billing</div>
-    <div class="card-body">
-      <span class="section-tab">Payment method</span>
-      <div class="row">
-        <input class="input" id="pm-last4" placeholder="Card last4 e.g. 4242" style="max-width:220px;" />
-        <button class="btn" id="pm-update">Save</button>
-      </div>
-      <div class="hr"></div>
-      <p class="features">Invoices and history will appear here (placeholder).</p>
-    </div>
-  </div> -->
-
-      <!-- Credits -->
-      <div class="card has-header" id="section-credits">
-        <div class="card-header">Credits</div>
-        <div class="card-body">
-          <span class="section-tab">Balance</span>
-          <div class="row" style="justify-content:space-between;">
-            <span class="badge">Credits</span>
-            <span class="badge" id="credits-label">—</span>
-          </div>
-          <div class="meter" aria-label="included credits"><span id="credits-meter"></span></div>
-          <div class="row" style="justify-content:space-between; margin-top:8px;">
-            <span class="badge">Additional credits</span>
-            <span class="badge" id="purchased-label">0 / 0 this cycle</span>
-          </div>
-          <div class="meter blue" aria-label="purchased credits"><span id="purchased-meter"></span></div>
-          <div class="hr"></div>
-          <div class="card-actions" style="gap:8px; flex-wrap:wrap;">
-            <a class="btn primary" href="credits.html">Purchase credits</a>
+            <button class="btn ghost" id="btn-manage-plan">Manage billing</button>
           </div>
         </div>
       </div>
