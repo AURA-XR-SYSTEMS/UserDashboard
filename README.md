@@ -21,6 +21,25 @@ npm run dev
 
 The dev server uses port `3000`. Vite proxies `/api` and `/health` to the configured backend target.
 
+## Billing
+
+The dashboard starts Aura Membership through the UserService hosted Stripe
+Checkout endpoint:
+
+```text
+POST /api/subscriptions/checkout
+```
+
+Billing management redirects through:
+
+```text
+POST /api/subscriptions/portal
+```
+
+The frontend no longer embeds Stripe Elements or credit purchase flows. UserService
+owns Stripe secret configuration, Price lookup, Checkout Session creation, Billing
+Portal Session creation, and webhook-driven subscription state.
+
 ## Verification
 
 ```bash

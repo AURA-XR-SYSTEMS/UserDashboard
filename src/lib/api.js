@@ -9,9 +9,11 @@ export function fmtDate(value) {
   return value ? new Date(value).toLocaleDateString() : "--";
 }
 
-export function creditPct(remaining, allowance) {
-  if (!allowance || allowance <= 0) return 0;
-  return (Number(remaining || 0) / allowance) * 100;
+export function fmtMoney(cents, currency = "usd") {
+  return new Intl.NumberFormat(undefined, {
+    style: "currency",
+    currency: String(currency || "usd").toUpperCase(),
+  }).format(Number(cents || 0) / 100);
 }
 
 export function hasPlanAccess(status) {

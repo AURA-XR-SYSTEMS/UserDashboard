@@ -35,7 +35,6 @@ export default defineConfig(({ mode }) => {
           account: "./account.html",
           docs: "./docs.html",
           plans: "./plans.html",
-          credits: "./credits.html",
           billing: "./billing.html",
           "reset-password": "./reset-password.html",
           "forgot-password": "./forgot-password.html",
