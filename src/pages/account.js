@@ -1,4 +1,4 @@
-import { api, fmtDate, loadAccount } from "../lib/api.js";
+import { api, fmtDate, fmtMoney, hasPlanAccess, loadAccount } from "../lib/api.js";
 
 function setText(id, html) {
   const el = document.getElementById(id);
@@ -11,48 +11,107 @@ async function openBillingPortal() {
   window.location.href = url;
 }
 
+function statusMeta(status) {
+  if (status === "active") return { dot: "ok", label: "Active" };
+  if (status === "trialing") return { dot: "ok", label: "Trial active" };
+  if (status === "paused") return { dot: "warn", label: "Needs attention" };
+  if (status === "canceled") return { dot: "bad", label: "Canceled" };
+  return { dot: "warn", label: "No membership" };
+}
+
+function membershipKvHTML(billing, subscription) {
+  const { dot, label } = statusMeta(billing.status);
+  const rows = [
+    ["Plan", subscription.name],
+    ["Status", `<span class="status-dot ${dot}"></span>${label} <span class="muted">(${billing.status})</span>`],
+    ["Price", `${fmtMoney(subscription.amountCents, subscription.currency)} / ${subscription.interval}`],
+    ["Payment method", billing.method || "—"],
+  ];
+  if (billing.status === "trialing" && subscription.trialEnd) {
+    rows.push(["Trial started", fmtDate(subscription.trialStart)]);
+    rows.push(["Trial converts", fmtDate(subscription.trialEnd)]);
+  }
+  if (subscription.currentPeriodStart || subscription.currentPeriodEnd) {
+    rows.push([
+      "Current period",
+      `${fmtDate(subscription.currentPeriodStart)} &rarr; ${fmtDate(subscription.currentPeriodEnd)}`,
+    ]);
+  }
+  rows.push([
+    "Auto-renew",
+    subscription.cancelAtPeriodEnd
+      ? `<span class="chip warn">Off — cancels at period end</span>`
+      : `<span class="chip success">On</span>`,
+  ]);
+  return `<dl class="kv">${rows
+    .map(([dt, dd]) => `<div><dt>${dt}</dt><dd>${dd ?? "—"}</dd></div>`)
+    .join("")}</dl>`;
+}
+
+function workspacesHTML(workspaces) {
+  if (!workspaces?.length) return "";
+  return workspaces
+    .map(
+      (w) => `
+      <div class="ws-item">
+        <span class="ws-name">${w.name || "Untitled workspace"}</span>
+        <span class="ws-date">updated ${fmtDate(w.updatedAt || w.createdAt)}</span>
+      </div>`
+    )
+    .join("");
+}
+
+function renderAccount(account) {
+  const { email, firstName, lastName, createdAt, userType, billing, subscription, workspaces } = account;
+
+  const fullName = [firstName, lastName].filter(Boolean).join(" ");
+  const nameEl = document.querySelector("[data-username]");
+  if (nameEl) nameEl.textContent = fullName || email;
+  setText("account-subtitle", `Signed in as <span class="mono">${email}</span>`);
+
+  // Profile
+  setText("pf-name", fullName || "—");
+  setText("pf-email", email || "—");
+  setText("pf-created", createdAt ? fmtDate(createdAt) : "—");
+  setText("pf-type", userType || "standard");
+
+  // Membership
+  const stateEl = document.getElementById("mb-state");
+  const bodyEl = document.getElementById("membership-body");
+  const startBtn = document.getElementById("mb-start");
+  const manageBtn = document.getElementById("mb-manage");
+  const isMember = hasPlanAccess(billing.status) && subscription;
+
+  const { dot, label } = statusMeta(subscription ? billing.status : "onboarding");
+  if (stateEl) {
+    stateEl.innerHTML = `<span class="status-dot ${dot}"></span>${label}`;
+    stateEl.classList.add(isMember ? "ok" : "attn");
+  }
+
+  if (subscription) {
+    bodyEl.innerHTML = membershipKvHTML(billing, subscription);
+    if (manageBtn) manageBtn.hidden = false;
+    if (startBtn) startBtn.hidden = true;
+  } else {
+    bodyEl.innerHTML = `<div class="empty">No membership yet. Start one to unlock gateway downloads and client access${
+      billing.trialAvailable ? " — your free trial is available" : ""
+    }.</div>`;
+    if (startBtn) startBtn.hidden = false;
+    if (manageBtn) manageBtn.hidden = true;
+  }
+
+  // Workspaces
+  const wsHTML = workspacesHTML(workspaces);
+  if (wsHTML) setText("ws-list", wsHTML);
+}
+
 export async function initAccount() {
   const account = await loadAccount();
-  const { email, firstName, lastName, subscription } = account;
-  const { status } = account.billing;
-  const planName = subscription?.name || "No membership";
-  const periodDate =
-    status === "trialing"
-      ? subscription?.trialEnd
-      : subscription?.currentPeriodEnd;
-  const renewsAtTzAware = fmtDate(periodDate);
+  if (account) renderAccount(account);
 
-  setText("ov-plan", `Plan: <strong>${planName}</strong>`);
-  setText("ov-status", `Status: <strong>${status}</strong>`);
-  setText("ov-renew", `Renews: <strong>${renewsAtTzAware}</strong>`);
-
-  let statusClass = status === "onboarding" ? "muted" : "warn";
-  if (["active", "trialing"].includes(status)) {
-    statusClass = "success";
-  }
-
-  const planSummary = document.getElementById("plan-summary");
-  if (planSummary) {
-    planSummary.innerHTML = `
-        <span class="chip">Plan: <strong>${planName}</strong></span>
-        <span class="chip ${statusClass}">Status: <strong>${status}</strong></span>
-        <span class="chip muted">Renews: <strong>${renewsAtTzAware}</strong></span>
-      `;
-  }
-
-  const nameEl = document.querySelector("[data-username]");
-  const fullName = [firstName, lastName].filter(Boolean).join(" ");
-  if (nameEl) nameEl.textContent = fullName || email;
-
-  ["ov-manage-billing", "btn-manage-plan"].forEach((id) => {
-    document.getElementById(id)?.addEventListener("click", async () => {
-      try {
-        await openBillingPortal();
-      } catch (e) {
-        alert(e.message);
-      }
-    });
-  });
+  document.getElementById("mb-manage")?.addEventListener("click", () =>
+    openBillingPortal().catch((e) => alert(e.message))
+  );
 
   const emailResetForm = document.getElementById("email-reset-form");
   const emailResetInput = document.getElementById("sec-email");

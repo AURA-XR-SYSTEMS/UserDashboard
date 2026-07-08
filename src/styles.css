@@ -45,6 +45,8 @@
     background:
       radial-gradient(1200px 600px at 70% -10%, rgba(43,183,169,.10) 0%, transparent 60%),
       radial-gradient(1000px 500px at -10% 10%, rgba(90,208,198,.08) 0%, transparent 50%),
+      repeating-linear-gradient(0deg, rgba(255,255,255,.015) 0 1px, transparent 1px 48px),
+      repeating-linear-gradient(90deg, rgba(255,255,255,.015) 0 1px, transparent 1px 48px),
       var(--bg);
   }
   
@@ -252,3 +254,185 @@
   40%, 60% { transform: translateX(8px); }
 }
 .form.shake { animation: shake .3s linear; }
+
+/* ============================================================
+   Portal v2 — flow-oriented components
+   ============================================================ */
+
+:root{
+  --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --success: #4ade80;
+  --success-dim: rgba(74,222,128,.14);
+  --warn: #f59e0b;
+  --warn-dim: rgba(245,158,11,.12);
+  --danger: #f87171;
+  --danger-dim: rgba(248,113,113,.12);
+}
+
+.mono{ font-family: var(--mono); font-size: .92em; letter-spacing: .01em; }
+
+/* App page header (auth pages keep .hero) */
+.page-head{ margin: 44px 0 28px; }
+.page-head .kicker{ display:block; margin-bottom: 8px; color: var(--accent-2); }
+.page-head h1{
+  font-size: clamp(28px, 4vw, 40px);
+  margin: 0 0 6px;
+}
+.page-head p{ margin: 0; color: var(--muted); max-width: 640px; }
+
+/* Numbered flow steps */
+.flow{ display:grid; gap: 20px; grid-template-columns: repeat(3, 1fr); counter-reset: step; }
+@media (max-width: 920px){ .flow{ grid-template-columns: 1fr; } }
+.flow .step-card{ position: relative; display:flex; flex-direction:column; min-height: 300px; }
+.flow .step-card .card-body{ flex:1; display:flex; flex-direction:column; gap:12px; }
+.step-num{
+  display:inline-flex; align-items:center; justify-content:center;
+  width: 30px; height: 30px; border-radius: 999px;
+  font: 700 14px/1 var(--mono);
+  color:#08211d; background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  flex: none;
+}
+.step-card.done .step-num{ background: var(--success); }
+.step-card .card-header{ display:flex; align-items:center; gap: 12px; }
+.step-state{
+  margin-left:auto; font: 600 11px/1 var(--mono); letter-spacing:.08em; text-transform: uppercase;
+  color: var(--muted);
+}
+.step-state.ok{ color: var(--success); }
+.step-state.attn{ color: var(--warn); }
+
+/* Status line: dot + label */
+.status-dot{
+  display:inline-block; width: 9px; height: 9px; border-radius: 999px;
+  background: var(--muted); box-shadow: 0 0 0 3px rgba(255,255,255,.06);
+  vertical-align: 1px; margin-right: 8px;
+}
+.status-dot.ok{ background: var(--success); box-shadow: 0 0 0 3px var(--success-dim), 0 0 12px rgba(74,222,128,.5); }
+.status-dot.warn{ background: var(--warn); box-shadow: 0 0 0 3px var(--warn-dim); }
+.status-dot.bad{ background: var(--danger); box-shadow: 0 0 0 3px var(--danger-dim); }
+
+/* Key-value data grid (account, billing detail) */
+.kv{ display:grid; grid-template-columns: minmax(140px, 220px) 1fr; gap: 0; margin:0; }
+.kv > div{
+  display: contents;
+}
+.kv dt{
+  padding: 10px 0; color: var(--muted); font-size: 13px;
+  text-transform: uppercase; letter-spacing: .07em;
+  border-bottom: 1px solid rgba(255,255,255,.05);
+}
+.kv dd{
+  margin: 0; padding: 10px 0; font-family: var(--mono); font-size: 14.5px;
+  border-bottom: 1px solid rgba(255,255,255,.05);
+  overflow-wrap: anywhere;
+}
+.kv > div:last-of-type dt, .kv > div:last-of-type dd{ border-bottom: 0; }
+@media (max-width: 640px){
+  .kv{ grid-template-columns: 1fr; }
+  .kv dt{ border-bottom: 0; padding-bottom: 0; }
+}
+
+/* Membership banner (plans page, dashboard) */
+.banner{
+  display:flex; align-items:center; gap: 14px; flex-wrap: wrap;
+  padding: 16px 20px; border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(43,183,169,.16), rgba(43,183,169,.05)), var(--panel);
+  border: 1px solid rgba(43,183,169,.4);
+}
+.banner .banner-title{ font: 700 16px/1.3 'Swiss721 Extended BT', Inter, system-ui; color:#eafffb; }
+.banner .banner-sub{ color: var(--muted); font-size: 14px; }
+.banner .card-actions{ margin-left:auto; margin-top:0; }
+@media (max-width: 720px){ .banner .card-actions{ margin-left:0; } }
+
+/* Big stat (price display) */
+.stat{ display:flex; align-items: baseline; gap: 8px; }
+.stat .stat-value{ font: 700 34px/1 'Swiss721 Extended BT', Inter, system-ui; }
+.stat .stat-unit{ color: var(--muted); font-size: 14px; }
+
+/* Empty / loading state */
+.empty{
+  padding: 28px; text-align:center; color: var(--muted);
+  border: 1px dashed var(--border); border-radius: var(--radius);
+}
+
+/* Footer refresh */
+.footer{ border-top: 1px solid rgba(255,255,255,.05); padding-top: 20px; }
+.footer .mono{ font-size: 12px; color: var(--muted); }
+
+/* Nav: primary flow links grouped center-right, account utilities after */
+.nav .right .sep{ width:1px; height: 22px; background: var(--border); margin: 0 4px; }
+
+/* Legal clickwrap modal */
+.legal-overlay{
+  position: fixed; inset: 0; z-index: 100; display: none;
+  align-items: center; justify-content: center;
+  background: rgba(5,7,10,.72); backdrop-filter: blur(6px);
+  padding: 24px;
+}
+.legal-overlay.open{ display: flex; }
+.legal-modal{
+  display: flex; flex-direction: column;
+  width: min(860px, 100%); max-height: min(84vh, 900px);
+  background: var(--panel); border: 1px solid var(--border);
+  border-radius: var(--radius); box-shadow: var(--shadow);
+  overflow: hidden;
+}
+.legal-head{
+  position: relative; padding: 20px 24px 8px;
+}
+.legal-title{ font: 700 20px/1.3 'Swiss721 Extended BT', Inter, system-ui; color: #eafffb; }
+.legal-sub{ color: var(--muted); font-size: 14px; margin-top: 2px; }
+.legal-close{
+  position: absolute; top: 14px; right: 16px;
+  appearance: none; background: transparent; border: 0; cursor: pointer;
+  color: var(--muted); font-size: 26px; line-height: 1; padding: 6px;
+}
+.legal-close:hover{ color: var(--text); }
+.legal-tabs{ padding: 10px 24px 0; }
+.legal-doc{
+  flex: 1; overflow-y: auto; margin: 12px 24px;
+  padding: 18px 22px; border: 1px solid var(--border); border-radius: 12px;
+  background: rgba(0,0,0,.25);
+  font-size: 14px; line-height: 1.65; color: #d6dee8;
+}
+.legal-doc h2{ font: 700 18px/1.3 'Swiss721 Extended BT', Inter, system-ui; color: #eafffb; margin: 4px 0 12px; }
+.legal-doc h3{ font: 700 15px/1.4 Inter, system-ui; color: #eafffb; margin: 22px 0 8px; }
+.legal-doc h4{ font: 600 14px/1.4 Inter, system-ui; color: #eafffb; margin: 16px 0 6px; }
+.legal-doc p{ margin: 0 0 10px; }
+.legal-doc ul{ margin: 0 0 10px; padding-left: 22px; }
+.legal-doc li{ margin-bottom: 4px; }
+.legal-doc blockquote{
+  margin: 0 0 12px; padding: 10px 14px;
+  border-left: 3px solid var(--accent); background: rgba(43,183,169,.07);
+  border-radius: 0 8px 8px 0;
+}
+.legal-doc blockquote p{ margin: 0; }
+.legal-doc hr{ border: 0; height: 1px; background: var(--border); margin: 16px 0; }
+.legal-doc a{ color: var(--accent-2); }
+.legal-table-wrap{ overflow-x: auto; margin: 0 0 12px; }
+.legal-doc table{ border-collapse: collapse; width: 100%; font-size: 13px; }
+.legal-doc th, .legal-doc td{
+  text-align: left; padding: 8px 10px; border: 1px solid var(--border); vertical-align: top;
+}
+.legal-doc th{ background: rgba(43,183,169,.10); color: #eafffb; }
+.legal-foot{
+  display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+  padding: 14px 24px 20px; border-top: 1px solid var(--border);
+}
+.legal-agree{
+  display: flex; align-items: center; gap: 10px; flex: 1;
+  min-width: 260px; font-size: 14px; color: #d6dee8; cursor: pointer;
+}
+.legal-agree input{ width: 18px; height: 18px; accent-color: var(--accent); flex: none; cursor: pointer; }
+.legal-fineprint{ font-size: 12.5px; color: var(--muted); margin-top: 10px; }
+.legal-fineprint a{ color: var(--accent-2); }
+
+/* Workspace list */
+.ws-list{ display:grid; gap: 10px; }
+.ws-item{
+  display:flex; align-items:center; gap: 12px;
+  padding: 10px 14px; border: 1px solid var(--border); border-radius: 12px;
+  background: rgba(255,255,255,.02);
+}
+.ws-item .ws-name{ font-weight: 600; }
+.ws-item .ws-date{ margin-left:auto; color: var(--muted); font-family: var(--mono); font-size: 12.5px; }
