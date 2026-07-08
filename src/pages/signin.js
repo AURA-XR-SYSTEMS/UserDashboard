@@ -99,6 +99,11 @@ export function initTabs() {
 }
 
 export async function handleLogout() {
-  await api("/api/auth/logout", { method: "POST" });
+  try {
+    await api("/api/auth/logout", { method: "POST" });
+  } catch {
+    // Even if the server call fails (expired session, missing gateway
+    // route, network error), always finish logging out locally.
+  }
   location.href = "index.html";
 }
