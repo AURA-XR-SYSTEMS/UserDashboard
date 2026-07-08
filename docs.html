@@ -11,28 +11,45 @@
   <nav class="nav">
     <div class="brand"><a href="dashboard.html"><img class="brand-logo"/></a></div>
     <div class="right">
-      <a class="btn ghost" href="account.html">Account</a>
-      <a class="btn ghost" href="docs.html">Documentation</a>
       <a class="btn ghost" href="downloads.html">Downloads</a>
+      <a class="btn ghost" href="plans.html">Plans</a>
+      <a class="btn ghost" href="docs.html">Docs</a>
+      <span class="sep"></span>
+      <a class="btn ghost" href="account.html">Account</a>
       <button class="btn" data-logout>Log out</button>
     </div>
   </nav>
 </header>
 
 <main class="container">
-  <section class="hero">
+  <section class="page-head">
+    <span class="kicker">Step 3 — Learn</span>
     <h1>Documentation</h1>
-    <p class="muted">Guides, API references, and best practices for using Aura.</p>
+    <p>Guides, references, and best practices for getting from install to your
+      first scene.</p>
   </section>
 
-  <div class="cards">
+  <section id="getting-started">
     <div class="card has-header">
       <div class="card-header">Getting started</div>
       <div class="card-body">
-        <div class="features">Install tools, authenticate, and set up your first project.</div>
+        <ol style="margin:0; padding-left:20px; line-height:2;">
+          <li><a href="downloads.html">Download and install</a> the Aura Engine client for Windows.</li>
+          <li><a href="plans.html">Activate your membership</a> — starts with a free trial, then converts to monthly billing via Stripe.</li>
+          <li>Launch the client and sign in with the same credentials you use here.</li>
+          <li>Create your first workspace — it will appear on your <a href="account.html">Account</a> page.</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <div class="cards" style="margin-top:24px;">
+    <div class="card has-header">
+      <div class="card-header">Client manual</div>
+      <div class="card-body">
+        <div class="features">Interface tour, project setup, and rendering workflows.</div>
         <div class="card-actions">
-          <!--<a class="btn primary" href="#getting-started">Open</a> -->
-          <a class="btn primary" download data-download-unavailable >Coming soon</a>
+          <a class="btn ghost" data-download-unavailable>Coming soon</a>
         </div>
       </div>
     </div>
@@ -41,50 +58,26 @@
       <div class="card-body">
         <div class="features">Commands for ingesting data, managing projects, and deployments.</div>
         <div class="card-actions">
-          <!-- <a class="btn primary" href="#cli">Open</a> -->
-          <a class="btn primary" download data-download-unavailable >Coming soon</a>
+          <a class="btn ghost" data-download-unavailable>Coming soon</a>
         </div>
       </div>
     </div>
     <div class="card has-header">
-      <div class="card-header">SDK & Plugins</div>
+      <div class="card-header">SDK &amp; Plugins</div>
       <div class="card-body">
-        <div class="features">Integrate with Unreal and other pipelines.</div>
+        <div class="features">Integrate with Unreal Engine 5 and other pipelines.</div>
         <div class="card-actions">
-          <!-- <a class="btn primary" href="#sdk">Open</a> -->
-          <a class="btn primary" download data-download-unavailable >Coming soon</a>
+          <a class="btn ghost" data-download-unavailable>Coming soon</a>
         </div>
       </div>
     </div>
   </div>
-
-  <section id="getting-started" style="margin-top:28px;">
-    <h2>Getting started</h2>
-    <div class="card" style="padding:18px 22px;">
-      <ol>
-        <li>Choose a plan under <a href="plans.html">Plans</a>.</li>
-        <li>Download tools from <a href="downloads.html">Downloads</a>.</li>
-        <li>Authenticate with your account credentials.</li>
-      </ol>
-    </div>
-  </section>
-
-  <section id="cli" style="margin-top:28px;">
-    <h2>CLI reference</h2>
-    <div class="card" style="padding:18px 22px;">
-      <p class="muted">Coming soon. This is a placeholder for command documentation.</p>
-    </div>
-  </section>
-
-  <section id="sdk" style="margin-top:28px;">
-    <h2>SDK & Plugins</h2>
-    <div class="card" style="padding:18px 22px;">
-      <p class="muted">Guides for integrating Aura into Unreal and other tools.</p>
-    </div>
-  </section>
 </main>
 
-<footer class="footer"><span>© 2025 Aura XR Systems LLC</span><span>Documentation</span></footer>
+<footer class="footer">
+  <span>© 2026 Aura XR Systems LLC</span>
+  <span class="mono">DOCS</span>
+</footer>
 <script type="module" src="/src/main.js"></script>
 </body>
 </html>

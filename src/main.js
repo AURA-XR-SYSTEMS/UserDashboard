@@ -16,6 +16,7 @@ import { initAccount } from "./pages/account.js";
 import { initBilling } from "./pages/billing.js";
 import { initResetPassword } from "./pages/reset-password.js";
 import { initForgotPassword } from "./pages/forgot-password.js";
+import { initLegalGate } from "./pages/legal-gate.js";
 
 const ALLOW_DEBUG_LOGS = import.meta.env.VITE_ALLOW_DEBUG_LOGS === "true";
 
@@ -53,6 +54,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("section-plan") &&
     document.getElementById('section-security')) initAccount();
   if (document.getElementById("billing-info")) initBilling();
+  if (document.querySelector("[data-legal-gate], [data-legal-view]")) initLegalGate();
   if (document.getElementById("reset-password")) initResetPassword();
   if (document.getElementById("forgot-password")) initForgotPassword();
 

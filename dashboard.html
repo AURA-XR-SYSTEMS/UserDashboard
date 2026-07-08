@@ -11,73 +11,80 @@
     <nav class="nav">
       <div class="brand"><a href="dashboard.html"><img class="brand-logo"/></a></div>
       <div class="right">
-        <a class="btn ghost" href="account.html">Account</a>
-        <a class="btn ghost" href="docs.html">Documentation</a>
         <a class="btn ghost" href="downloads.html">Downloads</a>
+        <a class="btn ghost" href="plans.html">Plans</a>
+        <a class="btn ghost" href="docs.html">Docs</a>
+        <span class="sep"></span>
+        <a class="btn ghost" href="account.html">Account</a>
         <button class="btn" data-logout>Log out</button>
       </div>
     </nav>
   </header>
 
   <main class="container">
-    <section class="hero">
-      <h1>Welcome, <span data-username>user</span></h1>
-      <p class="muted">Your unified portal for access keys, downloads, documentation, and billing.</p>
+    <section class="page-head" id="status-panel">
+      <span class="kicker">Aura Portal</span>
+      <h1>Welcome, <span data-username>there</span></h1>
+      <p id="status-chips"><span class="status-dot"></span>Checking membership status…</p>
     </section>
 
-    <div class="home-row first">
-      <div class="card has-header" id="status-panel">
-        <div class="card-header">Status</div>
-        <div class="card-body">
-          <div class="features" style="display:flex; flex-direction:column; gap:12px;">
-            <div id="status-chips">Loading status…</div>
-          </div>
-        </div>
-      </div>
-      <div class="card has-header">
-        <div class="card-header">Quick actions</div>
-        <div class="card-body">
-          <div class="features" style="display:flex; flex-direction:column; gap:10px;">
-            <div class="card-actions">
-              <a class="btn primary" href="downloads.html">Go to downloads</a>
-              <a class="btn ghost" href="account.html">Account settings</a>
-              <a class="btn ghost" href="account.html" onclick="event.preventDefault(); location.href='account.html'">Manage billing</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <div id="membership-banner"></div>
 
-    <div class="home-row second">
-      <div class="card has-header">
-        <div class="card-header">Get started</div>
+    <div class="flow" style="margin-top:24px;">
+      <div class="card has-header step-card" id="step-download">
+        <div class="card-header">
+          <span class="step-num">1</span> Download
+          <span class="step-state ok">Ready</span>
+        </div>
         <div class="card-body">
           <div class="features">
-            <ol style="margin:0; padding-left:18px;">
-              <li>Choose a plan</li>
-              <li>Download tools</li>
-              <li>Read setup guide</li>
-            </ol>
-            <div class="card-actions" style="margin-top:12px;">
-              <a class="btn primary" href="plans.html">Choose a plan</a>
-              <a class="btn ghost" href="downloads.html">Go to downloads</a>
-            </div>
+            Get the Aura Engine desktop client for Windows. Install it, then sign
+            in with this account.
+          </div>
+          <div class="card-actions">
+            <a class="btn primary" href="downloads.html">Go to downloads</a>
           </div>
         </div>
       </div>
-      <div class="card has-header">
-        <div class="card-header">Documentation</div>
+
+      <div class="card has-header step-card" id="step-membership">
+        <div class="card-header">
+          <span class="step-num">2</span> Activate
+          <span class="step-state" id="step-membership-state">…</span>
+        </div>
         <div class="card-body">
-          <div class="features">Read setup guides, API references, and tutorials.</div>
+          <div class="features" id="step-membership-copy">
+            Start your membership to unlock the full engine, gateway access, and
+            client updates.
+          </div>
+          <div class="card-actions" id="step-membership-actions">
+            <a class="btn primary" href="plans.html">View plan</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="card has-header step-card" id="step-docs">
+        <div class="card-header">
+          <span class="step-num">3</span> Learn
+          <span class="step-state ok">Ready</span>
+        </div>
+        <div class="card-body">
+          <div class="features">
+            Setup guides, workflows, and references to get from install to first
+            scene.
+          </div>
           <div class="card-actions">
-            <a class="btn ghost" href="docs.html">Open documentation</a>
+            <a class="btn primary" href="docs.html">Open documentation</a>
           </div>
         </div>
       </div>
     </div>
   </main>
 
-  <footer class="footer"><span>© 2025 Aura XR Systems LLC</span><span>Dashboard</span></footer>
+  <footer class="footer">
+    <span>© 2026 Aura XR Systems LLC</span>
+    <span class="mono">DASHBOARD</span>
+  </footer>
   <script type="module" src="/src/main.js"></script>
 </body>
 </html>

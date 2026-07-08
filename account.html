@@ -11,56 +11,64 @@
 <body>
   <header class="header">
     <nav class="nav">
-      <div class="brand">
-        <a href="dashboard.html">
-          <img class="brand-logo" />
-        </a>
-      </div>
+      <div class="brand"><a href="dashboard.html"><img class="brand-logo" /></a></div>
       <div class="right">
-        <a class="btn ghost" href="account.html">Account</a>
-        <a class="btn ghost" href="docs.html">Documentation</a>
         <a class="btn ghost" href="downloads.html">Downloads</a>
+        <a class="btn ghost" href="plans.html">Plans</a>
+        <a class="btn ghost" href="docs.html">Docs</a>
+        <span class="sep"></span>
+        <a class="btn ghost" href="account.html">Account</a>
         <button class="btn" data-logout>Log out</button>
       </div>
     </nav>
   </header>
 
   <main class="container">
-    <section class="hero">
-      <h1>Account</h1>
-      <p class="muted">Manage membership, billing, and security settings.</p>
+    <section class="page-head">
+      <span class="kicker">Account</span>
+      <h1 data-username>Account</h1>
+      <p id="account-subtitle">Your profile, membership, and security settings.</p>
     </section>
 
     <div class="stacked">
 
-      <!-- Overview -->
+      <!-- Profile -->
       <div class="card has-header" id="section-overview">
-        <div class="card-header">Overview</div>
+        <div class="card-header">Profile</div>
         <div class="card-body">
-          <div class="row" style="flex-wrap:wrap; gap:8px;">
-            <span class="chip" id="ov-plan">Plan: —</span>
-            <span class="chip" id="ov-status">Status: —</span>
-            <span class="chip muted" id="ov-renew">Renews: —</span>
+          <dl class="kv" id="profile-kv">
+            <div><dt>Name</dt><dd id="pf-name">—</dd></div>
+            <div><dt>Email</dt><dd id="pf-email">—</dd></div>
+            <div><dt>Member since</dt><dd id="pf-created">—</dd></div>
+            <div><dt>Account type</dt><dd id="pf-type">—</dd></div>
+          </dl>
+        </div>
+      </div>
+
+      <!-- Membership -->
+      <div class="card has-header" id="section-plan">
+        <div class="card-header">Membership
+          <span class="step-state" id="mb-state" style="float:right;">…</span>
+        </div>
+        <div class="card-body">
+          <div id="membership-body">
+            <div class="empty">Loading membership…</div>
           </div>
           <div class="hr"></div>
           <div class="card-actions" style="gap:10px; flex-wrap:wrap;">
-            <a class="btn primary" href="plans.html" id="ov-change-plan">Start membership</a>
-            <button class="btn ghost" id="ov-manage-billing">Manage billing</button>
+            <a class="btn primary" href="plans.html" id="mb-start" hidden>Start membership</a>
+            <button class="btn primary" id="mb-manage" hidden>Manage billing</button>
+            <a class="btn ghost" href="billing.html">Billing details</a>
           </div>
         </div>
       </div>
 
-      <!-- Plan -->
-      <div class="card has-header" id="section-plan">
-        <div class="card-header">Plan</div>
+      <!-- Workspaces -->
+      <div class="card has-header" id="section-workspaces">
+        <div class="card-header">Workspaces</div>
         <div class="card-body">
-          <span class="section-tab">Current plan</span>
-          <div class="row" id="plan-summary" style="flex-wrap:wrap; gap:8px; margin-bottom:6px;">
-            <span class="chip muted">Loading…</span>
-          </div>
-          <div class="card-actions" style="gap:8px; flex-wrap:wrap;">
-            <a class="btn" href="plans.html">Browse plans</a>
-            <button class="btn ghost" id="btn-manage-plan">Manage billing</button>
+          <div class="ws-list" id="ws-list">
+            <div class="empty">No workspaces yet — they appear here after you create one in the Aura client.</div>
           </div>
         </div>
       </div>
@@ -77,13 +85,11 @@
           </form>
           <div class="hr"></div>
           <span class="section-tab">Password Reset</span>
-          <!-- Password Reset form -->
           <form class="row" id="pw-reset-form" style="flex-wrap:wrap; justify-content: space-between;">
             <div class="row">
               <label for="sec-current">Current Password</label>
               <input class="input" id="sec-current" type="password" placeholder="Current password"
                 style="max-width:220px;" required />
-
             </div>
             <div class="row">
               <label for="sec-new">New Password</label>
@@ -102,9 +108,11 @@
     </div>
   </main>
 
-  <footer class="footer"><span>© 2025 Aura XR Systems LLC</span><span>Account</span></footer>
+  <footer class="footer">
+    <span>© 2026 Aura XR Systems LLC</span>
+    <span class="mono">ACCOUNT</span>
+  </footer>
 
-  <!-- Vite module entry -->
   <script type="module" src="/src/main.js"></script>
 </body>
 
