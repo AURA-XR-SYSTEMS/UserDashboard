@@ -32,6 +32,35 @@ function activeBannerHTML(status, subscription) {
     </div>`;
 }
 
+function firstChargeDateLabel(trialDays) {
+  const d = new Date(Date.now() + trialDays * 86400000);
+  return d.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
+}
+
+// Card-network + ROSCA rules: the recurring-charge terms must sit directly
+// next to the purchase action, not behind a link or expandable section.
+function chargeDisclosureHTML(plan) {
+  const price = fmtMoney(plan.amountCents, plan.currency);
+  const per = intervalLabel(plan.interval);
+  if (plan.trialDays > 0) {
+    const chargeDate = firstChargeDateLabel(plan.trialDays);
+    return `
+      <div class="charge-disclosure">
+        <strong>${plan.trialDays}-day free trial, then ${price} (USD) / ${per}.</strong>
+        Your card will be charged <strong>${price} on ${chargeDate}</strong> unless you
+        cancel before then. Your membership renews ${per}ly until cancelled — cancel
+        anytime from the <a href="billing.html">Billing</a> page. Cancellation takes
+        effect at the end of the current period, and you keep access until then.
+      </div>`;
+  }
+  return `
+    <div class="charge-disclosure">
+      <strong>${price} (USD) / ${per}, starting today.</strong>
+      Your membership renews ${per}ly until cancelled — cancel anytime from the
+      <a href="billing.html">Billing</a> page.
+    </div>`;
+}
+
 function planCardHTML(plan, memberStatus) {
   const { amountCents, currency, description, interval, name, trialDays } = plan;
   const isMember = hasPlanAccess(memberStatus);
@@ -46,7 +75,8 @@ function planCardHTML(plan, memberStatus) {
   const actions = isMember
     ? `<button class="btn ghost" data-manage-billing>Manage billing</button>
        <a class="btn ghost" href="account.html">View account</a>`
-    : `<button class="btn primary" data-start-membership>Start membership</button>`;
+    : `<button class="btn primary" data-start-membership>${trialDays > 0 ? "Start free trial" : "Start membership"}</button>`;
+  const disclosure = isMember ? "" : chargeDisclosureHTML(plan);
 
   return `
     <div class="card-header">${name}${trialHtml}${currentHtml}</div>
@@ -62,6 +92,7 @@ function planCardHTML(plan, memberStatus) {
           <span class="chip">Client access</span>
           <span class="chip">Billing managed by Stripe</span>
         </div>
+        ${disclosure}
       </div>
       <div class="hr"></div>
       <div class="card-actions">${actions}</div>

@@ -427,6 +427,22 @@
 .legal-fineprint{ font-size: 12.5px; color: var(--muted); margin-top: 10px; }
 .legal-fineprint a{ color: var(--accent-2); }
 
+/* Pre-checkout charge disclosure — card networks require these terms to be
+   unmissable next to the purchase action, not behind a link or tooltip. */
+.charge-disclosure{
+  margin: 14px 0 4px;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: 10px;
+  background: rgba(255,255,255,.03);
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: #d6dee8;
+}
+.charge-disclosure strong{ color: #fff; }
+.charge-disclosure a{ color: var(--accent-2); }
+
 /* Workspace list */
 .ws-list{ display:grid; gap: 10px; }
 .ws-item{
