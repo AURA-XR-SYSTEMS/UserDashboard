@@ -175,7 +175,7 @@ export async function initAccount() {
     confirmPasswordInput.classList.remove("invalid");
 
     try {
-      const { token } = await api("api/auth/resetToken", {
+      const { token } = await api("/api/auth/resetToken", {
         method: "POST",
         body: {
           previousPassword: currentPasswordInput.value,
@@ -183,7 +183,7 @@ export async function initAccount() {
         },
       });
 
-      await api("api/auth/reset", {
+      await api("/api/auth/reset", {
         method: "POST",
         body: { token, newPassword: confirmPasswordInput.value },
       });
