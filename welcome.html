@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Aura — Start your trial</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="default.css">
+</head>
+<body>
+  <header class="header">
+    <nav class="nav">
+      <div class="brand"><a href="dashboard.html"><img class="brand-logo"/></a></div>
+      <div class="right">
+        <a class="btn ghost" href="dashboard.html">Skip for now</a>
+        <button class="btn" data-logout>Log out</button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- The first screen after registering. One decision on it: start the trial.
+       The banner is suppressed here because the whole page IS the offer. -->
+  <main class="container" id="welcome" data-no-askaura-banner>
+    <section class="welcome-hero">
+      <span class="kicker">Welcome to Aura</span>
+      <h1>Start your <span class="accent">30-day free trial</span></h1>
+      <p class="welcome-lede">
+        Your account is ready, <span data-username>there</span>. Start your trial
+        and use <strong>Ask AURA</strong> in your browser straight away — no
+        download, no install. The desktop engine is waiting whenever you want it.
+      </p>
+
+      <div class="welcome-actions">
+        <button class="btn primary welcome-cta" type="button" id="welcome-start">
+          Start free trial
+        </button>
+        <a class="btn ghost" href="dashboard.html">Go to dashboard instead</a>
+      </div>
+
+      <p class="welcome-terms" id="welcome-terms"></p>
+    </section>
+
+    <section class="welcome-grid">
+      <div class="card">
+        <div class="card-body">
+          <div class="card-header-lite">Ask AURA — in the browser</div>
+          <div class="features">
+            Ask any question about the planet. AURA finds the data, runs the
+            spatial analysis, and draws the answer on a globe. Works on any
+            machine, nothing to install.
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-body">
+          <div class="card-header-lite">AURA Engine — the desktop client</div>
+          <div class="features">
+            The full real-time 3D environment: GIS, BIM, and AI over photoreal
+            digital twins. Windows, downloadable once your membership is live.
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span>© 2026 Aura XR Systems LLC</span>
+    <span class="mono">WELCOME</span>
+  </footer>
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

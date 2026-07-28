@@ -1,8 +1,14 @@
-import { fmtDate, hasPlanAccess, loadAccount, loadMe } from "../lib/api.js";
+import {
+  fmtDate,
+  hasPlanAccess,
+  loadAccountCached,
+  loadMe,
+  startCheckout,
+} from "../lib/api.js";
 
 function statusLineHTML(status, subscription) {
   if (!subscription || status === "onboarding") {
-    return `<span class="status-dot warn"></span>No active membership yet — activate in step 2 below.`;
+    return `<span class="status-dot warn"></span>No membership yet — start your free trial below.`;
   }
   if (status === "trialing") {
     return `<span class="status-dot ok"></span>Membership trial active — converts to paid on <strong>${fmtDate(subscription.trialEnd)}</strong>.`;
@@ -39,12 +45,46 @@ function membershipStep(status, subscription) {
   }
 }
 
+/**
+ * Without a membership, the 3-step setup checklist is answering a question the
+ * visitor hasn't asked yet — they can't download or run anything until they
+ * activate. So the trial gets the top of the page and the checklist moves below
+ * it, under a heading that says what it's for.
+ */
+function trialPromptHTML() {
+  return `
+    <div class="trial-prompt">
+      <div class="trial-prompt-copy">
+        <div class="trial-prompt-title">Start your 30-day free trial</div>
+        <div class="trial-prompt-sub">
+          Unlock Ask AURA in the browser and the AURA Engine desktop client.
+          Cancel anytime before the trial ends and you won't be charged.
+        </div>
+      </div>
+      <div class="card-actions">
+        <button class="btn primary" type="button" id="dash-start-trial">Start free trial</button>
+        <a class="btn ghost" href="plans.html">See what's included</a>
+      </div>
+    </div>`;
+}
+
+function demoteSetupFlow() {
+  const flow = document.querySelector(".flow");
+  if (!flow || document.getElementById("setup-heading")) return;
+  flow.classList.add("flow-secondary");
+  const heading = document.createElement("h2");
+  heading.id = "setup-heading";
+  heading.className = "setup-heading";
+  heading.textContent = "Once you're a member";
+  flow.parentNode.insertBefore(heading, flow);
+}
+
 export async function initDashboard() {
   const user = await loadMe();
   const nameEl = document.querySelector("[data-username]");
   if (nameEl && user) nameEl.textContent = user.firstName || user.email;
 
-  const account = await loadAccount();
+  const account = await loadAccountCached();
   if (!account) return;
   const { billing, subscription } = account;
 
@@ -52,4 +92,26 @@ export async function initDashboard() {
   if (statusEl) statusEl.innerHTML = statusLineHTML(billing.status, subscription);
 
   membershipStep(billing.status, subscription);
+
+  if (!hasPlanAccess(billing.status)) {
+    const mount = document.getElementById("membership-banner");
+    if (mount) {
+      mount.innerHTML = trialPromptHTML();
+      document
+        .getElementById("dash-start-trial")
+        ?.addEventListener("click", async (e) => {
+          const btn = e.currentTarget;
+          btn.disabled = true;
+          btn.textContent = "Opening checkout…";
+          try {
+            await startCheckout();
+          } catch (err) {
+            btn.disabled = false;
+            btn.textContent = "Start free trial";
+            alert(err.message);
+          }
+        });
+    }
+    demoteSetupFlow();
+  }
 }
