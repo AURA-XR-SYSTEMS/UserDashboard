@@ -25,7 +25,9 @@ export async function handleAuth(e) {
   try {
     const path = mode === "register" ? "/api/auth/register" : "/api/auth/login";
     await api(path, { method: "POST", body });
-    location.assign("/dashboard.html");
+    // A brand-new account goes to the trial offer, not the setup checklist —
+    // intent is never higher than the second after signing up.
+    location.assign(mode === "register" ? "/welcome.html" : "/dashboard.html");
   } catch (err) {
     const msg = normalizeAuthError(err);
     if (errorEl) {

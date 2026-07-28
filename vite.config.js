@@ -30,6 +30,7 @@ export default defineConfig(({ mode }) => {
         // multi-page entries (add others as needed)
         input: {
           index: "./index.html",
+          welcome: "./welcome.html",
           dashboard: "./dashboard.html",
           downloads: "./downloads.html",
           account: "./account.html",

@@ -1,4 +1,10 @@
-import { api, fmtDate, fmtMoney, hasPlanAccess, loadAccount } from "../lib/api.js";
+import {
+  api,
+  fmtDate,
+  fmtMoney,
+  hasPlanAccess,
+  loadAccountCached,
+} from "../lib/api.js";
 
 function setText(id, html) {
   const el = document.getElementById(id);
@@ -106,7 +112,7 @@ function renderAccount(account) {
 }
 
 export async function initAccount() {
-  const account = await loadAccount();
+  const account = await loadAccountCached();
   if (account) renderAccount(account);
 
   document.getElementById("mb-manage")?.addEventListener("click", () =>

@@ -452,3 +452,73 @@
 }
 .ws-item .ws-name{ font-weight: 600; }
 .ws-item .ws-date{ margin-left:auto; color: var(--muted); font-family: var(--mono); font-size: 12.5px; }
+
+/* ============================================================
+   FUNNEL — Ask AURA banner, welcome screen, trial prompt
+   ============================================================ */
+
+/* Ask AURA banner — top of every signed-in page. Warmer than .banner so it
+   reads as an invitation rather than a status readout. */
+.askaura-banner{
+  display:flex; align-items:center; gap: 18px; flex-wrap: wrap;
+  margin-bottom: 24px;
+  padding: 18px 22px; border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(43,183,169,.22), rgba(43,183,169,.06)), var(--panel);
+  border: 1px solid rgba(43,183,169,.45);
+  box-shadow: var(--shadow);
+}
+.askaura-banner-copy{ min-width: 0; }
+.askaura-banner-title{
+  font: 700 clamp(17px, 2.2vw, 21px)/1.25 'Swiss721 Extended BT', Inter, system-ui;
+  color:#eafffb; text-transform: uppercase; letter-spacing:.04em;
+}
+.askaura-banner-sub{ color: var(--muted); font-size: 14px; margin-top: 4px; }
+.askaura-banner-cta{ margin-left:auto; flex:none; padding: 12px 22px; font-size: 15px; }
+@media (max-width: 720px){
+  .askaura-banner-cta{ margin-left:0; width:100%; }
+}
+
+/* Welcome (post-registration) — one decision on the page */
+.welcome-hero{ text-align:center; max-width: 720px; margin: 8px auto 8px; }
+.welcome-hero h1{ margin: 6px 0 14px; }
+.welcome-hero .accent{ color: var(--accent-2); }
+.welcome-lede{ color: var(--muted); font-size: 16px; line-height:1.6; }
+.welcome-actions{
+  display:flex; gap: 12px; justify-content:center; flex-wrap:wrap; margin: 26px 0 14px;
+}
+.welcome-cta{ padding: 15px 34px; font-size: 16px; }
+.welcome-terms{
+  color: var(--muted); font-size: 12.5px; line-height:1.6;
+  max-width: 560px; margin: 0 auto;
+}
+.welcome-terms a{ color: var(--accent-2); }
+.welcome-grid{
+  display:grid; gap:20px; grid-template-columns: repeat(2, 1fr); margin-top: 34px;
+}
+@media (max-width: 920px){ .welcome-grid{ grid-template-columns: 1fr; } }
+.card-header-lite{
+  font: 700 15px/1.3 'Swiss721 Extended BT', Inter, system-ui;
+  color:#eafffb; margin-bottom: 8px;
+}
+
+/* Dashboard trial prompt — takes the top slot while there's no membership */
+.trial-prompt{
+  display:flex; align-items:center; gap: 18px; flex-wrap: wrap;
+  margin-top: 20px;
+  padding: 20px 22px; border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(43,183,169,.14), rgba(43,183,169,.04)), var(--panel);
+  border: 1px solid rgba(43,183,169,.4);
+}
+.trial-prompt-title{
+  font: 700 clamp(17px, 2.2vw, 20px)/1.25 'Swiss721 Extended BT', Inter, system-ui;
+  color:#eafffb;
+}
+.trial-prompt-sub{ color: var(--muted); font-size: 14px; margin-top: 5px; max-width: 62ch; }
+.trial-prompt .card-actions{ margin-left:auto; margin-top:0; }
+@media (max-width: 860px){ .trial-prompt .card-actions{ margin-left:0; } }
+
+/* The setup checklist is a "later" concern until someone is a member */
+.setup-heading{ margin-top: 34px; }
+.flow-secondary{ opacity: .72; }
+.flow-secondary:hover, .flow-secondary:focus-within{ opacity: 1; transition: opacity .2s ease; }
+.flow-secondary .step-card{ min-height: 0; }

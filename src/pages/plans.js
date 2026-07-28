@@ -1,4 +1,10 @@
-import { api, fmtDate, fmtMoney, hasPlanAccess, loadAccount } from "../lib/api.js";
+import {
+  api,
+  fmtDate,
+  fmtMoney,
+  hasPlanAccess,
+  loadAccountCached,
+} from "../lib/api.js";
 
 function intervalLabel(interval) {
   if (interval === "year") return "year";
@@ -103,7 +109,7 @@ export async function loadPlans() {
   const list = document.querySelector("#plan-list");
   if (!list) return;
 
-  const account = await loadAccount();
+  const account = await loadAccountCached();
   const status = account?.billing?.status || "onboarding";
   const subscription = account?.subscription;
   const isMember = hasPlanAccess(status) && subscription;
