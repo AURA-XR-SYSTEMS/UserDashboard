@@ -3,6 +3,7 @@ import {
   fmtDate,
   fmtMoney,
   hasPlanAccess,
+  isBillingExempt,
   loadAccountCached,
 } from "../lib/api.js";
 
@@ -67,21 +68,25 @@ function chargeDisclosureHTML(plan) {
     </div>`;
 }
 
-function planCardHTML(plan, memberStatus) {
+function planCardHTML(plan, memberStatus, exempt = false) {
   const { amountCents, currency, description, interval, name, trialDays } = plan;
-  const isMember = hasPlanAccess(memberStatus);
+  const isMember = exempt || hasPlanAccess(memberStatus);
   const trialHtml =
     !isMember && trialDays > 0
       ? `<span class="chip success" style="margin-left:8px;">${trialDays}-day free trial</span>`
       : "";
   const currentHtml = isMember
-    ? `<span class="chip success" style="margin-left:8px;">Current plan</span>`
+    ? `<span class="chip success" style="margin-left:8px;">${exempt ? "Included" : "Current plan"}</span>`
     : "";
 
-  const actions = isMember
-    ? `<button class="btn ghost" data-manage-billing>Manage billing</button>
+  // Exempt accounts have no Stripe customer, so the billing portal would fail
+  // for them the same way checkout does - offer neither.
+  const actions = exempt
+    ? `<a class="btn ghost" href="account.html">View account</a>`
+    : isMember
+      ? `<button class="btn ghost" data-manage-billing>Manage billing</button>
        <a class="btn ghost" href="account.html">View account</a>`
-    : `<button class="btn primary" data-start-membership>${trialDays > 0 ? "Start free trial" : "Start membership"}</button>`;
+      : `<button class="btn primary" data-start-membership>${trialDays > 0 ? "Start free trial" : "Start membership"}</button>`;
   const disclosure = isMember ? "" : chargeDisclosureHTML(plan);
 
   return `
@@ -112,10 +117,15 @@ export async function loadPlans() {
   const account = await loadAccountCached();
   const status = account?.billing?.status || "onboarding";
   const subscription = account?.subscription;
-  const isMember = hasPlanAccess(status) && subscription;
+  const exempt = isBillingExempt(account);
+  const isMember = hasPlanAccess(account) && subscription;
 
   const bannerEl = document.getElementById("plan-banner");
-  if (bannerEl && isMember) {
+  if (bannerEl && exempt) {
+    // Exempt accounts can browse the plans page, but checkout is refused, so
+    // it must not present itself as a purchase flow.
+    bannerEl.innerHTML = `<div class="banner ok">Your <strong>${account.userType}</strong> account already includes full access. No purchase needed.</div>`;
+  } else if (bannerEl && isMember) {
     bannerEl.innerHTML = activeBannerHTML(status, subscription);
     document
       .getElementById("banner-manage-billing")
@@ -133,7 +143,11 @@ export async function loadPlans() {
     plans.forEach((plan) => {
       const card = document.createElement("div");
       card.className = "card has-header";
-      card.innerHTML = planCardHTML(plan, isMember ? status : "onboarding");
+      card.innerHTML = planCardHTML(
+        plan,
+        isMember ? status : "onboarding",
+        exempt
+      );
       list.appendChild(card);
     });
   } catch (e) {

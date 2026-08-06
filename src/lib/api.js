@@ -29,8 +29,43 @@ export function fmtMoney(cents, currency = "usd") {
   }).format(Number(cents || 0) / 100);
 }
 
-export function hasPlanAccess(status) {
-  return ["active", "trialing"].includes(status);
+// Account types entitled to the product without a Stripe subscription. Kept in
+// sync with User.is_billing_exempt() in the UserService domain layer.
+const BILLING_EXEMPT_TYPES = [
+  "testing",
+  "demo_user",
+  "demo_admin",
+  "admin",
+  "security",
+];
+
+/**
+ * May this account use the product?
+ *
+ * Prefer passing the whole account object: the API now returns a server-computed
+ * `hasPlanAccess`, which is authoritative. The status/userType arguments are a
+ * fallback for callers that only hold those fields.
+ *
+ * Billing status alone is NOT sufficient - it misses billing-exempt types, and
+ * treating it as the only gate is what forced internal testers through real
+ * Stripe checkouts.
+ */
+export function hasPlanAccess(statusOrAccount, userType) {
+  if (statusOrAccount && typeof statusOrAccount === "object") {
+    const account = statusOrAccount;
+    if (typeof account.hasPlanAccess === "boolean") return account.hasPlanAccess;
+    return hasPlanAccess(account.billing?.status, account.userType);
+  }
+  if (BILLING_EXEMPT_TYPES.includes(userType)) return true;
+  return ["active", "trialing"].includes(statusOrAccount);
+}
+
+/**
+ * Has access without a subscription, so must never be shown trial/checkout copy
+ * — the server rejects checkout for these accounts.
+ */
+export function isBillingExempt(account) {
+  return BILLING_EXEMPT_TYPES.includes(account?.userType);
 }
 
 // Pages reachable without a session. Single source of truth: loadMe uses it to
@@ -100,8 +135,7 @@ export async function loadAccount() {
   try {
     const { account } = await api("/api/account");
     document.querySelectorAll("[data-requires-plan]").forEach((n) => {
-      const status = account.billing.status;
-      if (!hasPlanAccess(status)) {
+      if (!hasPlanAccess(account)) {
         n.disabled = true;
       }
     });
