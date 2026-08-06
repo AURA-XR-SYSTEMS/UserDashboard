@@ -3,6 +3,7 @@ import {
   fmtDate,
   fmtMoney,
   hasPlanAccess,
+  isBillingExempt,
   loadAccountCached,
 } from "../lib/api.js";
 
@@ -86,15 +87,24 @@ function renderAccount(account) {
   const bodyEl = document.getElementById("membership-body");
   const startBtn = document.getElementById("mb-start");
   const manageBtn = document.getElementById("mb-manage");
-  const isMember = hasPlanAccess(billing.status) && subscription;
+  const exempt = isBillingExempt(account);
+  const isMember = exempt || (hasPlanAccess(account) && subscription);
 
-  const { dot, label } = statusMeta(subscription ? billing.status : "onboarding");
+  const { dot, label } = exempt
+    ? { dot: "ok", label: "Included with account type" }
+    : statusMeta(subscription ? billing.status : "onboarding");
   if (stateEl) {
     stateEl.innerHTML = `<span class="status-dot ${dot}"></span>${label}`;
     stateEl.classList.add(isMember ? "ok" : "attn");
   }
 
-  if (subscription) {
+  if (exempt) {
+    // No subscription exists and checkout is refused server-side, so offering
+    // "start membership" here would be a dead end.
+    bodyEl.innerHTML = `<div class="empty">Your <strong>${userType}</strong> account has full product access without a membership. Nothing to bill.</div>`;
+    if (startBtn) startBtn.hidden = true;
+    if (manageBtn) manageBtn.hidden = true;
+  } else if (subscription) {
     bodyEl.innerHTML = membershipKvHTML(billing, subscription);
     if (manageBtn) manageBtn.hidden = false;
     if (startBtn) startBtn.hidden = true;

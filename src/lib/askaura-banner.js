@@ -59,7 +59,7 @@ export async function initAskAuraBanner() {
   // marketing banner is never worth breaking a page over.
   if (!account) return;
 
-  const isMember = hasPlanAccess(account?.billing?.status);
+  const isMember = hasPlanAccess(account);
 
   const mount = document.createElement("div");
   mount.id = MOUNT_ID;

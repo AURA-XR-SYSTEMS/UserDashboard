@@ -1,12 +1,18 @@
 import {
   fmtDate,
   hasPlanAccess,
+  isBillingExempt,
   loadAccountCached,
   loadMe,
   startCheckout,
 } from "../lib/api.js";
 
-function statusLineHTML(status, subscription) {
+function statusLineHTML(status, subscription, exempt) {
+  // Exempt accounts have no subscription by design, so the "no membership yet"
+  // copy below would be both wrong and un-actionable (checkout is refused).
+  if (exempt) {
+    return `<span class="status-dot ok"></span>Full access via your account type — no membership required.`;
+  }
   if (!subscription || status === "onboarding") {
     return `<span class="status-dot warn"></span>No membership yet — start your free trial below.`;
   }
@@ -19,14 +25,23 @@ function statusLineHTML(status, subscription) {
   return `<span class="status-dot bad"></span>Membership needs attention (status: ${status}) — check <a href="billing.html">billing</a>.`;
 }
 
-function membershipStep(status, subscription) {
+function membershipStep(account) {
+  const { billing, subscription } = account;
+  const status = billing.status;
+  const exempt = isBillingExempt(account);
   const stateEl = document.getElementById("step-membership-state");
   const copyEl = document.getElementById("step-membership-copy");
   const actionsEl = document.getElementById("step-membership-actions");
   const card = document.getElementById("step-membership");
   if (!stateEl || !copyEl || !actionsEl || !card) return;
 
-  if (hasPlanAccess(status)) {
+  if (exempt) {
+    card.classList.add("done");
+    stateEl.textContent = "Included";
+    stateEl.classList.add("ok");
+    copyEl.innerHTML = `Downloads and client access are unlocked for your <strong>${account.userType}</strong> account. No billing applies.`;
+    actionsEl.innerHTML = `<a class="btn ghost" href="account.html">Account</a>`;
+  } else if (hasPlanAccess(account)) {
     card.classList.add("done");
     stateEl.textContent = status === "trialing" ? "Trial active" : "Active";
     stateEl.classList.add("ok");
@@ -89,11 +104,17 @@ export async function initDashboard() {
   const { billing, subscription } = account;
 
   const statusEl = document.getElementById("status-chips");
-  if (statusEl) statusEl.innerHTML = statusLineHTML(billing.status, subscription);
+  if (statusEl) {
+    statusEl.innerHTML = statusLineHTML(
+      billing.status,
+      subscription,
+      isBillingExempt(account)
+    );
+  }
 
-  membershipStep(billing.status, subscription);
+  membershipStep(account);
 
-  if (!hasPlanAccess(billing.status)) {
+  if (!hasPlanAccess(account)) {
     const mount = document.getElementById("membership-banner");
     if (mount) {
       mount.innerHTML = trialPromptHTML();

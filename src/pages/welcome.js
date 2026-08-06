@@ -50,7 +50,7 @@ export async function initWelcome() {
 
   // Someone who already has a plan has no business on a trial pitch.
   const account = await loadAccountCached();
-  if (account && hasPlanAccess(account?.billing?.status)) {
+  if (account && hasPlanAccess(account)) {
     location.replace("dashboard.html");
     return;
   }
