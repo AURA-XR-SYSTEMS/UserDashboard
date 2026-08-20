@@ -280,19 +280,7 @@
 }
 .page-head p{ margin: 0; color: var(--muted); max-width: 640px; }
 
-/* Numbered flow steps */
-.flow{ display:grid; gap: 20px; grid-template-columns: repeat(3, 1fr); counter-reset: step; }
-@media (max-width: 920px){ .flow{ grid-template-columns: 1fr; } }
-.flow .step-card{ position: relative; display:flex; flex-direction:column; min-height: 300px; }
-.flow .step-card .card-body{ flex:1; display:flex; flex-direction:column; gap:12px; }
-.step-num{
-  display:inline-flex; align-items:center; justify-content:center;
-  width: 30px; height: 30px; border-radius: 999px;
-  font: 700 14px/1 var(--mono);
-  color:#08211d; background: linear-gradient(135deg, var(--accent), var(--accent-2));
-  flex: none;
-}
-.step-card.done .step-num{ background: var(--success); }
+/* Card header state chip (dashboard cards) */
 .step-card .card-header{ display:flex; align-items:center; gap: 12px; }
 .step-state{
   margin-left:auto; font: 600 11px/1 var(--mono); letter-spacing:.08em; text-transform: uppercase;
@@ -517,11 +505,8 @@
 .trial-prompt .card-actions{ margin-left:auto; margin-top:0; }
 @media (max-width: 860px){ .trial-prompt .card-actions{ margin-left:0; } }
 
-/* The setup checklist is a "later" concern until someone is a member */
+/* Section heading below the fold (dashboard tutorials) */
 .setup-heading{ margin-top: 34px; }
-.flow-secondary{ opacity: .72; }
-.flow-secondary:hover, .flow-secondary:focus-within{ opacity: 1; transition: opacity .2s ease; }
-.flow-secondary .step-card{ min-height: 0; }
 
 /* ============================================================
    Tutorials — video cards (tutorials.html)

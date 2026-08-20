@@ -1,4 +1,5 @@
 import {
+  ASKAURA_URL,
   fmtDate,
   hasPlanAccess,
   isBillingExempt,
@@ -25,47 +26,69 @@ function statusLineHTML(status, subscription, exempt) {
   return `<span class="status-dot bad"></span>Membership needs attention (status: ${status}) — check <a href="billing.html">billing</a>.`;
 }
 
-function membershipStep(account) {
+/** The AURA Engine card: download is always step one; the state chip and the
+ *  secondary action reflect membership. */
+function engineCard(account) {
   const { billing, subscription } = account;
   const status = billing.status;
   const exempt = isBillingExempt(account);
-  const stateEl = document.getElementById("step-membership-state");
-  const copyEl = document.getElementById("step-membership-copy");
-  const actionsEl = document.getElementById("step-membership-actions");
-  const card = document.getElementById("step-membership");
-  if (!stateEl || !copyEl || !actionsEl || !card) return;
+  const stateEl = document.getElementById("engine-state");
+  const copyEl = document.getElementById("engine-copy");
+  const actionsEl = document.getElementById("engine-actions");
+  if (!stateEl || !copyEl || !actionsEl) return;
+
+  const lede = `The full real-time 3D environment — GIS, BIM, and AI over photoreal digital twins.`;
+  const download = `<a class="btn primary" href="downloads.html">Download for Windows</a>`;
 
   if (exempt) {
-    card.classList.add("done");
     stateEl.textContent = "Included";
     stateEl.classList.add("ok");
-    copyEl.innerHTML = `Downloads and client access are unlocked for your <strong>${account.userType}</strong> account. No billing applies.`;
-    actionsEl.innerHTML = `<a class="btn ghost" href="account.html">Account</a>`;
+    copyEl.innerHTML = `${lede} Unlocked for your <strong>${account.userType}</strong> account — no billing applies.`;
+    actionsEl.innerHTML = `${download}<a class="btn ghost" href="account.html">Account</a>`;
   } else if (hasPlanAccess(account)) {
-    card.classList.add("done");
     stateEl.textContent = status === "trialing" ? "Trial active" : "Active";
     stateEl.classList.add("ok");
-    copyEl.innerHTML = `You're on <strong>${subscription?.name || "Aura Membership"}</strong>. Downloads and client access are unlocked.`;
-    actionsEl.innerHTML = `
-      <a class="btn ghost" href="billing.html">Manage billing</a>
-      <a class="btn ghost" href="account.html">Account</a>`;
+    copyEl.innerHTML = `${lede} You're on <strong>${subscription?.name || "Aura Membership"}</strong> — downloads and client access are unlocked.`;
+    actionsEl.innerHTML = `${download}<a class="btn ghost" href="billing.html">Manage billing</a>`;
   } else if (subscription && status !== "onboarding") {
     stateEl.textContent = "Attention";
     stateEl.classList.add("attn");
     copyEl.innerHTML = `Your membership status is <strong>${status}</strong>. Update payment or review billing to restore access.`;
-    actionsEl.innerHTML = `<a class="btn primary" href="billing.html">Review billing</a>`;
+    actionsEl.innerHTML = `<a class="btn primary" href="billing.html">Review billing</a><a class="btn ghost" href="downloads.html">Downloads</a>`;
   } else {
-    stateEl.textContent = "Action needed";
+    stateEl.textContent = "Membership required";
     stateEl.classList.add("attn");
+    copyEl.innerHTML = `${lede} Start your free trial above to unlock the client.`;
+    actionsEl.innerHTML = `<a class="btn ghost" href="downloads.html">Downloads</a><a class="btn ghost" href="plans.html">See the plan</a>`;
   }
 }
 
-/**
- * Without a membership, the 3-step setup checklist is answering a question the
- * visitor hasn't asked yet — they can't download or run anything until they
- * activate. So the trial gets the top of the page and the checklist moves below
- * it, under a heading that says what it's for.
- */
+/** The Ask AURA card CTA — same two destinations as the sitewide banner:
+ *  members go straight into the app, everyone else to checkout (Ask AURA
+ *  gates on the same status and would bounce them anyway). */
+function askAuraCard(account) {
+  const btn = document.getElementById("askaura-open");
+  if (!btn) return;
+  const isMember = hasPlanAccess(account);
+  if (!isMember) btn.textContent = "Start free trial";
+
+  btn.addEventListener("click", async () => {
+    if (isMember) {
+      window.open(ASKAURA_URL, "_blank", "noopener");
+      return;
+    }
+    btn.disabled = true;
+    btn.textContent = "Opening checkout…";
+    try {
+      await startCheckout();
+    } catch (err) {
+      btn.disabled = false;
+      btn.textContent = "Start free trial";
+      alert(err.message);
+    }
+  });
+}
+
 function trialPromptHTML() {
   return `
     <div class="trial-prompt">
@@ -81,17 +104,6 @@ function trialPromptHTML() {
         <a class="btn ghost" href="plans.html">See what's included</a>
       </div>
     </div>`;
-}
-
-function demoteSetupFlow() {
-  const flow = document.querySelector(".flow");
-  if (!flow || document.getElementById("setup-heading")) return;
-  flow.classList.add("flow-secondary");
-  const heading = document.createElement("h2");
-  heading.id = "setup-heading";
-  heading.className = "setup-heading";
-  heading.textContent = "Once you're a member";
-  flow.parentNode.insertBefore(heading, flow);
 }
 
 export async function initDashboard() {
@@ -112,7 +124,8 @@ export async function initDashboard() {
     );
   }
 
-  membershipStep(account);
+  engineCard(account);
+  askAuraCard(account);
 
   if (!hasPlanAccess(account)) {
     const mount = document.getElementById("membership-banner");
@@ -133,6 +146,5 @@ export async function initDashboard() {
           }
         });
     }
-    demoteSetupFlow();
   }
 }
