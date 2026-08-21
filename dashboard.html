@@ -21,7 +21,9 @@
     </nav>
   </header>
 
-  <main class="container">
+  <!-- The Ask AURA banner is suppressed here: the Ask AURA card below is the
+       same offer with the same destination logic. -->
+  <main class="container" data-no-askaura-banner>
     <section class="page-head" id="status-panel">
       <span class="kicker">Aura Portal</span>
       <h1>Welcome, <span data-username>there</span></h1>
@@ -30,54 +32,136 @@
 
     <div id="membership-banner"></div>
 
-    <div class="flow" style="margin-top:24px;">
-      <div class="card has-header step-card" id="step-download">
-        <div class="card-header">
-          <span class="step-num">1</span> Download
-          <span class="step-state ok">Ready</span>
+    <div class="cards" style="margin-top:24px;">
+      <div class="card has-header step-card" id="card-engine">
+        <div class="card-header">AURA Engine
+          <span class="step-state" id="engine-state">…</span>
         </div>
         <div class="card-body">
-          <div class="features">
-            Get the Aura Engine desktop client for Windows. Install it, then sign
-            in with this account.
+          <div class="features" id="engine-copy">
+            The full real-time 3D environment — GIS, BIM, and AI over photoreal
+            digital twins. Download the Windows client and sign in with this
+            account.
           </div>
-          <div class="card-actions">
-            <a class="btn primary" href="downloads.html">Go to downloads</a>
+          <div class="card-actions" id="engine-actions">
+            <a class="btn primary" href="downloads.html">Download for Windows</a>
           </div>
         </div>
       </div>
 
-      <div class="card has-header step-card" id="step-membership">
-        <div class="card-header">
-          <span class="step-num">2</span> Activate
-          <span class="step-state" id="step-membership-state">…</span>
-        </div>
-        <div class="card-body">
-          <div class="features" id="step-membership-copy">
-            Start your membership to unlock the full engine, gateway access, and
-            client updates.
-          </div>
-          <div class="card-actions" id="step-membership-actions">
-            <a class="btn primary" href="plans.html">View plan</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="card has-header step-card" id="step-docs">
-        <div class="card-header">
-          <span class="step-num">3</span> Learn
-          <span class="step-state ok">Ready</span>
+      <div class="card has-header step-card" id="card-askaura">
+        <div class="card-header">Ask AURA
+          <span class="step-state ok">In the browser</span>
         </div>
         <div class="card-body">
           <div class="features">
-            Setup guides, workflows, and references to get from install to first
-            scene.
+            Ask any question about the planet — AURA finds the data, runs the
+            spatial analysis, and draws the answer on a globe. Works on any
+            machine, nothing to install.
           </div>
           <div class="card-actions">
-            <a class="btn primary" href="docs.html">Open documentation</a>
+            <button class="btn primary" type="button" id="askaura-open">Open Ask AURA</button>
           </div>
         </div>
       </div>
+    </div>
+
+    <h2 class="setup-heading">Tutorials</h2>
+    <p class="muted" style="margin:0 0 4px;">Seven short walkthroughs of the
+      engine, from the interface tour to importing your own 3D models — each
+      opens on YouTube.</p>
+
+    <div class="video-grid">
+      <a class="card video-card" href="https://www.youtube.com/watch?v=fmgU1e72vbs" target="_blank" rel="noopener">
+        <span class="video-thumb">
+          <img src="https://img.youtube.com/vi/fmgU1e72vbs/hqdefault.jpg" alt="AURA Engine Interface Overview" />
+          <span class="video-play" aria-hidden="true"></span>
+          <span class="video-num mono">01</span>
+        </span>
+        <span class="video-body">
+          <span class="video-title">Interface Overview</span>
+          <span class="video-desc">Main features and tools.</span>
+          <span class="video-cta mono">Watch on YouTube ↗</span>
+        </span>
+      </a>
+
+      <a class="card video-card" href="https://www.youtube.com/watch?v=xZdkpPzD-DU" target="_blank" rel="noopener">
+        <span class="video-thumb">
+          <img src="https://img.youtube.com/vi/xZdkpPzD-DU/hqdefault.jpg" alt="AURA Engine Navigation Tutorial" />
+          <span class="video-play" aria-hidden="true"></span>
+          <span class="video-num mono">02</span>
+        </span>
+        <span class="video-body">
+          <span class="video-title">Navigation</span>
+          <span class="video-desc">WASD, Q/E, space bar, and mouse controls.</span>
+          <span class="video-cta mono">Watch on YouTube ↗</span>
+        </span>
+      </a>
+
+      <a class="card video-card" href="https://www.youtube.com/watch?v=m2bS_MVSN34" target="_blank" rel="noopener">
+        <span class="video-thumb">
+          <img src="https://img.youtube.com/vi/m2bS_MVSN34/hqdefault.jpg" alt="How to Find a Location in AURA" />
+          <span class="video-play" aria-hidden="true"></span>
+          <span class="video-num mono">03</span>
+        </span>
+        <span class="video-body">
+          <span class="video-title">Finding Locations</span>
+          <span class="video-desc">Single, smart, and area search.</span>
+          <span class="video-cta mono">Watch on YouTube ↗</span>
+        </span>
+      </a>
+
+      <a class="card video-card" href="https://www.youtube.com/watch?v=k0jhO5ceFic" target="_blank" rel="noopener">
+        <span class="video-thumb">
+          <img src="https://img.youtube.com/vi/k0jhO5ceFic/hqdefault.jpg" alt="How to Use GIS Maps in AURA" />
+          <span class="video-play" aria-hidden="true"></span>
+          <span class="video-num mono">04</span>
+        </span>
+        <span class="video-body">
+          <span class="video-title">GIS Maps</span>
+          <span class="video-desc">GIS view, base maps, and layers.</span>
+          <span class="video-cta mono">Watch on YouTube ↗</span>
+        </span>
+      </a>
+
+      <a class="card video-card" href="https://www.youtube.com/watch?v=xXOxO8Nvpo8" target="_blank" rel="noopener">
+        <span class="video-thumb">
+          <img src="https://img.youtube.com/vi/xXOxO8Nvpo8/hqdefault.jpg" alt="How to Add ArcGIS Online Layers to AURA" />
+          <span class="video-play" aria-hidden="true"></span>
+          <span class="video-num mono">05</span>
+        </span>
+        <span class="video-body">
+          <span class="video-title">ArcGIS Online Layers</span>
+          <span class="video-desc">Copy a layer URL and import GIS data.</span>
+          <span class="video-cta mono">Watch on YouTube ↗</span>
+        </span>
+      </a>
+
+      <a class="card video-card" href="https://www.youtube.com/watch?v=CkdtU_vQqAA" target="_blank" rel="noopener">
+        <span class="video-thumb">
+          <img src="https://img.youtube.com/vi/CkdtU_vQqAA/hqdefault.jpg" alt="How to Create and Use Saved Views in AURA" />
+          <span class="video-play" aria-hidden="true"></span>
+          <span class="video-num mono">06</span>
+        </span>
+        <span class="video-body">
+          <span class="video-title">Saved Views</span>
+          <span class="video-desc">Camera positions, layers, and scene settings.</span>
+          <span class="video-cta mono">Watch on YouTube ↗</span>
+        </span>
+      </a>
+
+      <a class="card video-card" href="https://www.youtube.com/watch?v=HnKhW3FiXl8" target="_blank" rel="noopener">
+        <span class="video-thumb">
+          <img src="https://img.youtube.com/vi/HnKhW3FiXl8/hqdefault.jpg" alt="How to Import 3D Models into AURA" />
+          <span class="video-play" aria-hidden="true"></span>
+          <span class="video-num mono">07</span>
+        </span>
+        <span class="video-body">
+          <span class="video-title">Importing 3D Models</span>
+          <span class="video-desc">Place, move, and visualize custom models.</span>
+          <span class="video-cta mono">Watch on YouTube ↗</span>
+        </span>
+      </a>
     </div>
   </main>
 
