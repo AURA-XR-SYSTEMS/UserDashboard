@@ -99,7 +99,7 @@ function planCardHTML(plan, memberStatus, exempt = false) {
         </div>
         <p class="muted" style="margin:10px 0 12px;">${description || "Membership access for Aura downloads and services."}</p>
         <div class="row" style="gap:12px; flex-wrap:wrap;">
-          <span class="chip">Gateway downloads</span>
+          <span class="chip">AURA ENGINE downloads</span>
           <span class="chip">Client access</span>
           <span class="chip">Billing managed by Stripe</span>
         </div>
