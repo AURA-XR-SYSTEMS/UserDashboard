@@ -109,7 +109,7 @@ function renderAccount(account) {
     if (manageBtn) manageBtn.hidden = false;
     if (startBtn) startBtn.hidden = true;
   } else {
-    bodyEl.innerHTML = `<div class="empty">No membership yet. Start one to unlock gateway downloads and client access${
+    bodyEl.innerHTML = `<div class="empty">No membership yet. Start one to unlock AURA ENGINE downloads and client access${
       billing.trialAvailable ? " — your free trial is available" : ""
     }.</div>`;
     if (startBtn) startBtn.hidden = false;
