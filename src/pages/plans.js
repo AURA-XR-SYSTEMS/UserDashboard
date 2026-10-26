@@ -73,7 +73,7 @@ function planCardHTML(plan, memberStatus, exempt = false) {
   const isMember = exempt || hasPlanAccess(memberStatus);
   const trialHtml =
     !isMember && trialDays > 0
-      ? `<span class="chip success" style="margin-left:8px;">${trialDays}-day free trial</span>`
+      ? `<span class="chip success" style="margin-left:8px;">${trialDays === 30 ? "First month free" : `${trialDays}-day free trial`}</span>`
       : "";
   const currentHtml = isMember
     ? `<span class="chip success" style="margin-left:8px;">${exempt ? "Included" : "Current plan"}</span>`
@@ -86,7 +86,7 @@ function planCardHTML(plan, memberStatus, exempt = false) {
     : isMember
       ? `<button class="btn ghost" data-manage-billing>Manage billing</button>
        <a class="btn ghost" href="account.html">View account</a>`
-      : `<button class="btn primary" data-start-membership>${trialDays > 0 ? "Start free trial" : "Start membership"}</button>`;
+      : `<button class="btn primary" data-start-membership>${trialDays > 0 ? (trialDays === 30 ? "Start your free month" : "Start free trial") : "Start membership"}</button>`;
   const disclosure = isMember ? "" : chargeDisclosureHTML(plan);
 
   return `

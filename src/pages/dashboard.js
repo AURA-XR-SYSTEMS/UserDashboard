@@ -15,7 +15,7 @@ function statusLineHTML(status, subscription, exempt) {
     return `<span class="status-dot ok"></span>Full access via your account type — no membership required.`;
   }
   if (!subscription || status === "onboarding") {
-    return `<span class="status-dot warn"></span>No membership yet — start your free trial below.`;
+    return `<span class="status-dot warn"></span>No membership yet. <strong>Your first month is free</strong>: you won't be charged for 30 days.`;
   }
   if (status === "trialing") {
     return `<span class="status-dot ok"></span>Membership trial active — converts to paid on <strong>${fmtDate(subscription.trialEnd)}</strong>.`;
@@ -58,7 +58,7 @@ function engineCard(account) {
   } else {
     stateEl.textContent = "Membership required";
     stateEl.classList.add("attn");
-    copyEl.innerHTML = `${lede} Start your free trial above to unlock the client.`;
+    copyEl.innerHTML = `${lede} Start your free month above to unlock the client. You won't be charged for 30 days.`;
     actionsEl.innerHTML = `<a class="btn ghost" href="downloads.html">Downloads</a><a class="btn ghost" href="plans.html">See the plan</a>`;
   }
 }
@@ -70,7 +70,7 @@ function askAuraCard(account) {
   const btn = document.getElementById("askaura-open");
   if (!btn) return;
   const isMember = hasPlanAccess(account);
-  if (!isMember) btn.textContent = "Start free trial";
+  if (!isMember) btn.textContent = "Start your free month";
 
   btn.addEventListener("click", async () => {
     if (isMember) {
@@ -83,7 +83,7 @@ function askAuraCard(account) {
       await startCheckout();
     } catch (err) {
       btn.disabled = false;
-      btn.textContent = "Start free trial";
+      btn.textContent = "Start your free month";
       alert(err.message);
     }
   });
@@ -93,14 +93,15 @@ function trialPromptHTML() {
   return `
     <div class="trial-prompt">
       <div class="trial-prompt-copy">
-        <div class="trial-prompt-title">Start your 30-day free trial</div>
+        <div class="trial-prompt-title">Your first month is free</div>
         <div class="trial-prompt-sub">
           Unlock Ask AURA in the browser and the AURA Engine desktop client.
-          Cancel anytime before the trial ends and you won't be charged.
+          You won't be charged for 30 days, and you can cancel anytime before then.
+          Stripe asks for a card to start the month; nothing is charged until it ends.
         </div>
       </div>
       <div class="card-actions">
-        <button class="btn primary" type="button" id="dash-start-trial">Start free trial</button>
+        <button class="btn primary" type="button" id="dash-start-trial">Start your free month</button>
         <a class="btn ghost" href="plans.html">See what's included</a>
       </div>
     </div>`;
@@ -141,7 +142,7 @@ export async function initDashboard() {
             await startCheckout();
           } catch (err) {
             btn.disabled = false;
-            btn.textContent = "Start free trial";
+            btn.textContent = "Start your free month";
             alert(err.message);
           }
         });

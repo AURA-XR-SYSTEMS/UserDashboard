@@ -25,8 +25,8 @@ const MOUNT_ID = "askaura-banner";
 function bannerHTML(isMember) {
   const sub = isMember
     ? "Your membership is live — open the browser app and ask the planet a question."
-    : "No download, no install. Start your free trial and use Ask AURA in the browser right now.";
-  const cta = isMember ? "Open Ask AURA" : "Start free trial";
+    : "No download, no install. Your first month is free: you won't be charged for 30 days, and you can cancel anytime before then.";
+  const cta = isMember ? "Open Ask AURA" : "Start your free month";
 
   return `
     <div class="askaura-banner">
@@ -78,7 +78,7 @@ export async function initAskAuraBanner() {
       await startCheckout();
     } catch (err) {
       btn.disabled = false;
-      btn.textContent = "Start free trial";
+      btn.textContent = "Start your free month";
       alert(err.message);
     }
   });

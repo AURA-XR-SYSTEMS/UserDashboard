@@ -110,7 +110,7 @@ function renderAccount(account) {
     if (startBtn) startBtn.hidden = true;
   } else {
     bodyEl.innerHTML = `<div class="empty">No membership yet. Start one to unlock AURA ENGINE downloads and client access${
-      billing.trialAvailable ? " — your free trial is available" : ""
+      billing.trialAvailable ? ". Your first month is free: you won't be charged for 30 days, and you can cancel anytime before then" : ""
     }.</div>`;
     if (startBtn) startBtn.hidden = false;
     if (manageBtn) manageBtn.hidden = true;
