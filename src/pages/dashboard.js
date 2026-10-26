@@ -58,7 +58,9 @@ function engineCard(account) {
   } else {
     stateEl.textContent = "Membership required";
     stateEl.classList.add("attn");
-    copyEl.innerHTML = `${lede} Start your free month above to unlock the client. You won't be charged for 30 days.`;
+    copyEl.innerHTML = billing.trialAvailable
+      ? `${lede} Start your free month above to unlock the client. You won't be charged for 30 days.`
+      : `${lede} Start a membership above to unlock the client.`;
     actionsEl.innerHTML = `<a class="btn ghost" href="downloads.html">Downloads</a><a class="btn ghost" href="plans.html">See the plan</a>`;
   }
 }
@@ -70,7 +72,8 @@ function askAuraCard(account) {
   const btn = document.getElementById("askaura-open");
   if (!btn) return;
   const isMember = hasPlanAccess(account);
-  if (!isMember) btn.textContent = "Start your free month";
+  const startLabel = account.billing?.trialAvailable ? "Start your free month" : "Start membership";
+  if (!isMember) btn.textContent = startLabel;
 
   btn.addEventListener("click", async () => {
     if (isMember) {
@@ -83,13 +86,31 @@ function askAuraCard(account) {
       await startCheckout();
     } catch (err) {
       btn.disabled = false;
-      btn.textContent = "Start your free month";
+      btn.textContent = startLabel;
       alert(err.message);
     }
   });
 }
 
-function trialPromptHTML() {
+/** A lapsed member has no trial left (checkout charges at once), so they get a
+ *  plain membership prompt instead of the free-month offer. */
+function trialPromptHTML(trialAvailable) {
+  if (!trialAvailable) {
+    return `
+    <div class="trial-prompt">
+      <div class="trial-prompt-copy">
+        <div class="trial-prompt-title">Start your membership</div>
+        <div class="trial-prompt-sub">
+          Unlock Ask AURA in the browser and the AURA Engine desktop client.
+          Renews monthly; cancel anytime from Billing.
+        </div>
+      </div>
+      <div class="card-actions">
+        <button class="btn primary" type="button" id="dash-start-trial">Start membership</button>
+        <a class="btn ghost" href="plans.html">See what's included</a>
+      </div>
+    </div>`;
+  }
   return `
     <div class="trial-prompt">
       <div class="trial-prompt-copy">
@@ -131,7 +152,8 @@ export async function initDashboard() {
   if (!hasPlanAccess(account)) {
     const mount = document.getElementById("membership-banner");
     if (mount) {
-      mount.innerHTML = trialPromptHTML();
+      const trialAvailable = Boolean(billing.trialAvailable);
+      mount.innerHTML = trialPromptHTML(trialAvailable);
       document
         .getElementById("dash-start-trial")
         ?.addEventListener("click", async (e) => {
@@ -142,7 +164,7 @@ export async function initDashboard() {
             await startCheckout();
           } catch (err) {
             btn.disabled = false;
-            btn.textContent = "Start your free month";
+            btn.textContent = trialAvailable ? "Start your free month" : "Start membership";
             alert(err.message);
           }
         });
