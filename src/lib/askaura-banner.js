@@ -22,11 +22,13 @@ import {
 
 const MOUNT_ID = "askaura-banner";
 
-function bannerHTML(isMember) {
+function bannerHTML(isMember, trialAvailable) {
   const sub = isMember
     ? "Your membership is live — open the browser app and ask the planet a question."
-    : "No download, no install. Start your free trial and use Ask AURA in the browser right now.";
-  const cta = isMember ? "Open Ask AURA" : "Start free trial";
+    : trialAvailable
+      ? "No download, no install. Your first month is free: you won't be charged for 30 days, and you can cancel anytime before then."
+      : "No download, no install. Start a membership and use Ask AURA in the browser right now.";
+  const cta = isMember ? "Open Ask AURA" : trialAvailable ? "Start your free month" : "Start membership";
 
   return `
     <div class="askaura-banner">
@@ -60,10 +62,12 @@ export async function initAskAuraBanner() {
   if (!account) return;
 
   const isMember = hasPlanAccess(account);
+  // A lapsed member has no trial left, so never promise them a free month.
+  const trialAvailable = Boolean(account.billing?.trialAvailable);
 
   const mount = document.createElement("div");
   mount.id = MOUNT_ID;
-  mount.innerHTML = bannerHTML(isMember);
+  mount.innerHTML = bannerHTML(isMember, trialAvailable);
   container.prepend(mount);
 
   mount.querySelector("[data-askaura-go]")?.addEventListener("click", async (e) => {
@@ -78,7 +82,7 @@ export async function initAskAuraBanner() {
       await startCheckout();
     } catch (err) {
       btn.disabled = false;
-      btn.textContent = "Start free trial";
+      btn.textContent = trialAvailable ? "Start your free month" : "Start membership";
       alert(err.message);
     }
   });
