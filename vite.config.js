@@ -40,6 +40,8 @@ export default defineConfig(({ mode }) => {
           billing: "./billing.html",
           "reset-password": "./reset-password.html",
           "forgot-password": "./forgot-password.html",
+          dataroom: "./dataroom.html",
+          "dataroom-invite": "./dataroom-invite.html",
         },
       },
     },

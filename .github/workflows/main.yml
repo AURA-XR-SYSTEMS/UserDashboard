@@ -32,6 +32,7 @@ jobs:
           echo "VITE_STRIPE_PUBLISHABLE_KEY=${{ vars.VITE_STRIPE_PUBLISHABLE_KEY }}" >> .env.production
           echo "VITE_ALLOW_NO_AUTH=${{ vars.VITE_ALLOW_NO_AUTH }}" >> .env.production
           echo "VITE_ALLOW_DEBUG_LOGS=${{ vars.VITE_ALLOW_DEBUG_LOGS }}" >> .env.production
+          echo "VITE_DATAROOM_ENABLED=${{ vars.VITE_DATAROOM_ENABLED }}" >> .env.production
 
       - name: Install deps
         run: npm ci

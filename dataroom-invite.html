@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>AURA — Data room invitation</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex, nofollow" />
+  <!-- The invite token is in the fragment; no-referrer keeps the page URL out of any request. -->
+  <meta name="referrer" content="no-referrer" />
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://*.aura-infra.com https://*.auraengine.com https://*.amazonaws.com; form-action 'self'; base-uri 'self'; object-src 'none'">
+  <link rel="stylesheet" href="default.css">
+</head>
+<body>
+  <header class="header">
+    <nav class="nav">
+      <div class="brand"><a href="dataroom.html"><img class="brand-logo" alt="AURA"/></a></div>
+    </nav>
+  </header>
+
+  <main class="container" id="dr-root">
+    <p class="muted">Checking your invitation…</p>
+  </main>
+
+  <footer class="footer container">
+    <span class="mono">© 2026 Aura XR Systems LLC</span>
+  </footer>
+
+  <script type="module" src="/src/dataroom/invite.js"></script>
+</body>
+</html>

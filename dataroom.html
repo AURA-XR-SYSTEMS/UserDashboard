@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>AURA — Data room</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="referrer" content="no-referrer" />
+  <!-- GitHub Pages can't send headers, so the policy rides in a meta tag. Scripts only from
+       this origin; network calls only to this origin, the API and S3 (presigned uploads). -->
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://*.amazonaws.com https://*.aura-infra.com https://*.auraengine.com; form-action 'self'; base-uri 'self'; object-src 'none'">
+  <link rel="stylesheet" href="default.css">
+</head>
+<body>
+  <header class="header">
+    <nav class="nav">
+      <div class="brand"><a href="dataroom.html"><img class="brand-logo" alt="AURA"/></a></div>
+      <div class="right">
+        <span class="dr-signed-in" id="dr-signed-in"></span>
+        <button class="btn" id="dr-logout" hidden>Log out</button>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container" id="dr-root" data-no-askaura-banner>
+    <p class="muted">Loading…</p>
+  </main>
+
+  <footer class="footer container">
+    <span class="mono">© 2026 Aura XR Systems LLC</span>
+  </footer>
+
+  <script type="module" src="/src/dataroom/room.js"></script>
+</body>
+</html>
