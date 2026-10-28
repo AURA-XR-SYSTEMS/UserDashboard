@@ -155,6 +155,13 @@
             if (target) target.classList.add("active");
           })
         );
+        // auraengine.com's Download button sends new users here as /#register
+        if (location.hash === "#register") {
+          const reg = btns.find((b) => b.dataset.tabTarget === "#tab-register");
+          if (reg) reg.click();
+          const first = document.querySelector('#tab-register input[name="first_name"]');
+          if (first) first.focus();
+        }
       });
     </script>
   </body>
