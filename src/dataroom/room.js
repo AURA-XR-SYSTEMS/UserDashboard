@@ -715,7 +715,7 @@ async function renderNda(host) {
     const f = new FormData(form);
     try {
       const { room } = await dr(`/api/dataroom/rooms/${r.id}/nda`, {
-        method: "PATCH",
+        method: "POST",
         body: { status: f.get("status"), fileId: f.get("fileId") || null, note: f.get("note") || null, uploadsNeedNda: f.get("uploadsNeedNda") === "on" },
       });
       state.room = room;
