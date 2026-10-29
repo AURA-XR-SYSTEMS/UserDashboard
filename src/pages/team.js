@@ -1,6 +1,6 @@
 // src/pages/team.js
 // Team plan: buy seats, invite people into them, see who has one.
-import { api, esc, fmtDate } from "../lib/api.js";
+import { api, esc, fmtDate, fmtMoney } from "../lib/api.js";
 
 function checkoutNotice() {
   const checkout = new URLSearchParams(window.location.search).get("checkout");
@@ -13,9 +13,26 @@ function checkoutNotice() {
   return "";
 }
 
-function buyForm(team) {
+// The team fee includes some seats; each seat beyond them has its own price.
+function teamTotal(pricing, seats) {
+  const extra = Math.max(seats - pricing.includedSeats, 0);
+  return pricing.basePriceCents + extra * pricing.seatPriceCents;
+}
+
+function pricingLine(pricing) {
+  if (!pricing) return "Stripe Checkout shows the exact total before you pay.";
+  const fee = fmtMoney(pricing.basePriceCents, pricing.currency);
+  const seat = fmtMoney(pricing.seatPriceCents, pricing.currency);
+  return `${fee} per ${pricing.interval} for the team, including ${pricing.includedSeats} seats
+    (yours and ${pricing.includedSeats - 1} more), then ${seat} per ${pricing.interval} for each
+    additional seat.`;
+}
+
+function buyForm(team, pricing) {
   const name = team?.name || "";
-  const seats = team?.seats || 5;
+  const min = pricing?.minSeats || 2;
+  const max = pricing?.maxSeats || 100;
+  const seats = Math.max(team?.seats || 5, min);
   return `
     ${checkoutNotice()}
     ${team ? `<div class="notice">Your team "${esc(name)}" is waiting for checkout to finish.</div>` : ""}
@@ -26,10 +43,11 @@ function buyForm(team) {
       </div>
       <div>
         <label>Seats (including you)</label>
-        <input class="input" name="seats" type="number" min="2" max="100" required value="${seats}" />
+        <input class="input" name="seats" type="number" min="${min}" max="${max}" required value="${seats}" />
       </div>
-      <p class="muted">Each seat is a full AURA Engine membership for one person, billed monthly
-        per seat. You can change the number of seats in Stripe Checkout and later from Billing.</p>
+      <p class="muted">${pricingLine(pricing)} Each seat is a full AURA Engine membership for one
+        person. You can change the number of seats in Stripe Checkout and later from Billing.</p>
+      <p id="team-total">${pricing ? `<strong>${fmtMoney(teamTotal(pricing, seats), pricing.currency)} per ${pricing.interval}</strong> for ${seats} seats` : ""}</p>
       <div class="form-error" data-team-error hidden></div>
       <div class="row" style="justify-content:flex-end">
         <button class="btn primary" type="submit">Continue to checkout</button>
@@ -142,7 +160,22 @@ export async function initTeam() {
     return;
   }
 
-  if (!team || team.status === "onboarding") el.innerHTML = buyForm(team);
+  let pricing = null;
+  if (!team || team.status === "onboarding") {
+    try {
+      pricing = await api("/api/teams/pricing");
+    } catch {
+      // Checkout still shows the price; the form just can't preview it.
+    }
+    el.innerHTML = buyForm(team, pricing);
+    const seatsInput = el.querySelector('input[name="seats"]');
+    seatsInput?.addEventListener("input", () => {
+      const n = Number(seatsInput.value);
+      if (!pricing || !n) return;
+      document.getElementById("team-total").innerHTML =
+        `<strong>${fmtMoney(teamTotal(pricing, n), pricing.currency)} per ${pricing.interval}</strong> for ${n} seats`;
+    });
+  }
   else if (team.role === "owner") el.innerHTML = ownerView(team);
   else el.innerHTML = memberView(team);
 
