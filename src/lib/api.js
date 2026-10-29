@@ -14,6 +14,13 @@ export async function startCheckout() {
   window.location.href = url;
 }
 
+/** Escape text for innerHTML (team names and emails are user-typed). */
+export function esc(value) {
+  return String(value ?? "").replace(/[&<>"']/g, (ch) => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
+  })[ch]);
+}
+
 export function fmtInt(n) {
   return Number(n || 0).toLocaleString();
 }
@@ -76,6 +83,7 @@ const PUBLIC_PATHS = [
   "/index.html",
   "/forgot-password.html",
   "/reset-password.html",
+  "/join.html",
 ];
 
 export function isPublicPage(path = window.location.pathname) {
@@ -97,7 +105,9 @@ export async function api(path, opts = {}) {
     let msg = res.statusText;
     try {
       const body = await res.json();
-      msg = body.error || body.detail || msg;
+      // Newer routes answer {detail: {code, message}}; older ones a string.
+      const detail = body.detail;
+      msg = body.error || (detail && typeof detail === "object" ? detail.message : detail) || msg;
     } catch {}
     throw new Error(msg);
   } else if (res.status == 204) return {};

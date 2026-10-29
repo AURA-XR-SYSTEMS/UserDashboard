@@ -18,6 +18,8 @@ import { initResetPassword } from "./pages/reset-password.js";
 import { initForgotPassword } from "./pages/forgot-password.js";
 import { initLegalGate } from "./pages/legal-gate.js";
 import { initWelcome } from "./pages/welcome.js";
+import { initTeam, revealTeamPlanLinks } from "./pages/team.js";
+import { initJoin } from "./pages/join.js";
 import { initAskAuraBanner } from "./lib/askaura-banner.js";
 
 const ALLOW_DEBUG_LOGS = import.meta.env.VITE_ALLOW_DEBUG_LOGS === "true";
@@ -60,6 +62,9 @@ document.addEventListener("DOMContentLoaded", () => {
   if (document.getElementById("reset-password")) initResetPassword();
   if (document.getElementById("forgot-password")) initForgotPassword();
   if (document.getElementById("welcome")) initWelcome();
+  if (document.getElementById("team-info")) initTeam();
+  revealTeamPlanLinks();
+  if (document.getElementById("join")) initJoin();
 
   // Every signed-in page carries the Ask AURA call to action. Pages opt out
   // with data-no-askaura-banner (welcome.html — the page is already the offer).
