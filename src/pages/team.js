@@ -56,7 +56,10 @@ function ownerView(team) {
       <tr>
         <td colspan="2">${esc(i.email)}</td>
         <td>Invited, expires ${fmtDate(i.expiresAt)}</td>
-        <td><button class="btn ghost" data-revoke="${esc(i.id)}">Revoke</button></td>
+        <td>
+          <button class="btn ghost" data-relink="${esc(i.email)}">New link</button>
+          <button class="btn ghost" data-revoke="${esc(i.id)}">Revoke</button>
+        </td>
       </tr>`
     )
     .join("");
@@ -83,10 +86,10 @@ function ownerView(team) {
             <div class="row" style="justify-content:flex-end">
               <button class="btn primary" type="submit">Send invite</button>
             </div>
-          </form>
-          <div id="invite-result"></div>`
+          </form>`
         : `<p class="muted">${team.active ? "Every seat is taken or invited. Add seats from Billing (Manage billing) or revoke an invite." : "Invites open again once the team's billing is active."}</p>`
-    }`;
+    }
+    <div id="invite-result"></div>`;
 }
 
 function memberView(team) {
@@ -97,6 +100,28 @@ function memberView(team) {
     <div class="hr"></div>
     <a class="btn primary" href="downloads.html">Go to downloads</a>
     <button class="btn ghost" id="team-leave">Leave team</button>`;
+}
+
+// Invite email can land in spam (the sending domain's reputation, 2026-10-28), so
+// the link the owner copies is the primary path, not a fallback.
+function showInviteLink(res) {
+  document.getElementById("invite-result").innerHTML = `
+    <div class="notice success">
+      <strong>Send ${esc(res.invite.email)} this link</strong> (by chat, text or your own
+      email). It works once, only for that address, until ${fmtDate(res.invite.expiresAt)}.
+      <input class="input" readonly value="${esc(res.inviteUrl)}" onclick="this.select()" />
+      <button class="btn primary" type="button" id="copy-invite">Copy link</button>
+      <span class="muted">${res.emailSent ? "We also emailed it, but it may land in spam." : "We couldn't email it, so the link is the only way in."}</span>
+    </div>
+    <a class="btn ghost" href="team.html">Done</a>`;
+  document.getElementById("copy-invite").addEventListener("click", async (e) => {
+    try {
+      await navigator.clipboard.writeText(res.inviteUrl);
+      e.currentTarget.textContent = "Copied";
+    } catch {
+      document.querySelector("#invite-result input").select();
+    }
+  });
 }
 
 function showError(form, err) {
@@ -146,13 +171,7 @@ export async function initTeam() {
         method: "POST",
         body: { email },
       });
-      document.getElementById("invite-result").innerHTML = `
-        <div class="notice success">
-          ${res.emailSent ? `Invite emailed to ${esc(res.invite.email)}.` : `Invite created for ${esc(res.invite.email)} (the email didn't send; share the link yourself).`}
-          You can also send them this link (it works once, for that email):
-          <input class="input" readonly value="${esc(res.inviteUrl)}" onclick="this.select()" />
-        </div>
-        <a class="btn ghost" href="team.html">Done</a>`;
+      showInviteLink(res);
       form.remove();
     } catch (err) {
       showError(form, err);
@@ -165,6 +184,22 @@ export async function initTeam() {
       try {
         await api(`/api/teams/${team.id}/members/${b.dataset.remove}`, { method: "DELETE" });
         location.reload();
+      } catch (err) {
+        alert(err.message);
+      }
+    })
+  );
+  // Only a hash of each link is stored, so "New link" re-invites the same address:
+  // the old link stops working and a fresh one is shown.
+  el.querySelectorAll("[data-relink]").forEach((b) =>
+    b.addEventListener("click", async () => {
+      try {
+        const res = await api(`/api/teams/${team.id}/invites`, {
+          method: "POST",
+          body: { email: b.dataset.relink },
+        });
+        showInviteLink(res);
+        document.getElementById("invite-result").scrollIntoView({ block: "center" });
       } catch (err) {
         alert(err.message);
       }
