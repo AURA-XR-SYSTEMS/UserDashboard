@@ -165,7 +165,11 @@ export async function initTeam() {
     try {
       pricing = await api("/api/teams/pricing");
     } catch {
-      // Checkout still shows the price; the form just can't preview it.
+      // No team prices in Stripe yet (the plan ships dark until they exist):
+      // nothing to buy, so don't offer a checkout that would fail.
+      el.innerHTML = `<p>Team plans open soon. To set up seats for your studio, firm
+        or class now, email <a href="mailto:support@auraengine.com">support@auraengine.com</a>.</p>`;
+      return;
     }
     el.innerHTML = buyForm(team, pricing);
     const seatsInput = el.querySelector('input[name="seats"]');
@@ -257,4 +261,16 @@ export async function initTeam() {
       alert(err.message);
     }
   });
+}
+
+/** Show the "team plan" pointers on Plans and Billing only once team prices exist. */
+export async function revealTeamPlanLinks() {
+  const links = document.querySelectorAll("[data-team-plan-link]");
+  if (!links.length) return;
+  try {
+    await api("/api/teams/pricing");
+    links.forEach((n) => (n.hidden = false));
+  } catch {
+    // Stay hidden: the team plan isn't on sale yet.
+  }
 }
