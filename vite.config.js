@@ -38,6 +38,8 @@ export default defineConfig(({ mode }) => {
           tutorials: "./tutorials.html",
           plans: "./plans.html",
           billing: "./billing.html",
+          team: "./team.html",
+          join: "./join.html",
           "reset-password": "./reset-password.html",
           "forgot-password": "./forgot-password.html",
         },
