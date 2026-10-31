@@ -6,3 +6,8 @@
 :root[data-theme="dark"] { --paper: #0d1517; --ink: #eef1ef; color-scheme: dark; }
 html { background: var(--paper); }
 body { margin: 0; min-height: 100vh; background: var(--paper); color: var(--ink); -webkit-font-smoothing: antialiased; }
+/* The inline marks are sized here too, so they never paint full-width before the bundle's stylesheet arrives. */
+.brand { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; }
+.brand svg { width: 34px; height: 23px; }
+.theme svg { width: 20px; height: 20px; }
+.top { position: fixed; inset: 0 0 auto 0; display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; }
