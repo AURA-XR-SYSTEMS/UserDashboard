@@ -40,7 +40,7 @@ function engineCard(account) {
   if (!stateEl || !copyEl || !actionsEl) return;
 
   const lede = `The full real-time 3D environment — GIS, BIM, and AI over photoreal digital twins.`;
-  const download = `<a class="btn primary" href="downloads.html">Download for Windows</a>`;
+  const download = `<a class="btn primary funnel" href="downloads.html">Download for Windows</a>`;
 
   if (exempt) {
     stateEl.textContent = "Included";
@@ -75,7 +75,10 @@ function askAuraCard(account) {
   if (!btn) return;
   const isMember = hasPlanAccess(account);
   const startLabel = account.billing?.trialAvailable ? "Start your free month" : "Start membership";
-  if (!isMember) btn.textContent = startLabel;
+  if (!isMember) {
+    btn.textContent = startLabel;
+    btn.classList.add("funnel");
+  }
 
   btn.addEventListener("click", async () => {
     if (isMember) {
@@ -108,7 +111,7 @@ function trialPromptHTML(trialAvailable) {
         </div>
       </div>
       <div class="card-actions">
-        <button class="btn primary" type="button" id="dash-start-trial">Start membership</button>
+        <button class="btn primary funnel" type="button" id="dash-start-trial">Start membership</button>
         <a class="btn ghost" href="plans.html">See what's included</a>
       </div>
     </div>`;
@@ -124,7 +127,7 @@ function trialPromptHTML(trialAvailable) {
         </div>
       </div>
       <div class="card-actions">
-        <button class="btn primary" type="button" id="dash-start-trial">Start your free month</button>
+        <button class="btn primary funnel" type="button" id="dash-start-trial">Start your free month</button>
         <a class="btn ghost" href="plans.html">See what's included</a>
       </div>
     </div>`;

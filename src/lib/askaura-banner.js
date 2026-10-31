@@ -31,12 +31,12 @@ function bannerHTML(isMember, trialAvailable) {
   const cta = isMember ? "Open Ask AURA" : trialAvailable ? "Start your free month" : "Start membership";
 
   return `
-    <div class="askaura-banner">
+    <div class="askaura-banner${isMember ? "" : " is-funnel"}">
       <div class="askaura-banner-copy">
         <div class="askaura-banner-title">Try Ask AURA on the web now</div>
         <div class="askaura-banner-sub">${sub}</div>
       </div>
-      <button class="btn primary askaura-banner-cta" type="button" data-askaura-go>
+      <button class="btn primary askaura-banner-cta${isMember ? "" : " funnel"}" type="button" data-askaura-go>
         ${cta}
       </button>
     </div>`;

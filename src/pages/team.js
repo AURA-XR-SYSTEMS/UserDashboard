@@ -50,7 +50,7 @@ function buyForm(team, pricing) {
       <p id="team-total">${pricing ? `<strong>${fmtMoney(teamTotal(pricing, seats), pricing.currency)} per ${pricing.interval}</strong> for ${seats} seats` : ""}</p>
       <div class="form-error" data-team-error hidden></div>
       <div class="row" style="justify-content:flex-end">
-        <button class="btn primary" type="submit">Continue to checkout</button>
+        <button class="btn primary funnel" type="submit">Continue to checkout</button>
       </div>
     </form>`;
 }
