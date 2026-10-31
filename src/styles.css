@@ -240,7 +240,9 @@ main.container > #askaura-banner:first-child { padding-top: 100px; }
 .features { font-size: 17px; line-height: 1.5; max-width: 60ch; }
 .features > div { padding: 8px 0; border-bottom: 1px solid var(--rule); }
 .features > div:first-child { border-top: 1px solid var(--rule); }
-.features > div.hr, .features > .notice { border: 0; padding: 0; }
+.features > div.hr { border: 0; padding: 0; }
+.features > .notice { border-bottom: 0; padding: 12px 16px; }
+.features > .charge-disclosure { border-bottom: 0; padding: 14px 16px; margin: 18px 0 4px; }
 .features .notice { margin-bottom: 14px; }
 .features .btn { margin-top: 14px; margin-right: 8px; }
 .hr { height: 1px; background: var(--rule); margin: 16px 0; }

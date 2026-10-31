@@ -28,7 +28,7 @@ function statusLineHTML(status, subscription, exempt) {
   return `<span class="status-dot bad"></span>Membership needs attention (status: ${status}) — check <a href="billing.html">billing</a>.`;
 }
 
-/** The AURA Engine card: download is always step one; the state chip and the
+/** The AURA ENGINE card: download is always step one; the state chip and the
  *  secondary action reflect membership. */
 function engineCard(account) {
   const { billing, subscription } = account;
@@ -106,7 +106,7 @@ function trialPromptHTML(trialAvailable) {
       <div class="trial-prompt-copy">
         <div class="trial-prompt-title">Start your membership</div>
         <div class="trial-prompt-sub">
-          Unlock Ask AURA in the browser and the AURA Engine desktop client.
+          Unlock Ask AURA in the browser and the AURA ENGINE desktop client.
           Renews monthly; cancel anytime from Billing.
         </div>
       </div>
@@ -121,7 +121,7 @@ function trialPromptHTML(trialAvailable) {
       <div class="trial-prompt-copy">
         <div class="trial-prompt-title">Your first month is free</div>
         <div class="trial-prompt-sub">
-          Unlock Ask AURA in the browser and the AURA Engine desktop client.
+          Unlock Ask AURA in the browser and the AURA ENGINE desktop client.
           You won't be charged for 30 days, and you can cancel anytime before then.
           Stripe asks for a card to start the month; nothing is charged until it ends.
         </div>

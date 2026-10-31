@@ -18,7 +18,7 @@ async function join(token, el) {
   const res = await api("/api/teams/join", { method: "POST", body: { token } });
   // The token is spent; drop it from the address bar.
   history.replaceState(null, "", "join.html");
-  setHead(`You're on ${res.team.name}`, "Your seat is active. Download AURA Engine and sign in with this account.");
+  setHead(`You're on ${res.team.name}`, "Your seat is active. Download AURA ENGINE and sign in with this account.");
   el.innerHTML = `
     ${res.personalPlanActive ? `<div class="notice">You also have your own paid membership. Your team seat covers you now, so you can cancel it from <a href="billing.html">Billing</a>.</div>` : ""}
     <a class="btn primary" href="downloads.html">Go to downloads</a>
@@ -65,7 +65,7 @@ export async function initJoin() {
   }
   setHead(
     `Join ${invite.teamName} on AURA`,
-    `${invite.inviterName} has a paid seat for you on AURA Engine. It's for ${invite.email}.`
+    `${invite.inviterName} has a paid seat for you on AURA ENGINE. It's for ${invite.email}.`
   );
 
   const me = await loadMe();

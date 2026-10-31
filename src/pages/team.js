@@ -45,7 +45,7 @@ function buyForm(team, pricing) {
         <label>Seats (including you)</label>
         <input class="input" name="seats" type="number" min="${min}" max="${max}" required value="${seats}" />
       </div>
-      <p class="muted">${pricingLine(pricing)} Each seat is a full AURA Engine membership for one
+      <p class="muted">${pricingLine(pricing)} Each seat is a full AURA ENGINE membership for one
         person. You can change the number of seats in Stripe Checkout and later from Billing.</p>
       <p id="team-total">${pricing ? `<strong>${fmtMoney(teamTotal(pricing, seats), pricing.currency)} per ${pricing.interval}</strong> for ${seats} seats` : ""}</p>
       <div class="form-error" data-team-error hidden></div>

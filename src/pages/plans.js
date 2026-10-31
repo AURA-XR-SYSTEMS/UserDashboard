@@ -97,7 +97,7 @@ function planCardHTML(plan, memberStatus, exempt = false) {
           <span class="stat-value">${fmtMoney(amountCents, currency)}</span>
           <span class="stat-unit">/ ${intervalLabel(interval)}</span>
         </div>
-        <p class="muted" style="margin:10px 0 12px;">${description || "Membership access for Aura downloads and services."}</p>
+        <p class="muted" style="margin:10px 0 12px;">${description || "Membership access for AURA ENGINE downloads and services."}</p>
         <div class="row" style="gap:12px; flex-wrap:wrap;">
           <span class="chip">AURA ENGINE downloads</span>
           <span class="chip">Client access</span>
