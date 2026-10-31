@@ -14,6 +14,7 @@ import {
   loadMe,
   startCheckout,
 } from "../lib/api.js";
+import { materialize } from "../lib/lidar-type.js";
 
 function firstChargeLabel(trialDays) {
   const d = new Date(Date.now() + trialDays * 86400000);
@@ -33,7 +34,7 @@ function termsHTML(plan) {
   const price = fmtMoney(plan.amountCents, plan.currency);
   const per = plan.interval === "year" ? "year" : "month";
   if (plan.trialDays > 0) {
-    return `<strong>${plan.trialDays}-day free trial, then ${price} (USD) / ${per}.</strong>
+    return `<strong>${plan.trialDays === 30 ? "Your first month is free" : `${plan.trialDays}-day free trial`}, then ${price} (USD) / ${per}.</strong>
       Your card will be charged <strong>${price} on ${firstChargeLabel(plan.trialDays)}</strong>
       unless you cancel before then. Cancel anytime from the
       <a href="billing.html">Billing</a> page.`;
@@ -69,7 +70,13 @@ export async function initWelcome() {
   if (termsEl) termsEl.innerHTML = termsHTML(plan);
   // /api/plans is now trial-aware per user, so a returning visitor who already
   // spent their trial sees the right label instead of a phantom free offer.
-  if (btn && plan && plan.trialDays === 0) btn.textContent = "Start membership";
+  const h1 = document.getElementById("welcome-h1");
+  if (btn && plan && plan.trialDays === 0) {
+    btn.textContent = "Start membership";
+    if (h1) h1.textContent = "Start your membership.";
+  }
+  // The headline's words are final now: draw it out of lidar.
+  materialize(h1);
 
   btn?.addEventListener("click", async () => {
     const original = btn.textContent;

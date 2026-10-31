@@ -1,50 +1,79 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <title>Aura — Team</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="default.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AURA — Team</title>
+<meta name="theme-color" content="#f4f5f2" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0d1517" media="(prefers-color-scheme: dark)">
+<link rel="preload" href="/fonts/archivo-latin-standard-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="default.css">
+<script>document.documentElement.classList.add("js");try{var t=localStorage.getItem("aura-theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
 </head>
 <body>
-<header class="header">
-  <nav class="nav">
-    <div class="brand"><a href="dashboard.html"><img class="brand-logo"/></a></div>
-    <div class="right">
-      <a class="btn ghost" href="downloads.html">Downloads</a>
-      <a class="btn ghost" href="plans.html">Plans</a>
-      <a class="btn ghost" href="team.html">Team</a>
-      <a class="btn ghost" href="docs.html">Docs</a>
-      <span class="sep"></span>
-      <a class="btn ghost" href="account.html">Account</a>
-      <button class="btn" data-logout>Log out</button>
-    </div>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="top" data-top>
+  <a class="brand" href="dashboard.html" aria-label="AURA, dashboard">
+    <svg viewBox="0 0 100 68" aria-hidden="true"><defs><clipPath id="mk-l"><circle cx="34" cy="34" r="34"/></clipPath><clipPath id="mk-r"><circle cx="66" cy="34" r="34"/></clipPath></defs><circle cx="66" cy="34" r="34" fill="var(--signal-fill)"/><circle cx="34" cy="34" r="34" fill="currentColor"/><g clip-path="url(#mk-l)"><rect x="0" y="0" width="50" height="68" fill="var(--signal-fill)" clip-path="url(#mk-r)"/></g></svg>
+    <span>AURA</span>
+  </a>
+  <nav aria-label="Main" data-nav>
+    <a href="dashboard.html" class="only-wide">Dashboard</a>
+    <a href="downloads.html">Downloads</a>
+    <a href="plans.html">Plans</a>
+    <a href="team.html">Team</a>
+    <a href="docs.html">Docs</a>
+    <a href="account.html">Account</a>
   </nav>
+  <div class="right">
+    <button class="btn" type="button" data-logout>Log out</button>
+    <button class="theme" type="button" data-theme-toggle aria-label="Switch colour theme">
+      <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M10 1.8a8.2 8.2 0 0 1 0 16.4z" fill="currentColor"/></svg>
+    </button>
+  </div>
 </header>
 
-<main class="container">
-  <section class="page-head">
-    <span class="kicker">Team plan</span>
-    <h1>Team</h1>
-    <p>Buy seats for your studio, firm or class and invite people into them. Each
-      seat is a full AURA Engine membership for one person.</p>
+<main id="main" class="container">
+  <section class="head">
+    <h1>Team.</h1>
+    <p>Buy seats for your studio, firm or class and invite people into them. Each seat is a full AURA Engine membership for one person.</p>
   </section>
 
-  <div class="card" style="padding:18px 22px;">
-    <div id="team-info" class="features">Loading…</div>
-  </div>
+  <section class="block" aria-labelledby="team-h">
+    <h2 id="team-h">Your team</h2>
+    <div class="block__body">
+      <div id="team-info" class="features">Loading…</div>
+    </div>
+  </section>
 
-  <p class="notice" style="margin-top:18px;">
-    The team fee and any additional seats are billed monthly through Stripe. Add or
-    remove seats, update your card or cancel from <a href="billing.html">Billing</a> (Manage billing). Removing a
-    person frees their seat at once. Questions? Email
-    <a href="mailto:support@auraengine.com">support@auraengine.com</a>. Terms are in our
-    <a href="#" data-legal-view="terms">Terms of Service</a>.
-  </p>
+  <section class="block" aria-labelledby="know-h">
+    <h2 id="know-h">Good to know</h2>
+    <div class="block__body">
+      <p class="notice">
+        The team fee and any additional seats are billed monthly through Stripe. Add or
+        remove seats, update your card or cancel from <a href="billing.html">Billing</a> (Manage billing). Removing a
+        person frees their seat at once. Questions? Email
+        <a href="mailto:support@auraengine.com">support@auraengine.com</a>. Terms are in our
+        <a href="#" data-legal-view="terms">Terms of Service</a>.
+      </p>
+    </div>
+  </section>
 </main>
 
-<footer class="footer"><span>© 2026 Aura XR Systems LLC</span><span class="mono">TEAM</span></footer>
-
+<footer class="foot">
+  <div class="foot__mark" aria-hidden="true" data-fit><span data-line>AURA</span><span data-line>Engine</span></div>
+  <div class="foot__row">
+    <ul>
+      <li><a href="docs.html">Docs</a></li>
+      <li><a href="#" data-legal-view="terms">Terms</a></li>
+      <li><a href="#" data-legal-view="privacy">Privacy</a></li>
+      <li><a href="mailto:support@auraengine.com">support@auraengine.com</a></li>
+    </ul>
+    <p>© 2026 Aura XR Systems LLC</p>
+  </div>
+</footer>
 <script type="module" src="/src/main.js"></script>
 </body>
 </html>

@@ -1,9 +1,9 @@
 // src/main.js
 import "./styles.css"; // optional: pull CSS into the bundle
-// import auraLogoUrl from "./assets/aura_logo_withtext_transparent_white-06.png";
-import auraLogoUrl from "./assets/wizard-top.png";
+import { initSite } from "./lib/site.js";
+import { materializeStatic } from "./lib/lidar-type.js";
 
-import { loadMe } from "./lib/api.js";
+import { isPublicPage, loadMe } from "./lib/api.js";
 import {
   handleAuth,
   initTabs,
@@ -34,13 +34,10 @@ console.log = function () {
 
 document.addEventListener("DOMContentLoaded", () => {
   // Common
-  loadMe();
+  initSite();
+  materializeStatic();
+  if (!isPublicPage()) loadMe();
 
-  const img = document.querySelector(".brand-logo");
-  if (img) {
-    img.src = auraLogoUrl;
-    img.alt = "Aura logo";
-  }
   const path = location.pathname;
 
   // Sign-in page features
@@ -74,7 +71,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (logout) logout.addEventListener("click", handleLogout);
 
   // Determine styles for active tab
-  document.querySelectorAll(".nav .right a").forEach((a) => {
+  document.querySelectorAll("[data-nav] a").forEach((a) => {
     try {
       const url = new URL(a.href, location.origin);
       if (url.pathname === path) a.classList.add("active");

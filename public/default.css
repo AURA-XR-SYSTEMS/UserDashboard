@@ -1,25 +1,8 @@
-/* minimal, non-opinionated base to avoid white flash */
-:root{
-  --bg:#0a0c10;         /* matches your final :root */
-  --panel:#10141b;
-  --border:#1b2330;
-  --text:#ffffff;
+/* Loads before the bundle: paper and ink in the right scheme, so nothing flashes. */
+:root { --paper: #f4f5f2; --ink: #0d1517; color-scheme: light; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { --paper: #0d1517; --ink: #eef1ef; color-scheme: dark; }
 }
-html{ background:var(--bg); color-scheme:dark; }
-body{
-  margin:0;
-  min-height:100vh;
-  background:var(--bg); /* plain color; gradients will override later */
-  color:var(--text);
-  -webkit-font-smoothing:antialiased;
-  -moz-osx-font-smoothing:grayscale;
-}
-/* keep header/nav from flashing light */
-.header{ padding:4px 0; }
-.nav{
-  background:var(--panel);
-  border:1px solid var(--border);
-  border-radius:16px;
-}
-/* avoid layout jump for the logo while full CSS loads */
-.brand-logo{ display:block; height:64px; width:auto; }
+:root[data-theme="dark"] { --paper: #0d1517; --ink: #eef1ef; color-scheme: dark; }
+html { background: var(--paper); }
+body { margin: 0; min-height: 100vh; background: var(--paper); color: var(--ink); -webkit-font-smoothing: antialiased; }

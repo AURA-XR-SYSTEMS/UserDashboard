@@ -1,119 +1,123 @@
 <!doctype html>
 <html lang="en">
-
 <head>
-  <meta charset="utf-8" />
-  <title>Aura — Account</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="default.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AURA — Account</title>
+<meta name="theme-color" content="#f4f5f2" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0d1517" media="(prefers-color-scheme: dark)">
+<link rel="preload" href="/fonts/archivo-latin-standard-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="default.css">
+<script>document.documentElement.classList.add("js");try{var t=localStorage.getItem("aura-theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
 </head>
-
 <body>
-  <header class="header">
-    <nav class="nav">
-      <div class="brand"><a href="dashboard.html"><img class="brand-logo" /></a></div>
-      <div class="right">
-        <a class="btn ghost" href="downloads.html">Downloads</a>
-        <a class="btn ghost" href="plans.html">Plans</a>
-        <a class="btn ghost" href="docs.html">Docs</a>
-        <span class="sep"></span>
-        <a class="btn ghost" href="account.html">Account</a>
-        <button class="btn" data-logout>Log out</button>
-      </div>
-    </nav>
-  </header>
+<a class="skip" href="#main">Skip to content</a>
 
-  <main class="container">
-    <section class="page-head">
-      <span class="kicker">Account</span>
-      <h1 data-username>Account</h1>
-      <p id="account-subtitle">Your profile, membership, and security settings.</p>
-    </section>
+<header class="top" data-top>
+  <a class="brand" href="dashboard.html" aria-label="AURA, dashboard">
+    <svg viewBox="0 0 100 68" aria-hidden="true"><defs><clipPath id="mk-l"><circle cx="34" cy="34" r="34"/></clipPath><clipPath id="mk-r"><circle cx="66" cy="34" r="34"/></clipPath></defs><circle cx="66" cy="34" r="34" fill="var(--signal-fill)"/><circle cx="34" cy="34" r="34" fill="currentColor"/><g clip-path="url(#mk-l)"><rect x="0" y="0" width="50" height="68" fill="var(--signal-fill)" clip-path="url(#mk-r)"/></g></svg>
+    <span>AURA</span>
+  </a>
+  <nav aria-label="Main" data-nav>
+    <a href="dashboard.html" class="only-wide">Dashboard</a>
+    <a href="downloads.html">Downloads</a>
+    <a href="plans.html">Plans</a>
+    <a href="team.html" data-team-plan-link hidden>Team</a>
+    <a href="docs.html">Docs</a>
+    <a href="account.html">Account</a>
+  </nav>
+  <div class="right">
+    <button class="btn" type="button" data-logout>Log out</button>
+    <button class="theme" type="button" data-theme-toggle aria-label="Switch colour theme">
+      <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M10 1.8a8.2 8.2 0 0 1 0 16.4z" fill="currentColor"/></svg>
+    </button>
+  </div>
+</header>
 
-    <div class="stacked">
+<main id="main" class="container">
+  <section class="head">
+    <h1>Account.</h1>
+    <p id="account-subtitle">Your profile, membership and security settings.</p>
+  </section>
 
-      <!-- Profile -->
-      <div class="card has-header" id="section-overview">
-        <div class="card-header">Profile</div>
-        <div class="card-body">
-          <dl class="kv" id="profile-kv">
-            <div><dt>Name</dt><dd id="pf-name">—</dd></div>
-            <div><dt>Email</dt><dd id="pf-email">—</dd></div>
-            <div><dt>Member since</dt><dd id="pf-created">—</dd></div>
-            <div><dt>Account type</dt><dd id="pf-type">—</dd></div>
-          </dl>
-        </div>
-      </div>
-
-      <!-- Membership -->
-      <div class="card has-header" id="section-plan">
-        <div class="card-header">Membership
-          <span class="step-state" id="mb-state" style="float:right;">…</span>
-        </div>
-        <div class="card-body">
-          <div id="membership-body">
-            <div class="empty">Loading membership…</div>
-          </div>
-          <div class="hr"></div>
-          <div class="card-actions" style="gap:10px; flex-wrap:wrap;">
-            <a class="btn primary" href="plans.html" id="mb-start" hidden>Start membership</a>
-            <button class="btn primary" id="mb-manage" hidden>Manage billing</button>
-            <a class="btn ghost" href="billing.html">Billing details</a>
-          </div>
-        </div>
-      </div>
-
-      <!-- Workspaces -->
-      <div class="card has-header" id="section-workspaces">
-        <div class="card-header">Workspaces</div>
-        <div class="card-body">
-          <div class="ws-list" id="ws-list">
-            <div class="empty">No workspaces yet — they appear here after you create one in the Aura client.</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Security -->
-      <div class="card has-header" id="section-security">
-        <div class="card-header">Security</div>
-        <div class="card-body">
-          <span class="section-tab">Email</span>
-          <form class="row" id="email-reset-form">
-            <label for="sec-email">New Email</label>
-            <input class="input" type="email" name="email" required id="sec-email" placeholder="New email" style="max-width:320px;" />
-            <button class="btn" id="sec-email-save" type="submit">Update</button>
-          </form>
-          <div class="hr"></div>
-          <span class="section-tab">Password Reset</span>
-          <form class="row" id="pw-reset-form" style="flex-wrap:wrap; justify-content: space-between;">
-            <div class="row">
-              <label for="sec-current">Current Password</label>
-              <input class="input" id="sec-current" type="password" placeholder="Current password"
-                style="max-width:220px;" required />
-            </div>
-            <div class="row">
-              <label for="sec-new">New Password</label>
-              <input class="input" id="sec-new" type="password" placeholder="New password" style="max-width:220px;" required />
-            </div>
-            <div class="row">
-              <label for="sec-new-confirm">Confirm Password</label>
-              <input class="input" id="sec-new-confirm" type="password" placeholder="Confirm new password"
-                style="max-width:220px;" required />
-            </div>
-            <button class="btn" id="sec-pass-save" type="submit">Reset password</button>
-          </form>
-        </div>
-      </div>
-
+  <section class="block" id="section-overview" aria-labelledby="profile-h">
+    <h2 id="profile-h">Profile</h2>
+    <div class="block__body">
+      <dl class="kv" id="profile-kv">
+        <div><dt>Name</dt><dd id="pf-name">—</dd></div>
+        <div><dt>Email</dt><dd id="pf-email">—</dd></div>
+        <div><dt>Member since</dt><dd id="pf-created">—</dd></div>
+        <div><dt>Account type</dt><dd id="pf-type">—</dd></div>
+      </dl>
     </div>
-  </main>
+  </section>
 
-  <footer class="footer">
-    <span>© 2026 Aura XR Systems LLC</span>
-    <span class="mono">ACCOUNT</span>
-  </footer>
+  <section class="block" id="section-plan" aria-labelledby="membership-h">
+    <h2 id="membership-h">Membership<small class="step-state" id="mb-state">…</small></h2>
+    <div class="block__body">
+      <div id="membership-body">
+        <div class="empty">Loading membership…</div>
+      </div>
+      <div class="card-actions">
+        <a class="btn primary" href="plans.html" id="mb-start" hidden>Start membership</a>
+        <button class="btn primary" type="button" id="mb-manage" hidden>Manage billing</button>
+        <a class="btn ghost" href="billing.html">Billing details</a>
+      </div>
+    </div>
+  </section>
 
-  <script type="module" src="/src/main.js"></script>
+  <section class="block" id="section-workspaces" aria-labelledby="ws-h">
+    <h2 id="ws-h">Workspaces</h2>
+    <div class="block__body">
+      <div class="ws-list" id="ws-list">
+        <div class="empty">No workspaces yet. They appear here after you create one in AURA Engine.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="section-security" aria-labelledby="security-h">
+    <h2 id="security-h">Security</h2>
+    <div class="block__body">
+      <form class="row-form" id="email-reset-form">
+        <div>
+          <label for="sec-email">New email</label>
+          <input class="input" type="email" name="email" required id="sec-email" autocomplete="email" placeholder="you@company.com">
+        </div>
+        <button class="btn" id="sec-email-save" type="submit">Update email</button>
+      </form>
+      <div class="hr"></div>
+      <form class="row-form three" id="pw-reset-form">
+        <div>
+          <label for="sec-current">Current password</label>
+          <input class="input" id="sec-current" type="password" autocomplete="current-password" required>
+        </div>
+        <div>
+          <label for="sec-new">New password</label>
+          <input class="input" id="sec-new" type="password" autocomplete="new-password" required>
+        </div>
+        <div>
+          <label for="sec-new-confirm">Confirm new password</label>
+          <input class="input" id="sec-new-confirm" type="password" autocomplete="new-password" required>
+        </div>
+        <button class="btn" id="sec-pass-save" type="submit">Reset password</button>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="foot__mark" aria-hidden="true" data-fit><span data-line>AURA</span><span data-line>Engine</span></div>
+  <div class="foot__row">
+    <ul>
+      <li><a href="docs.html">Docs</a></li>
+      <li><a href="#" data-legal-view="terms">Terms</a></li>
+      <li><a href="#" data-legal-view="privacy">Privacy</a></li>
+      <li><a href="mailto:support@auraengine.com">support@auraengine.com</a></li>
+    </ul>
+    <p>© 2026 Aura XR Systems LLC</p>
+  </div>
+</footer>
+<script type="module" src="/src/main.js"></script>
 </body>
-
 </html>

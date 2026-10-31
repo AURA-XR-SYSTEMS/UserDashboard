@@ -1,132 +1,73 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <title>Aura — Video Tutorials</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="default.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AURA — Tutorials</title>
+<meta name="theme-color" content="#f4f5f2" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0d1517" media="(prefers-color-scheme: dark)">
+<link rel="preload" href="/fonts/archivo-latin-standard-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="default.css">
+<script>document.documentElement.classList.add("js");try{var t=localStorage.getItem("aura-theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
 </head>
 <body>
-<header class="header">
-  <nav class="nav">
-    <div class="brand"><a href="dashboard.html"><img class="brand-logo"/></a></div>
-    <div class="right">
-      <a class="btn ghost" href="downloads.html">Downloads</a>
-      <a class="btn ghost" href="plans.html">Plans</a>
-      <a class="btn ghost" href="docs.html">Docs</a>
-      <span class="sep"></span>
-      <a class="btn ghost" href="account.html">Account</a>
-      <button class="btn" data-logout>Log out</button>
-    </div>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="top" data-top>
+  <a class="brand" href="dashboard.html" aria-label="AURA, dashboard">
+    <svg viewBox="0 0 100 68" aria-hidden="true"><defs><clipPath id="mk-l"><circle cx="34" cy="34" r="34"/></clipPath><clipPath id="mk-r"><circle cx="66" cy="34" r="34"/></clipPath></defs><circle cx="66" cy="34" r="34" fill="var(--signal-fill)"/><circle cx="34" cy="34" r="34" fill="currentColor"/><g clip-path="url(#mk-l)"><rect x="0" y="0" width="50" height="68" fill="var(--signal-fill)" clip-path="url(#mk-r)"/></g></svg>
+    <span>AURA</span>
+  </a>
+  <nav aria-label="Main" data-nav>
+    <a href="dashboard.html" class="only-wide">Dashboard</a>
+    <a href="downloads.html">Downloads</a>
+    <a href="plans.html">Plans</a>
+    <a href="team.html" data-team-plan-link hidden>Team</a>
+    <a href="docs.html">Docs</a>
+    <a href="account.html">Account</a>
   </nav>
+  <div class="right">
+    <button class="btn" type="button" data-logout>Log out</button>
+    <button class="theme" type="button" data-theme-toggle aria-label="Switch colour theme">
+      <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M10 1.8a8.2 8.2 0 0 1 0 16.4z" fill="currentColor"/></svg>
+    </button>
+  </div>
 </header>
 
-<main class="container">
-  <section class="page-head">
-    <span class="kicker">Learn</span>
-    <h1>Video Tutorials</h1>
-    <p>Seven short walkthroughs of the Aura Engine — start with the interface
-      tour and work through to importing your own 3D models. Each video opens
-      on YouTube.</p>
+<main id="main" class="container">
+  <section class="head">
+    <h1>Tutorials.</h1>
+    <p>Seven short walkthroughs of AURA Engine, from the interface tour to importing your own 3D models. Each opens on YouTube.</p>
   </section>
 
-  <div class="video-grid">
-    <a class="card video-card" href="https://www.youtube.com/watch?v=fmgU1e72vbs" target="_blank" rel="noopener">
-      <span class="video-thumb">
-        <img src="https://img.youtube.com/vi/fmgU1e72vbs/hqdefault.jpg" alt="AURA Engine Interface Overview" />
-        <span class="video-play" aria-hidden="true"></span>
-        <span class="video-num mono">01</span>
-      </span>
-      <span class="video-body">
-        <span class="video-title">Interface Overview</span>
-        <span class="video-desc">Main features and tools.</span>
-        <span class="video-cta mono">Watch on YouTube ↗</span>
-      </span>
-    </a>
-
-    <a class="card video-card" href="https://www.youtube.com/watch?v=xZdkpPzD-DU" target="_blank" rel="noopener">
-      <span class="video-thumb">
-        <img src="https://img.youtube.com/vi/xZdkpPzD-DU/hqdefault.jpg" alt="AURA Engine Navigation Tutorial" />
-        <span class="video-play" aria-hidden="true"></span>
-        <span class="video-num mono">02</span>
-      </span>
-      <span class="video-body">
-        <span class="video-title">Navigation</span>
-        <span class="video-desc">WASD, Q/E, space bar, and mouse controls.</span>
-        <span class="video-cta mono">Watch on YouTube ↗</span>
-      </span>
-    </a>
-
-    <a class="card video-card" href="https://www.youtube.com/watch?v=m2bS_MVSN34" target="_blank" rel="noopener">
-      <span class="video-thumb">
-        <img src="https://img.youtube.com/vi/m2bS_MVSN34/hqdefault.jpg" alt="How to Find a Location in AURA" />
-        <span class="video-play" aria-hidden="true"></span>
-        <span class="video-num mono">03</span>
-      </span>
-      <span class="video-body">
-        <span class="video-title">Finding Locations</span>
-        <span class="video-desc">Single, smart, and area search.</span>
-        <span class="video-cta mono">Watch on YouTube ↗</span>
-      </span>
-    </a>
-
-    <a class="card video-card" href="https://www.youtube.com/watch?v=k0jhO5ceFic" target="_blank" rel="noopener">
-      <span class="video-thumb">
-        <img src="https://img.youtube.com/vi/k0jhO5ceFic/hqdefault.jpg" alt="How to Use GIS Maps in AURA" />
-        <span class="video-play" aria-hidden="true"></span>
-        <span class="video-num mono">04</span>
-      </span>
-      <span class="video-body">
-        <span class="video-title">GIS Maps</span>
-        <span class="video-desc">GIS view, base maps, and layers.</span>
-        <span class="video-cta mono">Watch on YouTube ↗</span>
-      </span>
-    </a>
-
-    <a class="card video-card" href="https://www.youtube.com/watch?v=xXOxO8Nvpo8" target="_blank" rel="noopener">
-      <span class="video-thumb">
-        <img src="https://img.youtube.com/vi/xXOxO8Nvpo8/hqdefault.jpg" alt="How to Add ArcGIS Online Layers to AURA" />
-        <span class="video-play" aria-hidden="true"></span>
-        <span class="video-num mono">05</span>
-      </span>
-      <span class="video-body">
-        <span class="video-title">ArcGIS Online Layers</span>
-        <span class="video-desc">Copy a layer URL and import GIS data.</span>
-        <span class="video-cta mono">Watch on YouTube ↗</span>
-      </span>
-    </a>
-
-    <a class="card video-card" href="https://www.youtube.com/watch?v=CkdtU_vQqAA" target="_blank" rel="noopener">
-      <span class="video-thumb">
-        <img src="https://img.youtube.com/vi/CkdtU_vQqAA/hqdefault.jpg" alt="How to Create and Use Saved Views in AURA" />
-        <span class="video-play" aria-hidden="true"></span>
-        <span class="video-num mono">06</span>
-      </span>
-      <span class="video-body">
-        <span class="video-title">Saved Views</span>
-        <span class="video-desc">Camera positions, layers, and scene settings.</span>
-        <span class="video-cta mono">Watch on YouTube ↗</span>
-      </span>
-    </a>
-
-    <a class="card video-card" href="https://www.youtube.com/watch?v=HnKhW3FiXl8" target="_blank" rel="noopener">
-      <span class="video-thumb">
-        <img src="https://img.youtube.com/vi/HnKhW3FiXl8/hqdefault.jpg" alt="How to Import 3D Models into AURA" />
-        <span class="video-play" aria-hidden="true"></span>
-        <span class="video-num mono">07</span>
-      </span>
-      <span class="video-body">
-        <span class="video-title">Importing 3D Models</span>
-        <span class="video-desc">Place, move, and visualize custom models.</span>
-        <span class="video-cta mono">Watch on YouTube ↗</span>
-      </span>
-    </a>
-  </div>
+  <section class="block block--loose" aria-labelledby="list-h">
+    <h2 id="list-h" class="label">The series</h2>
+    <div class="block__body">
+      <ol class="tut">
+        <li><span class="n">01</span><div><h3>Interface overview</h3><p>Main features and tools.</p><a class="go" href="https://www.youtube.com/watch?v=fmgU1e72vbs" target="_blank" rel="noopener">Watch on YouTube ↗</a></div><img src="https://img.youtube.com/vi/fmgU1e72vbs/hqdefault.jpg" alt="" loading="lazy"></li>
+        <li><span class="n">02</span><div><h3>Navigation</h3><p>WASD, Q/E, space bar, and mouse controls.</p><a class="go" href="https://www.youtube.com/watch?v=xZdkpPzD-DU" target="_blank" rel="noopener">Watch on YouTube ↗</a></div><img src="https://img.youtube.com/vi/xZdkpPzD-DU/hqdefault.jpg" alt="" loading="lazy"></li>
+        <li><span class="n">03</span><div><h3>Finding locations</h3><p>Single, smart, and area search.</p><a class="go" href="https://www.youtube.com/watch?v=m2bS_MVSN34" target="_blank" rel="noopener">Watch on YouTube ↗</a></div><img src="https://img.youtube.com/vi/m2bS_MVSN34/hqdefault.jpg" alt="" loading="lazy"></li>
+        <li><span class="n">04</span><div><h3>GIS maps</h3><p>GIS view, base maps, and layers.</p><a class="go" href="https://www.youtube.com/watch?v=k0jhO5ceFic" target="_blank" rel="noopener">Watch on YouTube ↗</a></div><img src="https://img.youtube.com/vi/k0jhO5ceFic/hqdefault.jpg" alt="" loading="lazy"></li>
+        <li><span class="n">05</span><div><h3>ArcGIS Online layers</h3><p>Copy a layer URL and import GIS data.</p><a class="go" href="https://www.youtube.com/watch?v=xXOxO8Nvpo8" target="_blank" rel="noopener">Watch on YouTube ↗</a></div><img src="https://img.youtube.com/vi/xXOxO8Nvpo8/hqdefault.jpg" alt="" loading="lazy"></li>
+        <li><span class="n">06</span><div><h3>Saved views</h3><p>Camera positions, layers, and scene settings.</p><a class="go" href="https://www.youtube.com/watch?v=CkdtU_vQqAA" target="_blank" rel="noopener">Watch on YouTube ↗</a></div><img src="https://img.youtube.com/vi/CkdtU_vQqAA/hqdefault.jpg" alt="" loading="lazy"></li>
+        <li><span class="n">07</span><div><h3>Importing 3D models</h3><p>Place and move your own models.</p><a class="go" href="https://www.youtube.com/watch?v=HnKhW3FiXl8" target="_blank" rel="noopener">Watch on YouTube ↗</a></div><img src="https://img.youtube.com/vi/HnKhW3FiXl8/hqdefault.jpg" alt="" loading="lazy"></li>
+      </ol>
+    </div>
+  </section>
 </main>
 
-<footer class="footer">
-  <span>© 2026 Aura XR Systems LLC</span>
-  <span class="mono">TUTORIALS</span>
+<footer class="foot">
+  <div class="foot__mark" aria-hidden="true" data-fit><span data-line>AURA</span><span data-line>Engine</span></div>
+  <div class="foot__row">
+    <ul>
+      <li><a href="docs.html">Docs</a></li>
+      <li><a href="#" data-legal-view="terms">Terms</a></li>
+      <li><a href="#" data-legal-view="privacy">Privacy</a></li>
+      <li><a href="mailto:support@auraengine.com">support@auraengine.com</a></li>
+    </ul>
+    <p>© 2026 Aura XR Systems LLC</p>
+  </div>
 </footer>
 <script type="module" src="/src/main.js"></script>
 </body>

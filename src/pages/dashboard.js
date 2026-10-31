@@ -7,6 +7,8 @@ import {
   loadMe,
   startCheckout,
 } from "../lib/api.js";
+import { materialize } from "../lib/lidar-type.js";
+import { drawTimeline } from "../lib/timeline.js";
 
 function statusLineHTML(status, subscription, exempt) {
   // Exempt accounts have no subscription by design, so the "no membership yet"
@@ -132,9 +134,12 @@ export async function initDashboard() {
   const user = await loadMe();
   const nameEl = document.querySelector("[data-username]");
   if (nameEl && user) nameEl.textContent = user.firstName || user.email;
+  // The headline's words are final now: draw it out of lidar.
+  materialize(document.querySelector("[data-lidar]"));
 
   const account = await loadAccountCached();
   if (!account) return;
+  drawTimeline(document.querySelector("[data-timeline]"), document.querySelector("[data-timeline-note]"), account);
   const { billing, subscription } = account;
 
   const statusEl = document.getElementById("status-chips");

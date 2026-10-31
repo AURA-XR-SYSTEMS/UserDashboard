@@ -68,7 +68,9 @@ export async function initAskAuraBanner() {
   const mount = document.createElement("div");
   mount.id = MOUNT_ID;
   mount.innerHTML = bannerHTML(isMember, trialAvailable);
-  container.prepend(mount);
+  // After the page's headline when it has one (one idea per screen), else at the top.
+  const head = container.querySelector(":scope > .head");
+  if (head) head.after(mount); else container.prepend(mount);
 
   mount.querySelector("[data-askaura-go]")?.addEventListener("click", async (e) => {
     if (isMember) {

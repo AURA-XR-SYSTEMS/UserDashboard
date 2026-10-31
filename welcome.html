@@ -1,71 +1,87 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <title>Aura — Your first month is free</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="default.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AURA — Your first month is free</title>
+<meta name="theme-color" content="#f4f5f2" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0d1517" media="(prefers-color-scheme: dark)">
+<link rel="preload" href="/fonts/archivo-latin-standard-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="default.css">
+<script>document.documentElement.classList.add("js");try{var t=localStorage.getItem("aura-theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
 </head>
 <body>
-  <header class="header">
-    <nav class="nav">
-      <div class="brand"><a href="dashboard.html"><img class="brand-logo"/></a></div>
-      <div class="right">
-        <a class="btn ghost" href="dashboard.html">Skip for now</a>
-        <button class="btn" data-logout>Log out</button>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="top" data-top>
+  <a class="brand" href="dashboard.html" aria-label="AURA, dashboard">
+    <svg viewBox="0 0 100 68" aria-hidden="true"><defs><clipPath id="mk-l"><circle cx="34" cy="34" r="34"/></clipPath><clipPath id="mk-r"><circle cx="66" cy="34" r="34"/></clipPath></defs><circle cx="66" cy="34" r="34" fill="var(--signal-fill)"/><circle cx="34" cy="34" r="34" fill="currentColor"/><g clip-path="url(#mk-l)"><rect x="0" y="0" width="50" height="68" fill="var(--signal-fill)" clip-path="url(#mk-r)"/></g></svg>
+    <span>AURA</span>
+  </a>
+  <nav aria-label="Main" data-nav>
+    <a href="dashboard.html">Skip for now</a>
+  </nav>
+  <div class="right">
+    <button class="btn" type="button" data-logout>Log out</button>
+    <button class="theme" type="button" data-theme-toggle aria-label="Switch colour theme">
+      <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M10 1.8a8.2 8.2 0 0 1 0 16.4z" fill="currentColor"/></svg>
+    </button>
+  </div>
+</header>
+
+<!-- The first screen after registering. One decision on it: start the free month.
+     The banner is suppressed here because the whole page IS the offer. -->
+<main id="main" class="container" data-no-askaura-banner>
+  <section class="welcome-hero" id="welcome">
+    <h1 data-lidar data-lidar-later id="welcome-h1">Your first month is <span class="accent" data-hot>free</span>.</h1>
+    <p class="welcome-lede">
+      Your account is ready, <span data-username>there</span>. You won't be charged for
+      30 days, and you can cancel anytime before then. Start your free month and use <strong>Ask AURA</strong> in your browser straight away: no
+      download, no install. The desktop engine is waiting whenever you want it.
+    </p>
+    <div class="welcome-actions">
+      <button class="btn primary welcome-cta" type="button" id="welcome-start">Start your free month</button>
+      <a class="btn ghost" href="dashboard.html">Go to dashboard instead</a>
+    </div>
+    <p class="welcome-terms" id="welcome-terms"></p>
+  </section>
+
+  <section class="welcome-grid">
+    <div class="card">
+      <div class="card-body">
+        <div class="card-header-lite">Ask AURA, in the browser</div>
+        <p class="features">
+          Ask any question about the planet. AURA finds the data, runs the
+          spatial analysis, and draws the answer on a globe. Works on any
+          machine, nothing to install.
+        </p>
       </div>
-    </nav>
-  </header>
-
-  <!-- The first screen after registering. One decision on it: start the trial.
-       The banner is suppressed here because the whole page IS the offer. -->
-  <main class="container" id="welcome" data-no-askaura-banner>
-    <section class="welcome-hero">
-      <span class="kicker">Welcome to Aura</span>
-      <h1>Your first month is <span class="accent">free</span></h1>
-      <p class="welcome-lede">
-        Your account is ready, <span data-username>there</span>. You won't be charged for
-        30 days, and you can cancel anytime before then. Start your free month and use <strong>Ask AURA</strong> in your browser straight away — no
-        download, no install. The desktop engine is waiting whenever you want it.
-      </p>
-
-      <div class="welcome-actions">
-        <button class="btn primary welcome-cta" type="button" id="welcome-start">
-          Start your free month
-        </button>
-        <a class="btn ghost" href="dashboard.html">Go to dashboard instead</a>
+    </div>
+    <div class="card">
+      <div class="card-body">
+        <div class="card-header-lite">AURA Engine, the desktop client</div>
+        <p class="features">
+          The full real-time 3D environment: GIS, BIM, and AI over photoreal
+          digital twins. Windows, downloadable once your membership is live.
+        </p>
       </div>
+    </div>
+  </section>
+</main>
 
-      <p class="welcome-terms" id="welcome-terms"></p>
-    </section>
-
-    <section class="welcome-grid">
-      <div class="card">
-        <div class="card-body">
-          <div class="card-header-lite">Ask AURA — in the browser</div>
-          <div class="features">
-            Ask any question about the planet. AURA finds the data, runs the
-            spatial analysis, and draws the answer on a globe. Works on any
-            machine, nothing to install.
-          </div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-body">
-          <div class="card-header-lite">AURA Engine — the desktop client</div>
-          <div class="features">
-            The full real-time 3D environment: GIS, BIM, and AI over photoreal
-            digital twins. Windows, downloadable once your membership is live.
-          </div>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <footer class="footer">
-    <span>© 2026 Aura XR Systems LLC</span>
-    <span class="mono">WELCOME</span>
-  </footer>
-  <script type="module" src="/src/main.js"></script>
+<footer class="foot">
+  <div class="foot__mark" aria-hidden="true" data-fit><span data-line>AURA</span><span data-line>Engine</span></div>
+  <div class="foot__row">
+    <ul>
+      <li><a href="docs.html">Docs</a></li>
+      <li><a href="#" data-legal-view="terms">Terms</a></li>
+      <li><a href="#" data-legal-view="privacy">Privacy</a></li>
+      <li><a href="mailto:support@auraengine.com">support@auraengine.com</a></li>
+    </ul>
+    <p>© 2026 Aura XR Systems LLC</p>
+  </div>
+</footer>
+<script type="module" src="/src/main.js"></script>
 </body>
 </html>

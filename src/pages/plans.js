@@ -53,7 +53,7 @@ function chargeDisclosureHTML(plan) {
     const chargeDate = firstChargeDateLabel(plan.trialDays);
     return `
       <div class="charge-disclosure">
-        <strong>${plan.trialDays}-day free trial, then ${price} (USD) / ${per}.</strong>
+        <strong>${plan.trialDays === 30 ? "Your first month is free" : `${plan.trialDays}-day free trial`}, then ${price} (USD) / ${per}.</strong>
         Your card will be charged <strong>${price} on ${chargeDate}</strong> unless you
         cancel before then. Your membership renews ${per}ly until cancelled — cancel
         anytime from the <a href="billing.html">Billing</a> page. Cancellation takes
