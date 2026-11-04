@@ -32,7 +32,7 @@ function authForms(invite) {
       <div><label>First Name</label><input class="input" name="first_name" required /></div>
       <div><label>Last Name</label><input class="input" name="last_name" required /></div>
       <div><label>Email</label><input class="input" name="email" type="email" readonly value="${esc(invite.email)}" /></div>
-      <div><label>Password</label><input class="input" name="password" type="password" required minlength="8" placeholder="Create a password" /></div>
+      <div><label>Password</label><input class="input" name="password" type="password" required placeholder="Create a password" /></div>
       <div class="form-error" data-join-error hidden></div>
       <div class="row" style="justify-content:flex-end"><button class="btn primary" type="submit">Create account and join</button></div>
     </form>
