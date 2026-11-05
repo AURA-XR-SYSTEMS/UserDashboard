@@ -90,6 +90,38 @@ export function isPublicPage(path = window.location.pathname) {
   return PUBLIC_PATHS.some((p) => path.endsWith(p));
 }
 
+// Pages that show one person's account. Plans, downloads, docs and tutorials
+// aren't here: they stay readable signed out.
+const SESSION_PATHS = [
+  "/dashboard.html",
+  "/account.html",
+  "/billing.html",
+  "/team.html",
+  "/welcome.html",
+];
+
+function isSessionPage(path = window.location.pathname) {
+  return SESSION_PATHS.some((p) => path.endsWith(p));
+}
+
+const SIGN_IN_TRIP = "aura-sign-in-trip";
+
+/**
+ * Off to sign in, coming back to this page afterwards. Returns false, and stays,
+ * when this page already sent us there in the last minute: the session is fine
+ * by /api/me but this page still can't use it, and another trip wouldn't help.
+ */
+export function redirectToSignIn() {
+  const page = window.location.pathname.split("/").pop();
+  try {
+    const last = JSON.parse(sessionStorage.getItem(SIGN_IN_TRIP) || "null");
+    if (last && last.page === page && Date.now() - last.at < 60_000) return false;
+    sessionStorage.setItem(SIGN_IN_TRIP, JSON.stringify({ page, at: Date.now() }));
+  } catch {}
+  window.location.replace(`index.html?next=${encodeURIComponent(page)}`);
+  return true;
+}
+
 export async function api(path, opts = {}) {
   const url = path.startsWith("http") ? path : `${BASE}${path}`;
   const res = await fetch(url, {
@@ -109,7 +141,9 @@ export async function api(path, opts = {}) {
       const detail = body.detail;
       msg = body.error || (detail && typeof detail === "object" ? detail.message : detail) || msg;
     } catch {}
-    throw new Error(msg);
+    const err = new Error(msg);
+    err.status = res.status;
+    throw err;
   } else if (res.status == 204) return {};
   else return res.json();
 }
@@ -118,6 +152,8 @@ export async function loadMe() {
   try {
     const { user } = await api("/api/me");
     console.log("Found user in loadMe...", user);
+    // Signed out answers 200 with no user, so an expired session lands here.
+    if (!user && isSessionPage()) redirectToSignIn();
     return user;
   } catch (error) {
     console.log("Caught error in loadMe...", error);

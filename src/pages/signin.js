@@ -1,6 +1,20 @@
 // src/pages/signin.js
 import { api } from "../lib/api.js";
 
+/** Where to go after signing in: a page of this site by file name, never a URL. */
+function nextPage() {
+  const next = new URLSearchParams(location.search).get("next");
+  return next && /^[a-z-]+\.html$/.test(next) ? next : null;
+}
+
+// The API is on another site, so the session is a third-party cookie. Safari,
+// Brave and private windows refuse those: sign-in answers 200 and nothing sticks.
+function cookieRefusedMessage(mode) {
+  const lead = mode === "register" ? "Your account is created, but your" : "Your";
+  const end = mode === "register" ? "then sign in" : "and sign in again";
+  return `${lead} browser blocked the cookie that keeps you signed in. Please use Chrome or Edge, or allow third-party cookies in your browser's settings, ${end}.`;
+}
+
 export async function handleAuth(e) {
   e.preventDefault();
   const form = e.currentTarget;
@@ -25,9 +39,13 @@ export async function handleAuth(e) {
   try {
     const path = mode === "register" ? "/api/auth/register" : "/api/auth/login";
     await api(path, { method: "POST", body });
+    const { user } = await api("/api/me");
+    if (!user) throw new Error(cookieRefusedMessage(mode));
     // A brand-new account goes to the trial offer, not the setup checklist —
     // intent is never higher than the second after signing up.
-    location.assign(mode === "register" ? "/welcome.html" : "/dashboard.html");
+    location.assign(
+      mode === "register" ? "/welcome.html" : `/${nextPage() || "dashboard.html"}`
+    );
   } catch (err) {
     const msg = normalizeAuthError(err);
     if (errorEl) {
@@ -68,6 +86,13 @@ function normalizeAuthError(err) {
 }
 
 export function initAuthFormUX() {
+  if (nextPage()) {
+    const notice = document.querySelector("#tab-login [data-auth-error]");
+    if (notice) {
+      notice.textContent = "Your session has ended. Please sign in again.";
+      notice.hidden = false;
+    }
+  }
   document.querySelectorAll("[data-auth-form]").forEach((form) => {
     form.addEventListener(
       "input",

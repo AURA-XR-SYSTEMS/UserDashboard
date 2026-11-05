@@ -1,4 +1,4 @@
-import { api, fmtDate, fmtMoney } from "../lib/api.js";
+import { api, fmtDate, fmtMoney, redirectToSignIn } from "../lib/api.js";
 
 function checkoutNotice() {
   const params = new URLSearchParams(window.location.search);
@@ -56,6 +56,15 @@ export async function initBilling() {
       }
     });
   } catch (e) {
+    if (e.status === 401) {
+      if (redirectToSignIn()) {
+        el.textContent = "Your session has ended. Taking you to sign in…";
+      } else {
+        el.textContent =
+          "We couldn't confirm your sign-in for billing. Please e-mail support@auraengine.com and we'll sort it out.";
+      }
+      return;
+    }
     el.textContent = `Error loading billing: ${e.message}`;
   }
 }
