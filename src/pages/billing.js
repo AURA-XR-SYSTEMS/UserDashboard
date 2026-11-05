@@ -57,8 +57,12 @@ export async function initBilling() {
     });
   } catch (e) {
     if (e.status === 401) {
-      el.textContent = "Your session has ended. Taking you to sign in…";
-      redirectToSignIn();
+      if (redirectToSignIn()) {
+        el.textContent = "Your session has ended. Taking you to sign in…";
+      } else {
+        el.textContent =
+          "We couldn't confirm your sign-in for billing. Please e-mail support@auraengine.com and we'll sort it out.";
+      }
       return;
     }
     el.textContent = `Error loading billing: ${e.message}`;

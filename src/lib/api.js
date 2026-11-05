@@ -104,10 +104,22 @@ function isSessionPage(path = window.location.pathname) {
   return SESSION_PATHS.some((p) => path.endsWith(p));
 }
 
-/** Off to sign in, coming back to this page afterwards. */
+const SIGN_IN_TRIP = "aura-sign-in-trip";
+
+/**
+ * Off to sign in, coming back to this page afterwards. Returns false, and stays,
+ * when this page already sent us there in the last minute: the session is fine
+ * by /api/me but this page still can't use it, and another trip wouldn't help.
+ */
 export function redirectToSignIn() {
   const page = window.location.pathname.split("/").pop();
+  try {
+    const last = JSON.parse(sessionStorage.getItem(SIGN_IN_TRIP) || "null");
+    if (last && last.page === page && Date.now() - last.at < 60_000) return false;
+    sessionStorage.setItem(SIGN_IN_TRIP, JSON.stringify({ page, at: Date.now() }));
+  } catch {}
   window.location.replace(`index.html?next=${encodeURIComponent(page)}`);
+  return true;
 }
 
 export async function api(path, opts = {}) {
