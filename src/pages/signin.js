@@ -98,6 +98,13 @@ export function initTabs() {
       if (target) target.classList.add("active");
     })
   );
+  // auraengine.com's Download button sends new users here as /#register
+  if (location.hash === "#register") {
+    btns.find((b) => b.dataset.tabTarget === "#tab-register")?.click();
+    document
+      .querySelector('#tab-register input[name="first_name"]')
+      ?.focus();
+  }
 }
 
 export async function handleLogout() {

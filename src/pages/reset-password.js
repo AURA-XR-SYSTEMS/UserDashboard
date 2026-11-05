@@ -47,11 +47,6 @@ export function initResetPassword() {
     const p1 = newEl.value;
     const p2 = confirmEl.value;
 
-    if (p1.length < 8) {
-      alert("Please choose a password with at least 8 characters.");
-      newEl.focus();
-      return;
-    }
     if (p1 !== p2) {
       alert("Passwords do not match.");
       confirmEl.focus();
