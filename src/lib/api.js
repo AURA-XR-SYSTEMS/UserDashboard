@@ -90,6 +90,26 @@ export function isPublicPage(path = window.location.pathname) {
   return PUBLIC_PATHS.some((p) => path.endsWith(p));
 }
 
+// Pages that show one person's account. Plans, downloads, docs and tutorials
+// aren't here: they stay readable signed out.
+const SESSION_PATHS = [
+  "/dashboard.html",
+  "/account.html",
+  "/billing.html",
+  "/team.html",
+  "/welcome.html",
+];
+
+function isSessionPage(path = window.location.pathname) {
+  return SESSION_PATHS.some((p) => path.endsWith(p));
+}
+
+/** Off to sign in, coming back to this page afterwards. */
+export function redirectToSignIn() {
+  const page = window.location.pathname.split("/").pop();
+  window.location.replace(`index.html?next=${encodeURIComponent(page)}`);
+}
+
 export async function api(path, opts = {}) {
   const url = path.startsWith("http") ? path : `${BASE}${path}`;
   const res = await fetch(url, {
@@ -109,7 +129,9 @@ export async function api(path, opts = {}) {
       const detail = body.detail;
       msg = body.error || (detail && typeof detail === "object" ? detail.message : detail) || msg;
     } catch {}
-    throw new Error(msg);
+    const err = new Error(msg);
+    err.status = res.status;
+    throw err;
   } else if (res.status == 204) return {};
   else return res.json();
 }
@@ -118,6 +140,8 @@ export async function loadMe() {
   try {
     const { user } = await api("/api/me");
     console.log("Found user in loadMe...", user);
+    // Signed out answers 200 with no user, so an expired session lands here.
+    if (!user && isSessionPage()) redirectToSignIn();
     return user;
   } catch (error) {
     console.log("Caught error in loadMe...", error);
