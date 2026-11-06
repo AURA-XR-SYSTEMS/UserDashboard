@@ -40,6 +40,9 @@ export default defineConfig(({ mode }) => {
           billing: "./billing.html",
           team: "./team.html",
           join: "./join.html",
+          // Not in the nav: each stays dark until its UserService flag is on.
+          edu: "./edu.html",
+          report: "./report.html",
           "reset-password": "./reset-password.html",
           "forgot-password": "./forgot-password.html",
         },

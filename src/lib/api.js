@@ -98,6 +98,8 @@ const SESSION_PATHS = [
   "/billing.html",
   "/team.html",
   "/welcome.html",
+  "/edu.html",
+  "/report.html",
 ];
 
 function isSessionPage(path = window.location.pathname) {
@@ -105,6 +107,9 @@ function isSessionPage(path = window.location.pathname) {
 }
 
 const SIGN_IN_TRIP = "aura-sign-in-trip";
+// Set once this page is on its way to sign in, so a second caller (a page's own
+// 401 after loadMe's redirect) doesn't flash a "couldn't confirm" message.
+let leavingForSignIn = false;
 
 /**
  * Off to sign in, coming back to this page afterwards. Returns false, and stays,
@@ -112,12 +117,14 @@ const SIGN_IN_TRIP = "aura-sign-in-trip";
  * by /api/me but this page still can't use it, and another trip wouldn't help.
  */
 export function redirectToSignIn() {
+  if (leavingForSignIn) return true;
   const page = window.location.pathname.split("/").pop();
   try {
     const last = JSON.parse(sessionStorage.getItem(SIGN_IN_TRIP) || "null");
     if (last && last.page === page && Date.now() - last.at < 60_000) return false;
     sessionStorage.setItem(SIGN_IN_TRIP, JSON.stringify({ page, at: Date.now() }));
   } catch {}
+  leavingForSignIn = true;
   window.location.replace(`index.html?next=${encodeURIComponent(page)}`);
   return true;
 }
@@ -135,14 +142,18 @@ export async function api(path, opts = {}) {
 
   if (!res.ok) {
     let msg = res.statusText;
+    let code;
     try {
       const body = await res.json();
       // Newer routes answer {detail: {code, message}}; older ones a string.
       const detail = body.detail;
       msg = body.error || (detail && typeof detail === "object" ? detail.message : detail) || msg;
+      // The machine-readable reason, for pages that word each one themselves.
+      if (detail && typeof detail === "object" && typeof detail.code === "string") code = detail.code;
     } catch {}
     const err = new Error(msg);
     err.status = res.status;
+    err.code = code;
     throw err;
   } else if (res.status == 204) return {};
   else return res.json();
